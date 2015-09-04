@@ -1,0 +1,94 @@
+<?php
+
+namespace App;
+
+use Bican\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
+use Bican\Roles\Traits\HasRoleAndPermission;
+use Carbon\Carbon;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Morilog\Jalali\jDate;
+
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract
+{
+    use Authenticatable, CanResetPassword, HasRoleAndPermission;
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'image', 'confirmed', 'confirmation_code', 'status'];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['password', 'remember_token'];
+
+    /**
+     * Created by Emad Mirzaie on 01/09/2015.
+     * Human dates
+     */
+    public function getHumanCreatedAtAttribute()
+    {
+        return Carbon::parse($this->attributes['created_at'])->diffForHumans();
+    }
+
+    public function getHumanUpdatedAtAttribute()
+    {
+        return Carbon::parse($this->attributes['updated_at'])->diffForHumans();
+    }
+
+    /**
+     * Created by Emad Mirzaie on 01/09/2015.
+     * Shamsi Dates
+     */
+    public function getShamsiCreatedAtAttribute()
+    {
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
+    }
+    public function getShamsiUpdatedAtAttribute()
+    {
+        return jDate::forge($this->attributes['updated_at'])->format('Y/m/d');
+    }
+
+    /**
+     * Created by Emad Mirzaie on 01/09/2015.
+     * get user role
+     */
+    public function getUserRoleNameAttribute(){
+        return $this->roles()->first()->name;
+    }
+
+/**
+ * Created by Emad Mirzaie on 01/09/2015.
+ * User status and email confirmation status
+ */
+    public function getUserStatusAttribute(){
+        $statuses=[
+            0 => ['name'=>trans('users.deactiveStatus'), 'type'=>'danger'],
+            1 => ['name'=>trans('users.activeStatus'), 'type'=>'success']
+        ];
+        return $statuses[$this->attributes['status']];
+    }
+    public function getUserConfirmedStatusAttribute(){
+        $statuses=[
+            0 => ['name'=>trans('users.notConfirmedStatus'), 'type'=>'danger'],
+            1 => ['name'=>trans('users.confirmedStatus'), 'type'=>'success']
+        ];
+        return $statuses[$this->attributes['confirmed']];
+    }
+
+}
