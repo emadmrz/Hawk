@@ -1,0 +1,198 @@
+/*
+    Created By Emad Mirzaie
+    Login and Register Page CSS
+
+    Table Of Content
+    ---------------------------------------
+        1 - Initials
+        2 - Login & Register
+        4 - Footer
+*/
+
+/*
+-------------------------- 1- Initials -------------------------------
+*/
+body {
+    background: url(../img/bg/nasir-al-mulk-mosque-iran-29013-1280x800.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    direction: rtl;
+    font-family: web-yekan , tahoma , "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: relative;
+    height: 100%;
+}
+:focus{
+    outline: -webkit-focus-ring-color auto 0 !important;
+}
+a{
+    color: #8456A7;
+}
+li{
+    list-style: none;
+}
+form{
+    margin: 0;
+}
+.ltr{
+    direction: ltr;
+}
+.has-error .form-control:focus{
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.close{
+    float: left;
+}
+.alert-dismissable .close, .alert-dismissible .close , .notify-alert .close{
+    top: inherit;
+    left: -10px;
+    right: inherit;
+}
+.alert-dismissable, .alert-dismissible , .notify-alert {
+    padding-right: 15px;
+    padding-left: 25px !important;
+
+}
+.notify-alert{
+    border-radius: 2px;
+    animation-duration: 0.4s !important;
+    -webkit-animation-duration: 0.4s !important;
+    -moz-animation-duration: 0.4s !important;
+}
+.alert li{
+    margin-bottom: 5px;
+}
+.alert li:last-child{
+    margin-bottom: 0;
+}
+/*
+-------------------------- 2 - Login & register -------------------------------
+*/
+.site-login .logo.register h3{
+    font-size: 25px;
+    font-weight: bold;
+    color: #FFF;
+    margin: 0;
+}
+.site-login .logo.register img{
+    margin-top: 20px;
+    margin-bottom: 5px;
+    height: 80px;
+    opacity: 1;
+}
+.site-login .login-box{
+    width: 360px;
+    margin: 0 auto;
+    margin-top: 150px;
+}
+.site-login .login-box .logo img{
+    height: 90px;
+    opacity: 0.8;
+    margin: 0 auto 35px auto;
+}
+.site-login .register-box{
+    width: 400px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+.site-login .register-box .radio-box{
+    padding-top: 7px;
+}
+.site-login .register-box .radio-box .radio-inline{
+    padding-left: 10px;
+    padding-top: 0;
+}
+.site-login .register-box .radio-box label{
+    padding-top: 0;
+    line-height: 15px;
+}
+.panel-default {
+    opacity: 0.95;
+    margin-top:20px;
+}
+.site-login .alerts-box{
+    position: absolute;
+    display: block;
+    width: inherit;
+    top: 70px
+}
+.site-login .alerts-box ul{
+    padding: 0;
+}
+.form-group.last { margin-bottom:0; }
+
+div[class^='col-'] , label[class^='col-'] {
+    float: right;
+}
+input[type="checkbox"] {
+    margin: 4px 0 0;
+}
+input[type="checkbox"]{
+    margin-right: -20px;
+}
+.input-field div[class^='col-']{
+    padding-right: 10px;
+}
+.input-field label[class^='col-']{
+    padding-top: 7px;
+    padding-left: 5px;
+}
+input.en{
+    direction: ltr;
+    font-family: tahoma , "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+input[type='submit'] , button {
+    font-family: yekan , tahoma , "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.panel-heading .fa , .panel-heading .glyphicon{
+    margin-left: 5px;
+}
+.panel-footer{
+    font-size: 13px;
+}
+.panel-footer a{
+    color: #8456A7;
+}
+.form-control:focus {
+    border-color: rgb(152, 98, 186);
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+footer.footer{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+}
+footer.footer .social-media p{
+    font-size: 12px;
+}
+footer.footer .copyright{
+    background-color: #333;
+    color: #DDD;
+    vertical-align: middle;
+    padding: 10px;
+    margin-top: 10px;
+}
+.get-info{
+    margin-right: 10px;
+}
+.tooltip{
+    font-family: yekan , tahoma , "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+.tooltip .tooltip-inner{
+    background: #8456A7;
+}
+.tooltip.left .tooltip-arrow{
+    border-left-color: #8456A7 !important;
+}
+.tooltip.bottom .tooltip-arrow{
+    border-bottom-color: #8456A7 !important;
+}
+.reset-password i{
+    line-height: inherit;
+}
