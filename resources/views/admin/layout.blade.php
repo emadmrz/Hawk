@@ -60,7 +60,7 @@
         });
     </script>
 
-@yield('content')
+@yield('script')
 
 </body>
 </html>
