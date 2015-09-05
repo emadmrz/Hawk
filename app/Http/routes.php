@@ -86,6 +86,18 @@ Route::controllers([
  * Admin panel route group with admin prefix
  */
 Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
+    /**
+     * Created by Dara on 5/9/2015
+     * Admin register route group
+     */
+    Route::group(['prefix'=>'admins','as'=>'admins.'],function(){
+        Route::get('/',['as'=>'list','uses'=>'Admin\AdminController@index']);
+        Route::get('create',['as'=>'create','uses'=>'Admin\AdminController@create']);
+        Route::post('create','Admin\AdminController@store');
+        Route::get('/{admin}/delete',['as'=>'delete','uses'=>'Admin\AdminController@delete']);
+        Route::get('/{admin}/edit',['as'=>'edit','uses'=>'Admin\AdminController@edit']);
+        Route::put('/{admin}',['as'=>'update','uses'=>'Admin\AdminController@update']);
+    });
     Route::get('/','Admin\DashboardController@index');
     Route::get('test','Admin\DashboardController@test');
 
