@@ -8,6 +8,13 @@
 return [
 
     'userUpdate' => 'User information was updated successfully' ,
+
     'userDelete' => 'User information was deleted successfully from database' ,
+
+    'adminUpdate' => 'Admin information was updated successfully' ,
+    'userDelete' => 'User information was deleted successfully from database' ,
+    'adminDelete' => 'Admin information was deleted successfully from database' ,
+    'adminCreate' => 'Admin was created successfully' ,
+
 
 ];
