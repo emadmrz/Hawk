@@ -70,10 +70,6 @@ Route::get('/test', function (\Illuminate\Http\Request $request) {
 
 Route::get('auth/email',['middleware'=>'auth', 'uses'=>'Auth\EmailController@index']);
 Route::post('auth/email',['middleware'=>'auth', 'uses'=>'Auth\EmailController@resend']);
-
-Route::get('auth/email','Auth\EmailController@index');
-Route::post('auth/email','Auth\EmailController@resend');
-
 Route::get('auth/email/{confirmation_code}','Auth\EmailController@check');
 
 
