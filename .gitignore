@@ -2,11 +2,9 @@
 .env.*.php
 .env.php
 .env
-<<<<<<< HEAD
 .env.example
+.idea
 
-=======
->>>>>>> hawk
 
 # =========================
 # Operating System Files
