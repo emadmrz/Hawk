@@ -21,7 +21,13 @@ class AdminController extends Controller
     public function create(){
         return view('admin.admins.create')->with(['title'=>'create admin']);
     }
-    public function store(Requests\CreateAdminRequest $request){
+    public function store(Request $request){
+        $this->validate($request, [
+            'first_name'=>'required|max:255|min:3',
+            'last_name'=>'required|max:255|min:3',
+            'email'=>'required|max:255|min:3|email|unique:users',
+            'password'=>'required|max:255|min:6',
+        ]);
         $input=$request->all();
         $input['password']=bcrypt($request->input('password'));
         $input['confirmed']=1;
