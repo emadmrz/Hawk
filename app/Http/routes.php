@@ -67,8 +67,13 @@ Route::get('/test', function (\Illuminate\Http\Request $request) {
  * Created by Emad Mirzaie on 03/09/2015.
  * Email Confirmation it should be before Auth route
  */
+
+Route::get('auth/email',['middleware'=>'auth', 'uses'=>'Auth\EmailController@index']);
+Route::post('auth/email',['middleware'=>'auth', 'uses'=>'Auth\EmailController@resend']);
+
 Route::get('auth/email','Auth\EmailController@index');
 Route::post('auth/email','Auth\EmailController@resend');
+
 Route::get('auth/email/{confirmation_code}','Auth\EmailController@check');
 
 
@@ -86,6 +91,8 @@ Route::controllers([
  * Admin panel route group with admin prefix
  */
 Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
+
+
     /**
      * Created by Dara on 5/9/2015
      * Admin register route group
@@ -98,6 +105,7 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::get('/{admin}/edit',['as'=>'edit','uses'=>'Admin\AdminController@edit']);
         Route::put('/{admin}',['as'=>'update','uses'=>'Admin\AdminController@update']);
     });
+
     Route::get('/','Admin\DashboardController@index');
     Route::get('test','Admin\DashboardController@test');
 
