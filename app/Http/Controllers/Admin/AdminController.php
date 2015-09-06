@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
+use Bican\Roles\Models\Role;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Laracasts\Flash\Flash;
 
 class AdminController extends Controller
 {
     public function index(){
-        return "show admin users list";
+        $users=Role::find(1)->users()->paginate(20);
+        return view('admin.admins.index', compact('users'))->with(['title'=>'Admins Management']);
+
     }
     public function create(){
         return view('admin.admins.create')->with(['title'=>'create admin']);
@@ -31,10 +36,10 @@ class AdminController extends Controller
         return redirect(route('admin.admins.list'));
     }
     public function edit(User $user){
-        return view('admin.admins.edit');
+        return view('admin.admins.edit', compact('user'))->with(['title'=>'Edit Admin']);
     }
-    public function update(User $user,Requests\EditAdminRequest $request){
-        $user->update($request->all());
+    public function update(User $user,Requests\UserRequest $request){
+        $user->update($request->except(['created_at','updated_at','user_role_name','email']));
         Flash::success(trans('admin/messages.adminUpdate'));
         return redirect(route('admin.admins.list'));
     }
