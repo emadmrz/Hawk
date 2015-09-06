@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\UserRequest;
 use App\User;
-<<<<<<< HEAD
 use Bican\Roles\Models\Role;
-=======
->>>>>>> hawk
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -19,11 +16,8 @@ class UserController extends Controller
     public function index(User $user){
 //        $user->with('roles')->findOrFail(5);
 //        return $users->findOrFail(5)->roles()->get();
-<<<<<<< HEAD
 //        $aaa=Role::find(1)->users()->get();
 //        dd($aaa);
-=======
->>>>>>> hawk
         $users = $user->with('roles')->paginate(20);
         return view('admin.users.index', compact('users'))->with(['title'=>'Users Management']);
     }
