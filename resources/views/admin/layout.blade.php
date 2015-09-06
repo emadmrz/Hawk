@@ -60,7 +60,12 @@
         });
     </script>
 
-@yield('content')
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> hawk
+@yield('script')
 
 </body>
 </html>
