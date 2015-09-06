@@ -60,6 +60,11 @@
         });
     </script>
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> hawk
 @yield('script')
 
 </body>

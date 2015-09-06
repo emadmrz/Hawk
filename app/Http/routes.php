@@ -67,8 +67,13 @@ Route::get('/test', function (\Illuminate\Http\Request $request) {
  * Created by Emad Mirzaie on 03/09/2015.
  * Email Confirmation it should be before Auth route
  */
+<<<<<<< HEAD
 Route::get('auth/email',['middleware'=>'auth', 'uses'=>'Auth\EmailController@index']);
 Route::post('auth/email',['middleware'=>'auth', 'uses'=>'Auth\EmailController@resend']);
+=======
+Route::get('auth/email','Auth\EmailController@index');
+Route::post('auth/email','Auth\EmailController@resend');
+>>>>>>> hawk
 Route::get('auth/email/{confirmation_code}','Auth\EmailController@check');
 
 
@@ -86,6 +91,21 @@ Route::controllers([
  * Admin panel route group with admin prefix
  */
 Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
+<<<<<<< HEAD
+=======
+    /**
+     * Created by Dara on 5/9/2015
+     * Admin register route group
+     */
+    Route::group(['prefix'=>'admins','as'=>'admins.'],function(){
+        Route::get('/',['as'=>'list','uses'=>'Admin\AdminController@index']);
+        Route::get('create',['as'=>'create','uses'=>'Admin\AdminController@create']);
+        Route::post('create','Admin\AdminController@store');
+        Route::get('/{admin}/delete',['as'=>'delete','uses'=>'Admin\AdminController@delete']);
+        Route::get('/{admin}/edit',['as'=>'edit','uses'=>'Admin\AdminController@edit']);
+        Route::put('/{admin}',['as'=>'update','uses'=>'Admin\AdminController@update']);
+    });
+>>>>>>> hawk
     Route::get('/','Admin\DashboardController@index');
     Route::get('test','Admin\DashboardController@test');
 
