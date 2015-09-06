@@ -67,8 +67,8 @@ Route::get('/test', function (\Illuminate\Http\Request $request) {
  * Created by Emad Mirzaie on 03/09/2015.
  * Email Confirmation it should be before Auth route
  */
-Route::get('auth/email','Auth\EmailController@index');
-Route::post('auth/email','Auth\EmailController@resend');
+Route::get('auth/email',['middleware'=>'auth', 'uses'=>'Auth\EmailController@index']);
+Route::post('auth/email',['middleware'=>'auth', 'uses'=>'Auth\EmailController@resend']);
 Route::get('auth/email/{confirmation_code}','Auth\EmailController@check');
 
 
