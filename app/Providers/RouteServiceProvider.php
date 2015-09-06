@@ -36,7 +36,7 @@ class RouteServiceProvider extends ServiceProvider
 
         /**
          * created by dara on 6/9/2015
-         * add binding for admin wild card
+         * add binding for admin wild card me
          */
         $router->bind('admin' , function($value){
             return User::with('roles')->findOrFail($value);
