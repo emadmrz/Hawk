@@ -21,4 +21,5 @@ return array(
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
     'Carbon' => array($vendorDir . '/nesbot/carbon/src'),
     'Bican\\Roles' => array($vendorDir . '/bican/roles/src'),
+    'Baum' => array($vendorDir . '/baum/baum/src'),
 );

@@ -50,14 +50,15 @@
                     <div class="form-group radio-box radio-info">
                         {!! Form::label('radio1', 'نوع کاربر', ['class'=>'col-xs-3 control-label'] ) !!}
                         <div class="col-xs-9">
-                            <div class="radio radio-inline" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="توضیحی درباره کاربران حقوقی در همین اندازه">
+                            <div class="radio radio-inline" >
                                 {!! Form::radio('role', '2', null, ['id'=>'radio1', 'required']) !!}
-                                {!! Form::label('radio1', 'کاربر حقیقی', ['class'=>'control-label'] ) !!}
+                                {!! Form::label('radio1', 'کاربر عادی', ['class'=>'control-label'] ) !!}
                             </div>
-                            <div class="radio radio-inline" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="توضیح مختصری درباره کاربران حقوقی در همین اندازه">
+                            <div class="radio radio-inline">
                                 {!! Form::radio('role', '3', null, ['id'=>'radio2', 'required']) !!}
                                 {!! Form::label('radio2', 'کاربر حقوقی', ['class'=>'control-label'] ) !!}
                             </div>
+                            <a href="{{ url('about/legalUser') }}" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="درباره کابران حقوقی بیشتر بدانید" ><i class="fa icon-information fa-lg" ></i></a>
                         </div>
                     </div>
                     <div class="form-group">

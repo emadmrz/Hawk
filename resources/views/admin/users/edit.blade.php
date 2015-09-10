@@ -22,6 +22,13 @@
                         {!! Form::text('last_name', null , ['class'=>'form-control', 'required' ] ) !!}
                     </div>
 
+                    @if($user->roles()->first()->id == 3)
+                        <div class="form-group">
+                            {!! Form::label('company', 'Company Name ' ) !!}
+                            {!! Form::text('company', null , ['class'=>'form-control' ] ) !!}
+                        </div>
+                    @endif
+
                     <div class="form-group">
                         {!! Form::label('email', 'Emad Address (Non-editable)' ) !!}
                         {!! Form::text('email', null , ['class'=>'form-control', 'disabled' ] ) !!}
@@ -56,6 +63,15 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {!! Form::label('description', 'description' ) !!}
+                                {!! Form::text('description', null, ['class'=>'form-control' ] ) !!}                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="col-sm-4">
 

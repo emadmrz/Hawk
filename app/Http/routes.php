@@ -33,6 +33,13 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
  */
 Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','email'] ], function () {
     Route::get('/',['as'=>'me', 'uses'=>'ProfileController@index']);
+    Route::post('/description','ProfileController@description');
+    Route::delete('/deleteAvatar','CoverController@deleteAvatar');
+    Route::delete('/deleteCover','CoverController@deleteCover');
+    Route::post('/cover','CoverController@index');
+    Route::post('/userinfo','InfoController@edit');
+    Route::get('/test','ProfileController@test');
+
 
 
     /**
@@ -114,6 +121,25 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::put('/{user}',['as'=>'update', 'uses'=>'Admin\UserController@update']);
         Route::get('/{user}/delete',['as'=>'delete', 'uses'=>'Admin\UserController@delete']);
         Route::get('/{user}/edit',['as'=>'edit', 'uses'=>'Admin\UserController@edit']);
+    });
+
+    Route::group(['prefix' => 'setting', 'as'=>'setting.'], function () {
+
+        /**
+         * Created by Emad Mirzaie on 10/09/2015.
+         * admin setting of provinces and cities
+         */
+        Route::get('/province',['as'=>'provinces', 'uses'=>'Admin\ProvinceController@index']);
+        Route::post('/province',['as'=>'province.create', 'uses'=>'Admin\ProvinceController@provinceCreate']);
+        Route::put('/province/{province}',['as'=>'province.update', 'uses'=>'Admin\ProvinceController@provinceUpdate']);
+        Route::get('/province/{province}/edit',['as'=>'province.edit', 'uses'=>'Admin\ProvinceController@provinceEdit']);
+        Route::get('/province/{province}/delete',['as'=>'province.delete', 'uses'=>'Admin\ProvinceController@provinceDelete']);
+        Route::get('/cities/{province}/{city}/edit',['as'=>'city.edit', 'uses'=>'Admin\ProvinceController@cityEdit']);
+        Route::get('/cities/{province}/{city}/delete',['as'=>'city.delete', 'uses'=>'Admin\ProvinceController@cityDelete']);
+        Route::get('/cities/{province}',['as'=>'cities', 'uses'=>'Admin\ProvinceController@cities']);
+        Route::post('/cities/{province}',['as'=>'city.create', 'uses'=>'Admin\ProvinceController@cityCreate']);
+        Route::put('/cities/{province}/{city}',['as'=>'city.update', 'uses'=>'Admin\ProvinceController@cityUpdate']);
+
     });
 
 });

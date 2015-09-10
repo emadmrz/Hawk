@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="{{ asset('css/form.css') }}">
     <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
     <link rel="stylesheet" href="{{ asset('css/raterater.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/cropper.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/crop/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
 </head>
 <body>
 
@@ -51,6 +54,34 @@
 
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/cropper.js') }}"></script>
+<script src="{{ asset('js/crop/main.js') }}"></script>
+<script src="{{ asset('js/bootstrap-notify.js') }}"></script>
+<script src="{{ asset('js/profile.js') }}"></script>
+
+<script>
+    $(document).ready(function(){
+
+        $('[data-toggle="tooltip"]').tooltip()
+
+        $.notifyDefaults({
+            delay: 5000,
+            timer: 100,
+            offset: {
+                x: 10,
+                y:60
+            },
+            placement: {
+                from: "bottom",
+                align: "right"
+            },
+            animate: {
+                enter: 'animated fadeInRight',
+                exit: 'animated fadeOutRight'
+            }
+        });
+    });
+</script>
 
 @yield('script')
 

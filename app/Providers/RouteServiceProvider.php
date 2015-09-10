@@ -42,6 +42,13 @@ class RouteServiceProvider extends ServiceProvider
             return User::with('roles')->findOrFail($value);
         });
 
+        /**
+         * Created by Emad Mirzaie on 09/09/2015.
+         * province wild cart
+         */
+        $router->model('province' , 'App\Province');
+        $router->model('city' , 'App\Province');
+
 
     }
 

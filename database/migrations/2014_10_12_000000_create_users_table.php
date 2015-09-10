@@ -16,9 +16,12 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('company')->nullable();
             $table->string('email')->unique();
             $table->string('password', 60);
             $table->string('image')->nullable();
+            $table->string('cover')->nullable();
+            $table->string('description')->nullable();
             $table->boolean('confirmed')->default(0);
             $table->string('confirmation_code')->nullable();
             $table->integer('status')->unsigned()->default(1);

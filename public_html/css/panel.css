@@ -23,6 +23,9 @@ main{
     margin-top: 30px;
     font-family: web-yekan , tahoma;
 }
+.image-upload-modal .modal-body img{
+    width: 100%;
+}
 /*------------------------Social Media-------------------*/
 .cover.profile {
     position: relative;
@@ -44,6 +47,46 @@ main{
     height: 249px;
     overflow-y: hidden;
     position: relative;
+}
+.cover.profile .wrapper .image  .avatar-operations{
+    position: absolute;
+    z-index: 100;
+    top: 10px;
+    left: 10px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    text-align: center;
+    padding: 2px 10px;
+    border-radius: 5px;
+}
+.cover.profile .wrapper .image .avatar-operations form{
+     display: inline-block;
+     vertical-align: top;
+ }
+.cover.profile .wrapper .image  .avatar-operations a{
+    color: #CCC;
+    padding: 5px;
+    font-size: 1.2em;
+}
+.cover.profile .wrapper .image .avatar-operations button{
+    color: #CCC;
+    padding: 2px 5px;
+    font-size: 1.3em;
+    background: none;
+    border: none;
+}
+.cover.profile .wrapper .image .avatar-operations button i{
+    margin: 0;
+}
+.cover.profile .wrapper .image  .avatar-operations a:hover{
+    color: #FFF;
+}
+.cover.profile .wrapper .image  .avatar-operations button:hover{
+    color: #FFF;
+}
+.cover.profile .wrapper .image  .avatar-operations:hover{
+    background-color: rgba(0, 0, 0, 0.4);
 }
 .cover.profile .wrapper .image img {
     width: 100%;
@@ -70,7 +113,34 @@ main{
     background-image: url("../img/bg/Picture1.png");
     background-size: contain;
     background-repeat: round;
-    opacity: .8;
+}
+.cover.profile .wrapper .curve .description{
+    position: absolute;
+    bottom:10px;
+    left: 10%;
+    width: 50%;
+    z-index: 1000;
+}
+.cover.profile .wrapper .curve .description input[type=text]{
+    outline: none;
+    border: none;
+    background: rgba(255, 255, 255, 0.3);
+    color: #FFF;
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.cover.profile .wrapper .curve .description button[type=submit]{
+    position: absolute;
+    outline: none;
+    border: none;
+    left: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0);
+    color: #FFF;
+    padding: 2px 10px;
+    border-radius: 5px;
+    font-size: 1.2em;
 }
 .cover.profile .cover-info {
     position: relative;
@@ -84,14 +154,57 @@ main{
     margin-bottom: 5px;
     right: 30px;
     z-index: 4;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    overflow: hidden;
+}
+.cover.profile .cover-info .avatar .avatar-operations{
+    position: absolute;
+    z-index: 100;
+    bottom: -40px;
+    height: 35px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    text-align: center;
+    padding: 3px 0;
+    transition: all 0.5s;
+}
+.cover.profile .cover-info .avatar .avatar-operations form{
+    display: inline-block;
+    vertical-align: top;
+}
+.cover.profile .cover-info .avatar .avatar-operations a{
+    color: #CCC;
+    padding: 0 5px;
+    font-size: 1.2em;
+}
+.cover.profile .cover-info .avatar .avatar-operations button{
+    color: #CCC;
+    padding: 0 5px;
+    font-size: 1.4em;
+    background: none;
+    border: none;
+}
+.cover.profile .cover-info .avatar .avatar-operations button i{
+    margin: 0;
+}
+.cover.profile .cover-info .avatar .avatar-operations a:hover{
+    color: #FFF;
+}
+.cover.profile .cover-info .avatar .avatar-operations button:hover{
+    color: #FFF;
+}
+.cover.profile .cover-info .avatar:hover .avatar-operations{
+    background-color: rgba(0, 0, 0, 0.4);
+    bottom: 0;
 }
 .cover.profile .cover-info .avatar img {
     /*width: 110px;*/
     /*height: 110px;*/
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    border: 3px solid #fff;
+    width: 135px;
+    height: 135px;
+
 }
 .cover.profile .cover-info .name {
     position: absolute;
@@ -104,7 +217,7 @@ main{
 }
 .cover.profile .cover-info .name a {
     color: #fff;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 500;
 }
 .cover.profile .cover-info .cover-nav {
@@ -539,6 +652,10 @@ main{
 .panel-body .list-item-image li .media-heading{
     line-height: 18px;
     font-size: 13px;
+}
+
+.education-table th{
+    text-align: right;
 }
 
 /*------------------------Shop-------------------*/
@@ -1413,4 +1530,15 @@ section.shop .shop-properties .property-item.disable i{
 }
 .general-content h4:first-of-type{
     margin-top: 10px;
+}
+
+
+.modal .modal-header .close{
+    float: left;
+    background-color: #DDD;
+    padding: 5px 9px;
+    border-radius: 100%;
+}
+.modal .modal-header .close i{
+    margin: 0;
 }

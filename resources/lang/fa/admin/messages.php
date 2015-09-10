@@ -14,6 +14,12 @@ return [
     'userDelete' => 'User information was deleted successfully from database' ,
     'adminDelete' => 'Admin information was deleted successfully from database' ,
     'adminCreate' => 'Admin was created successfully' ,
+    'provinceAdded' => 'Province was created successfully',
+    'provinceUpdated' => 'Province was updated successfully',
+    'provinceDeleted' => 'Province was deleted successfully',
+    'cityAdded' => 'City was created successfully',
+    'cityUpdated' => 'City was updated successfully',
+    'cityDeleted' => 'City was deleted successfully',
 
 
 ];

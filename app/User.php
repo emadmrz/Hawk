@@ -28,7 +28,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'image', 'confirmed', 'confirmation_code', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'company', 'email', 'password', 'image', 'cover', 'description', 'confirmed', 'confirmation_code', 'status'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -89,6 +89,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             1 => ['name'=>trans('users.confirmedStatus'), 'type'=>'success']
         ];
         return $statuses[$this->attributes['confirmed']];
+    }
+
+    /**
+     * Created by Emad Mirzaie on 08/09/2015.
+     * username and image attributes
+     */
+
+    public function getAvatarAttribute(){
+        if(is_null($this->attributes['image'])){
+            return 'user-default-avatar.jpg';
+        }else{
+            return $this->attributes['image'];
+        }
+    }
+
+    public function getBannerAttribute(){
+        if(is_null($this->attributes['cover'])){
+            return 'default.png';
+        }else{
+            return $this->attributes['cover'];
+        }
+    }
+
+    public function getUsernameAttribute(){
+        if($this->hasRole(3)){
+            if(!is_null($this->attributes['company']) and !empty($this->attributes['company']) ){
+                return $this->attributes['company'];
+            }else{
+                return $this->attributes['first_name'].' '.$this->attributes['last_name'];
+            }
+        }else{
+            return $this->attributes['first_name'].' '.$this->attributes['last_name'];
+        }
+    }
+
+    public function info(){
+        return $this->hasOne('App\Info');
     }
 
 }

@@ -146,7 +146,9 @@ return [
         Illuminate\Html\HtmlServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Bican\Roles\RolesServiceProvider::class,
-        Morilog\Jalali\JalaliServiceProvider::class
+        Morilog\Jalali\JalaliServiceProvider::class,
+        App\Providers\ViewComposerServiceProvider::class,
+        Baum\Providers\BaumServiceProvider::class,
 
     ],
 
