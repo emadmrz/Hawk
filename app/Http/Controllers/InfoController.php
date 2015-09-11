@@ -16,12 +16,15 @@ class InfoController extends Controller
         $info = $request->except('user', 'email','_token');
         $user->update($account['user']);
         $user->info()->update($info);
+        $input=$request->all();
+        $input['city']=$user->info->city;
+        $input['province']=$user->info->province;
         return [
             'hasCallback'=>'1',
             'callback'=>'user_info',
             'hasMsg'=>'1',
             'msg'=>'data inserted successfully',
-            'returns'=>$request->all()
+            'returns'=>$input
         ];
     }
 }

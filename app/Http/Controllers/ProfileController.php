@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Info;
+use App\Province;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,7 +18,13 @@ class ProfileController extends Controller
     public function index(){
         $user=Auth::user();
         $info = $user->info()->with('user')->firstOrCreate(['user_id'=>$user->id]);
-        return view('profile.index', compact('info'))->with(['title'=>$user->first_name]);
+        $provinces = Province::where('parent_id', null)->lists('name', 'id');
+        if(!is_null($info->province_id)) {
+            $cities = Province::where('parent_id', $info->province_id)->lists('name', 'id');
+        }else{
+            $cities = [];
+        }
+        return view('profile.index', compact('info', 'provinces', 'cities'))->with(['title'=>$user->first_name]);
     }
 
     public function description(Request $request){

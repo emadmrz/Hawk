@@ -38,6 +38,7 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::delete('/deleteCover','CoverController@deleteCover');
     Route::post('/cover','CoverController@index');
     Route::post('/userinfo','InfoController@edit');
+    Route::post('/education','EducationController@create');
     Route::get('/test','ProfileController@test');
 
 
@@ -140,6 +141,19 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::post('/cities/{province}',['as'=>'city.create', 'uses'=>'Admin\ProvinceController@cityCreate']);
         Route::put('/cities/{province}/{city}',['as'=>'city.update', 'uses'=>'Admin\ProvinceController@cityUpdate']);
 
+    });
+
+});
+
+
+/**
+ * Created by Emad Mirzaie on 10/09/2015.
+ * Web Api
+ */
+Route::group(['prefix' => 'api', 'as'=>'api.'], function () {
+
+    Route::group(['prefix' => 'location', 'as'=>'location.'], function () {
+        Route::get('cities',['as'=>'cities', 'uses'=>'Api\LocationController@cities']);
     });
 
 });

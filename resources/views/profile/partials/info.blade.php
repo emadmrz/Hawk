@@ -19,7 +19,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right">نام : </label>
                                     <div class="col-sm-8">
-                                        <span data-get="info.user.first_name" class="form-control-static">{{ $info->user->first_name }}</span>
+                                        <span data-get="first_name" class="form-control-static">{{ $info->user->first_name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -28,7 +28,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right">نام خانوادگی :</label>
                                     <div class="col-sm-8">
-                                        <span class="form-control-static">{{ $info->user->last_name }}</span>
+                                        <span data-get="last_name" class="form-control-static">{{ $info->user->last_name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right">شماره تلفن : </label>
                                     <div class="col-sm-8">
-                                        <span class="form-control-static">{{ $info->phone1 }}</span>
+                                        <span data-get="phone1" class="form-control-static">{{ $info->phone1 }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right">شماره فکس : </label>
                                     <div class="col-sm-8">
-                                        <span class="form-control-static">{{ $info->fax }}</span>
+                                        <span data-get="fax" class="form-control-static">{{ $info->fax }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right">شماره همراه :</label>
                                     <div class="col-sm-8">
-                                        <span class="form-control-static">{{ $info->cell_phone }}</span>
+                                        <span data-get="cell_phone" class="form-control-static">{{ $info->cell_phone }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right">آدرس آیمیل :</label>
                                     <div class="col-sm-8">
-                                        <span class="form-control-static">{{ $info->user->email }}</span>
+                                        <span data-get="email" class="form-control-static">{{ $info->user->email }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right"> شهر : </label>
                                     <div class="col-sm-8">
-                                        <span class="form-control-static">تهران</span>
+                                        <span data-get="city" class="form-control-static">{{ $info->city }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right"> استان : </label>
                                     <div class="col-sm-8">
-                                        <span class="form-control-static">تهران</span>
+                                        <span data-get="province" class="form-control-static">{{ $info->province }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label pull-right"> آدرس : </label>
                                     <div class="col-sm-8">
-                                        <span class="form-control-static">{{ $info->address }}</span>
+                                        <span data-get="address" class="form-control-static">{{ $info->address }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -259,7 +259,7 @@
                             <div class="form-group">
                                 <label for="name" class="control-label pull-right"> شهر : </label>
                                 <div class="col-sm-8">
-                                    <span class="form-control-static">تهران</span>
+                                    <span data-get="city" class="form-control-static">{{ $info->city }}</span>
                                 </div>
                             </div>
                         </div>
@@ -268,7 +268,7 @@
                             <div class="form-group">
                                 <label for="name" class="control-label pull-right"> استان : </label>
                                 <div class="col-sm-8">
-                                    <span class="form-control-static">تهران</span>
+                                    <span data-get="province" class="form-control-static">{{ $info->province }}</span>
                                 </div>
                             </div>
                         </div>
@@ -361,14 +361,26 @@
 
                     <div class="col-sm-4">
                         <div class="form-group">
-                            {!! Form::label('cell_phone', 'شماره همراه : ', ['class'=>'control-label pull-right']) !!}
+                            {!! Form::label('province_id', 'استان : ', ['class'=>'control-label pull-right']) !!}
+                            <div class="col-sm-8">
+                                {!! Form::select('province_id', $provinces, null, ['class'=>'form-control']) !!}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            {!! Form::label('city_id', 'شهر : ', ['class'=>'control-label pull-right']) !!}
+                            <div class="col-sm-8">
+                                {!! Form::select('city_id', $cities, null, ['class'=>'form-control']) !!}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
                         <div class="form-group">
                             {!! Form::label('address', 'آدرس  :', ['class'=>'control-label pull-right']) !!}
-                            <div class="col-sm-10">
+                            <div class="col-sm-8">
                                 {!! Form::text('address', null, ['class'=>'form-control', 'placeholder'=>'']) !!}
                                 <i class="input-icon fa fa-edit"></i>
                             </div>

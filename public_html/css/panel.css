@@ -657,6 +657,14 @@ main{
 .education-table th{
     text-align: right;
 }
+.panel .new-education .panel-heading{
+    padding: 1px 10px;
+    background-color: #f5f5f5;
+    color: #666;
+}
+.panel .new-education .panel-body{
+    padding: 15px 10px 5px 10px;
+}
 
 /*------------------------Shop-------------------*/
 section.shop{
