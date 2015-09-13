@@ -1,6 +1,11 @@
 @extends('admin.layout')
 @section('content')
     <div class="col-lg-12">
+        <h5>View Method : </h5>
+                    <a href="{{action('Admin\VisitorController@index',['Daily'])}}" class="btn btn-primary">Daily</a>
+                    <a href="{{action('Admin\VisitorController@index',['Weekly'])}}" class="btn btn-primary">Weekly</a>
+                    <a href="{{action('Admin\VisitorController@index',['Monthly'])}}" class="btn btn-primary">Monthly</a>
+                    <a href="{{action('Admin\VisitorController@index',['Yearly'])}}" class="btn btn-primary">Yearly</a>
         <div class="panel panel-default">
             <div class="panel-heading">
                 Visitors List
@@ -12,12 +17,11 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Position</th>
-                            <th>Browser info</th>
                             <th>IP</th>
+                            <th>Position</th>
+                            <th>Browser</th>
 
                             <th>Date</th>
-
 
 
                         </tr>
@@ -26,11 +30,10 @@
                         @foreach($users as $user)
                             <tr>
                                 <td>{{ $user->id }}</td>
+                                <td>{{ $user->ip }}</td>
                                 <td>{{ $user->position }}</td>
                                 <td>{{ $user->browser }}</td>
-                                <td>{{ $user->ip }}</td>
-                                <td>{{ $user->created_at  }}</td>
-
+                                <td>{{ $user->created_at }}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -40,12 +43,7 @@
                 <!-- /.table-responsive -->
             </div>
             <!-- /.panel-body -->
-        </div>
-        <h5>View by time :</h5>
-        <a href="#" class="btn btn-primary">Daily</a>
-        <a href="#" class="btn btn-primary">Weekly</a>
-        <a href="#" class="btn btn-primary">Monthly</a>
-        <a href="#" class="btn btn-primary">Yearly</a>
-    </div>
 
-@stop()
+        </div>
+    </div>
+@endsection

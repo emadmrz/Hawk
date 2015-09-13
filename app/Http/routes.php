@@ -100,7 +100,9 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
      * visitor route group
      */
     Route::group(['prefix'=>'visitors','as'=>'visitors.'],function(){
-       Route::get('/',['as'=>'list','uses'=>'Admin\VisitorController@index']);
+        Route::get('diagram',['as'=>'diagram','uses'=>'Admin\VisitorController@show']);
+        Route::get('/{method?}',['as'=>'list','uses'=>'Admin\VisitorController@index']);
+
     });
 
 
