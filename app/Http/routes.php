@@ -95,6 +95,15 @@ Route::controllers([
  * Admin panel route group with admin prefix
  */
 Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
+    /*
+     * Create By Dara on 11/9/2015
+     * visitor route group
+     */
+    Route::group(['prefix'=>'visitors','as'=>'visitors.'],function(){
+        Route::get('diagram',['as'=>'diagram','uses'=>'Admin\VisitorController@show']);
+        Route::get('/{method?}',['as'=>'list','uses'=>'Admin\VisitorController@index']);
+
+    });
 
 
     /**
