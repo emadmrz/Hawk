@@ -149,6 +149,9 @@ return [
         Morilog\Jalali\JalaliServiceProvider::class,
         App\Providers\ViewComposerServiceProvider::class,
         Baum\Providers\BaumServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+
 
     ],
 
@@ -201,7 +204,9 @@ return [
         'Html'      => Illuminate\Html\HtmlFacade::class,
         'Flash'     => Laracasts\Flash\Flash::class,
         'jDate'     => Morilog\Jalali\Facades\jDate::class,
-        'jDateTime' => Morilog\Jalali\Facades\jDateTime::class
+        'jDateTime' => Morilog\Jalali\Facades\jDateTime::class,
+        'Agent'     => Jenssegers\Agent\Facades\Agent::class,
+        'Image'     => Intervention\Image\Facades\Image::class,
 
 
     ],

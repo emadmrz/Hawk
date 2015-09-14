@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -58,12 +59,19 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $data['confirmation_code']=str_random(30);
+        $newUser = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'confirmation_code'=> $data['confirmation_code']
         ]);
+        $newUser->attachRole($data['role']);
+        $newUser->info()->create(['user_id'=>$newUser->id]);
+        Mail::send('emails.welcome', ['user'=>$data], function ($message)use ($data)  {
+            $message->to($data['email'])->subject('welcome to skillema');
+        });
+        return $newUser;
     }
 }

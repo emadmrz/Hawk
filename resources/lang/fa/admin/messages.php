@@ -20,6 +20,9 @@ return [
     'cityAdded' => 'City was created successfully',
     'cityUpdated' => 'City was updated successfully',
     'cityDeleted' => 'City was deleted successfully',
+    'universityAdded' => 'University was created successfully',
+    'universityUpdated' => 'University was updated successfully',
+    'universityDeleted' => 'University was deleted successfully',
 
 
 ];

@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class University extends Model
 {
-
+    protected $tabel = 'universities';
     protected $fillable = ['name', 'logo'];
 
     public function educations(){
-        $this->belongsToMany('App\Education')->withTimestamps();
+        return $this->belongsToMany('App\Education')->withTimestamps();
     }
 }

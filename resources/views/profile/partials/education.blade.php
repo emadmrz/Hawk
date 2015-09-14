@@ -10,20 +10,28 @@
 
                 <div class="" data-role="preview">
 
-                    <table class="table education-table">
+                    <table class="table education-table" id="education_table_preview">
                         <thead>
                             <tr>
-                                <th>مقطع</th>
-                                <th>رشته تحصیلی</th>
-                                <th>دانشگاه</th>
+                                <th width="15%" >مقطع</th>
+                                <th width="20%" >رشته تحصیلی</th>
+                                <th width="15%" >وضعیت</th>
+                                <th width="25%" >دانشگاه</th>
+                                <th width="15%" >شروع</th>
+                                <th width="15%" >اتمام</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>کارشناسی</td>
-                                <td>برق قدرت</td>
-                                <td>شهید بهشتی</td>
-                            </tr>
+                            @foreach($educations as $education)
+                                <tr data-education="{{ $education->id }}">
+                                    <td>{{ $education->degree_name }}</td>
+                                    <td>{{ $education->field }}</td>
+                                    <td>{{ $education->status_name }}</td>
+                                    <td>{{ $education->university->name }}</td>
+                                    <td>{{ $education->entrance_year }}</td>
+                                    <td>{{ $education->graduate_year }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -38,28 +46,50 @@
                             <h5>ثبت مقطع تحصیلی جدید</h5>
                         </div>
                         <div class="panel-body">
-                            {!! Form::open('url'
-                            <form class="form-horizontal panel-form">
+                            {!! Form::open(['url'=>'/profile/education', 'method'=>'post', 'data-remote', 'class'=>'form-horizontal panel-form']) !!}
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        {!! Form::label('degree', 'مقطع : ', ['class'=>'control-label pull-right']) !!}
+                                        <div class="col-sm-9">
+                                            {!! Form::select('degree', $degrees,  null, ['class'=>'form-control']) !!}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        {!! Form::label('field', 'رشته : ', ['class'=>'control-label pull-right']) !!}
+                                        <div class="col-sm-9">
+                                            {!! Form::text('field', null, ['class'=>'form-control', 'placeholder'=>'رشته تحصیلی']) !!}
+                                            <i class="input-icon fa fa-edit"></i>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="degree" class="control-label pull-right">مقطع : </label>
+                                        {!! Form::label('status', 'وضعیت : ', ['class'=>'control-label pull-right']) !!}
                                         <div class="col-sm-9">
-                                            <select name="degree" id="degree" class="form-control" title="انتخاب مقطع">
-                                                <option>انتخاب مقطع</option>
-                                                <option>کارشناسی</option>
-                                                <option>کارشناسی ارشد</option>
-                                                <option>دکتری</option>
-                                            </select>
+                                            {!! Form::select('status', $statuses , null, ['class'=>'form-control']) !!}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="name" class="control-label pull-right">رشته : </label>
+                                        {!! Form::label('university_id', 'دانشگاه : ', ['class'=>'control-label pull-right']) !!}
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="name" placeholder="رشته تحصیلی" >
+                                            {!! Form::select('university_id', $universities, null, ['class'=>'form-control']) !!}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        {!! Form::label('entrance_year', 'سال شروع : ', ['class'=>'control-label pull-right']) !!}
+                                        <div class="col-sm-8">
+                                            {!! Form::text('entrance_year', null, ['class'=>'form-control', 'placeholder'=>'مثلا 1387']) !!}
                                             <i class="input-icon fa fa-edit"></i>
                                         </div>
                                     </div>
@@ -67,86 +97,57 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="name" class="control-label pull-right">دانشگاه : </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="name" placeholder="دانشگاه محل تحصیل">
+                                        {!! Form::label('graduate_year', 'سال اتمام : ', ['class'=>'control-label pull-right']) !!}
+                                        <div class="col-sm-8">
+                                            {!! Form::text('graduate_year', null, ['class'=>'form-control', 'placeholder'=>'مثلا 1392']) !!}
                                             <i class="input-icon fa fa-edit"></i>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <button type="button" class=" btn btn-success btn-block">افزودن</button>
+                                        <button type="submit" class=" btn btn-success btn-sm "><i class="fa fa-plus"></i> افزودن مورد جدید </button>
                                     </div>
                                 </div>
 
-                            </form>
+                            {!! Form::close() !!}
                         </div>
                     </div>
 
                     <div class="seprator"></div>
 
-
-                    <form class="form-horizontal panel-form">
-
-                        <table class="table education-table">
-                            <thead>
-                            <tr>
-                                <th>مقطع</th>
-                                <th>رشته تحصیلی</th>
-                                <th>دانشگاه</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
+                    <table class="table education-table" id="education_table_edit">
+                        <thead>
+                        <tr>
+                            <th width="15%" >مقطع</th>
+                            <th width="20%">رشته تحصیلی</th>
+                            <th width="15%"  >وضعیت</th>
+                            <th width="20%" >دانشگاه</th>
+                            <th width="10%">شروع</th>
+                            <th width="10%">اتمام</th>
+                            <th width="5%"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($educations as $education)
+                            <tr data-education="{{ $education->id }}">
+                                <td>{{ $education->degree_name }}</td>
+                                <td>{{ $education->field }}</td>
+                                <td>{{ $education->status_name }}</td>
+                                <td>{{ $education->university->name }}</td>
+                                <td>{{ $education->entrance_year }}</td>
+                                <td>{{ $education->graduate_year }}</td>
                                 <td>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <select name="degree" id="degree" class="form-control" title="انتخاب مقطع">
-                                                <option>انتخاب مقطع</option>
-                                                <option selected >کارشناسی</option>
-                                                <option>کارشناسی ارشد</option>
-                                                <option>دکتری</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" value="برق قدرت" id="name" placeholder="نام شما">
-                                            <i class="input-icon fa fa-edit"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="col-md-11">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" value="دانشگاه شهید بهشتی" id="name" placeholder="نام شما">
-                                            <i class="input-icon fa fa-edit"></i>
-                                        </div>
-                                    </div>
-
-                                </td>
-                                <td>
-                                    <div class="form-group control-button">
-                                        <button type="button" class=" btn btn-success  btn-xs"><i class="fa fa-pencil fa-lg" ></i></button>
-                                        <button type="button" class=" btn btn-danger btn-xs"><i class="fa fa-trash-o fa-lg" ></i></button>
-                                    </div>
+                                    <form method="get">
+                                        <input type='hidden' name='education_id' value="{{ $education->id }}" >
+                                        <button type='submit' class=' btn btn-danger btn-xs' ><i class='fa fa-trash-o fa-lg' ></i></button>
+                                    </form>
                                 </td>
                             </tr>
-                            </tbody>
-                        </table>
-
-
-
-
-
-                    </form>
-
-
+                        @endforeach
+                        </tbody>
+                    </table>
                     <button type="button" class="btn btn-default" data-role="return" > <i class="fa fa-retweet"></i>  بازگشت  </button>
 
 

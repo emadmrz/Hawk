@@ -106,7 +106,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getBannerAttribute(){
         if(is_null($this->attributes['cover'])){
-            return 'default.png';
+            return 'default.jpg';
         }else{
             return $this->attributes['cover'];
         }
@@ -126,6 +126,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function info(){
         return $this->hasOne('App\Info');
+    }
+
+    public function educations(){
+        return $this->hasMany('App\Education');
+    }
+
+    public function biography(){
+        return $this->hasOne('App\Biography');
+    }
+
+    public function files(){
+        return $this->hasMany('App\File');
+    }
+
+    public function articles(){
+        return $this->hasMany('App\Article');
+    }
+
+    public function posts(){
+        return $this->hasMany('App\Post');
     }
 
 }

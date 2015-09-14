@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Info;
 use App\Province;
+use App\University;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -30,6 +31,13 @@ class ProfileController extends Controller
     public function description(Request $request){
         if($request->ajax()){
             Auth::user()->update(['description'=>$request->input('description')]);
+            return [
+                'hasCallback'=> 0,
+                'callback'=>'user_info',
+                'hasMsg'=>0,
+                'msg'=>'',
+                'returns'=> ''
+            ];
         }
     }
 

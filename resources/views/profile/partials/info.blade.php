@@ -156,6 +156,24 @@
                                 </div>
                             </div>
 
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    {!! Form::label('province_id', 'استان : ', ['class'=>'control-label pull-right']) !!}
+                                    <div class="col-sm-8">
+                                        {!! Form::select('province_id', $provinces, null, ['class'=>'form-control']) !!}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    {!! Form::label('city_id', 'شهر : ', ['class'=>'control-label pull-right']) !!}
+                                    <div class="col-sm-4">
+                                        {!! Form::select('city_id', $cities, null, ['class'=>'form-control']) !!}
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     {!! Form::label('address', 'آدرس  :', ['class'=>'control-label pull-right']) !!}

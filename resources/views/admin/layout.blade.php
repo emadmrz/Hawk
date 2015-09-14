@@ -50,8 +50,8 @@
 <script src="{{ asset('js/admin/metisMenu.min.js') }}"></script>
 <script src="{{ asset('js/admin/sb-admin-2.js') }}"></script>
 {{--added by Dara morris dependencies--}}
-<script src="{{ asset('js/raphael-min.js') }}"></script>
-<script src="{{ asset('js/morris.min.js') }}"></script>
+<script src="{{ asset('js/admin/raphael-min.js') }}"></script>
+<script src="{{ asset('js/admin/morris.min.js') }}"></script>
 <script>
     $(document).ready(function () {
         $('a[data-delete-confirm]').click(function () {

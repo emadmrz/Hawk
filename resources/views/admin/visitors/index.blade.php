@@ -2,10 +2,12 @@
 @section('content')
     <div class="col-lg-12">
         <h5>View Method : </h5>
-                    <a href="{{action('Admin\VisitorController@index',['Daily'])}}" class="btn btn-primary">Daily</a>
-                    <a href="{{action('Admin\VisitorController@index',['Weekly'])}}" class="btn btn-primary">Weekly</a>
-                    <a href="{{action('Admin\VisitorController@index',['Monthly'])}}" class="btn btn-primary">Monthly</a>
-                    <a href="{{action('Admin\VisitorController@index',['Yearly'])}}" class="btn btn-primary">Yearly</a>
+        <p>
+            <a href="{{action('Admin\VisitorController@index',['Daily'])}}" class="btn btn-primary">Daily</a>
+            <a href="{{action('Admin\VisitorController@index',['Weekly'])}}" class="btn btn-primary">Weekly</a>
+            <a href="{{action('Admin\VisitorController@index',['Monthly'])}}" class="btn btn-primary">Monthly</a>
+            <a href="{{action('Admin\VisitorController@index',['Yearly'])}}" class="btn btn-primary">Yearly</a>
+        </p>
         <div class="panel panel-default">
             <div class="panel-heading">
                 Visitors List

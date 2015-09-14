@@ -17,17 +17,16 @@ class CoverController extends Controller
         $imageName = $baseName.'.'.$request->file('avatar_file')->getClientOriginalExtension();
         $request->file('avatar_file')->move(public_path() . '/img/'.$this->imageDirectory($request->input('type')).'/', $imageName);
         $response=$cropperRepository->crop(
-            $baseName,
+            $imageName,
             $this->imageDirectory($request->input('type')),
-            public_path() . '/img/'.$this->imageDirectory($request->input('type')).'/'.$imageName,
             $request->input('avatar_data')
         );
         if($response['isDone']){
             if($request->input('type')=='avatar'){
-                $user->update(['image'=>$baseName.'.png']);
+                $user->update(['image'=>$imageName]);
             }
             if($request->input('type')=='cover'){
-                $user->update(['cover'=>$baseName.'.png']);
+                $user->update(['cover'=>$imageName]);
             }
         }
         $response['type']=$request->input('type');

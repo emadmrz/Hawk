@@ -25,7 +25,7 @@ class CreateEducationsTable extends Migration
 
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('university_id')->references('id')->on('universitys')->onDelete('cascade');
+            $table->foreign('university_id')->references('id')->on('universities')->onDelete('cascade');
         });
     }
 

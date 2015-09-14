@@ -273,3 +273,12 @@ input[type="radio"] .styled:checked + label::before {
 input[type="checkbox"] .styled:checked + label::after,
 input[type="radio"] .styled:checked + label::after {
     color: #fff; }
+
+input[type="file"].inline-file{
+    width: 25px;
+    position: absolute;
+    top:-6px;
+    right: -6px;
+    opacity: 0;
+    overflow: hidden;
+}

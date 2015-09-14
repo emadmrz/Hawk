@@ -39,6 +39,21 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::post('/cover','CoverController@index');
     Route::post('/userinfo','InfoController@edit');
     Route::post('/education','EducationController@create');
+    Route::get('/education/delete','EducationController@delete');
+    Route::post('/biography','BiographyController@update');
+    Route::get('/article',['as'=>'articles', 'uses'=>'ArticleController@index']);
+    Route::get('/article/create',['as'=>'article.create', 'uses'=>'ArticleController@create']);
+    Route::get('/article/{article}/preview',['as'=>'article.preview', 'uses'=>'ArticleController@preview']);
+    Route::get('/article/{article}/edit',['as'=>'article.edit', 'uses'=>'ArticleController@edit']);
+    Route::put('/article/{article}/edit',['as'=>'article.update', 'uses'=>'ArticleController@update']);
+    Route::delete('/article/{article}/delete',['as'=>'article.delete', 'uses'=>'ArticleController@delete']);
+    Route::post('/article/{article}/banner', 'ArticleController@banner');
+    Route::post('/article',['as'=>'article.add', 'uses'=>'ArticleController@add']);
+
+    Route::post('/post',['as'=>'post.add', 'uses'=>'PostController@add']);
+
+    Route::post('/post/image','PostController@image');
+
     Route::get('/test','ProfileController@test');
 
 
@@ -150,6 +165,13 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::post('/cities/{province}',['as'=>'city.create', 'uses'=>'Admin\ProvinceController@cityCreate']);
         Route::put('/cities/{province}/{city}',['as'=>'city.update', 'uses'=>'Admin\ProvinceController@cityUpdate']);
 
+        Route::get('/university',['as'=>'universities', 'uses'=>'Admin\UniversityController@index']);
+        Route::post('/university',['as'=>'university.create', 'uses'=>'Admin\UniversityController@create']);
+        Route::get('/university/{university}/edit',['as'=>'university.edit', 'uses'=>'Admin\UniversityController@edit']);
+        Route::put('/university/{university}',['as'=>'university.update', 'uses'=>'Admin\UniversityController@update']);
+        Route::get('/university/{university}/delete',['as'=>'university.delete', 'uses'=>'Admin\UniversityController@delete']);
+
+
     });
 
 });
@@ -165,4 +187,19 @@ Route::group(['prefix' => 'api', 'as'=>'api.'], function () {
         Route::get('cities',['as'=>'cities', 'uses'=>'Api\LocationController@cities']);
     });
 
+});
+
+
+/**
+ * Created by Emad Mirzaie on 12/09/2015.
+ * FileS managment and upload
+ */
+Route::group(['prefix' => 'files', 'as'=>'files.'], function () {
+    Route::post('uploader',['as'=>'uploader', 'uses'=>'FilesController@upload']);
+    Route::post('attachment',['as'=>'attachment', 'uses'=>'FilesController@attachment']);
+    Route::delete('attachment',['as'=>'attachment.delete', 'uses'=>'FilesController@deleteAttachment']);
+
+    Route::post('article',['as'=>'article.attachment', 'uses'=>'FilesController@articleAttachment']);
+    Route::post('article/uploader',['as'=>'article.uploader', 'uses'=>'FilesController@articleUpload']);
+    Route::delete('article',['as'=>'article.attachment.delete', 'uses'=>'FilesController@deleteArticleAttachment']);
 });

@@ -28,13 +28,23 @@ class Info extends Model
     }
 
     public function getCityAttribute(){
-        $city = $this->city()->find($this->attributes['city_id']);
-        return $city['name'];
+        if(!is_null($this->attributes['city_id'])){
+            $city = $this->city()->find($this->attributes['city_id']);
+            return $city['name'];
+        }else{
+            return '';
+        }
+
     }
 
     public function getProvinceAttribute(){
-        $province = $this->province()->find($this->attributes['province_id']);
-        return  $province['name'];
+        if(!is_null($this->attributes['province_id'])){
+            $province = $this->province()->find($this->attributes['province_id']);
+            return  $province['name'];
+        }else{
+            return '';
+        }
+
     }
 
 }

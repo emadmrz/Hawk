@@ -48,6 +48,8 @@ class RouteServiceProvider extends ServiceProvider
          */
         $router->model('province' , 'App\Province');
         $router->model('city' , 'App\Province');
+        $router->model('university' , 'App\University');
+        $router->model('article' , 'App\Article');
 
 
     }

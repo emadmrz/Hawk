@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('css/cropper.css') }}">
     <link rel="stylesheet" href="{{ asset('css/crop/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/summernote/summernote.css') }}">
 </head>
 <body>
 
@@ -58,6 +59,10 @@
 <script src="{{ asset('js/crop/main.js') }}"></script>
 <script src="{{ asset('js/bootstrap-notify.js') }}"></script>
 <script src="{{ asset('js/profile.js') }}"></script>
+<script src="{{ asset('js/summernote/summernote.min.js') }}"></script>
+<script src="{{ asset('js/summernote/summernote-fa-IR.js') }}"></script>
+<script src="{{ asset('js/jquery.flexText.min.js') }}"></script>
+
 
 <script>
     $(document).ready(function(){
@@ -80,6 +85,7 @@
                 exit: 'animated fadeOutRight'
             }
         });
+
     });
 </script>
 
