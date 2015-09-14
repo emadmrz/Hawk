@@ -150,6 +150,9 @@ class TrackController extends Controller
         } elseif (preg_match('/Netscape/i', $u_agent)) {
             $bname = 'Netscape';
             $ub = "Netscape";
+        }elseif (preg_match('/Trident/i', $u_agent)){
+            $bname = 'Internet Explorer';
+            $ub="";
         }
 
         // finally get the correct version number
