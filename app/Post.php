@@ -12,4 +12,8 @@ class Post extends Model
     public function user(){
         return $this->belongsTo('App\User');
     }
+
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('%A %d %B %Y ');
+    }
 }

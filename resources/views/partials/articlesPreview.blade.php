@@ -1,70 +1,70 @@
-<div class="article-preview">
-    <article>
-        <h3>
+<div class="timeline-block" id="add_new_post">
+    <div class="panel panel-default share clearfix-xs">
+        <div class="panel-heading panel-heading-gray title">
             {{ $article->title }}
-        </h3>
-        <div class="info-bar">
-            <ul>
-                <li><span>ارسال شده توسط : </span> <a href="#" >{{ $article->user->first_name  }} {{ $article->user->last_name  }} </a></li>
-                <li><span>ناریخ : </span> {{ $article->shamsi_created_at }} </li>
-                <li><a href="#" > دیدگاه ( {{ $article->num_comment  }} ) </a></li>
-            </ul>
         </div>
-        @if(!empty($article->banner))
-            <div class="image">
-                <img src="{{ asset('img/files/'.$article->banner) }}">
-            </div>
-        @endif
-        <div class="content">
-            {!! $article->content !!}
-        </div>
-        @if(count($attachments)>0)
-            <div class="attachments-list">
-                <span>ضمیمه های مقاله : </span>
-                <ul>
-                    @foreach($attachments as $attachment)
-                        <li><a target="_blank" href="{{ asset('img/files/'.$attachment->name) }}" >{{ $attachment->real_name }}</a><i class="fa fa-paperclip" ></i></li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <div class="statics clearfix">
-            <div class="num-comments pull-right"><i class="fa fa-comments-o" ></i>  دیدگاه ( {{ $article->num_comment  }} )  </div>
-            <div class="num-like pull-left"><i class="fa fa-heart" ></i>  می پسندم ( {{ $article->num_like  }} )  </div>
-            <div class="num-visit pull-left"><i class="fa fa-eye" ></i>  بازدید  ( {{ $article->num_visit  }} )  </div>
-        </div>
-
-    </article>
-
-        <div class="commenting">
-            <textarea class="form-control" rows="4"></textarea>
-            <button class="btn-violet btn">ثبت دیدگاه</button>
-
-            <div class="comments-list">
-
-                <div class="media">
-                    <div class="media-right">
-                        <a href="#" class="thumbnail">
-                            <img class="media-object" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="aaaa">
-                        </a>
+        <div class="panel-body">
+            <div class="article_show">
+                @if(!empty($article->banner))
+                    <div class="image">
+                        <img src="{{ asset('img/files/'.$article->banner) }}">
                     </div>
-                    <div class="media-body">
-                        <div class="panel panel-default comment">
-                            <div class="panel-heading">
-                                <span class="text-muted">commented 5 days ago</span><strong>myusername</strong>
-                            </div>
-                            <div class="panel-body">
-                                Panel content
-                            </div><!-- /panel-body -->
-                        </div><!-- /panel panel-default -->
-                    </div>
+                @endif
+                <div class="info">
+                    <ul>
+                        <li><i class="fa icon-user-1 fa-lg"></i>فرستنده : <a href="#">{{ $article->user->first_name  }} {{ $article->user->last_name  }}</a></li>
+                        <li><i class="fa icon-calendar-1 fa-lg"></i>{{ $article->shamsi_created_at }}</li>
+                        <li><i class="fa icon-user-2 fa-lg"></i> {{ $article->num_visit }} بازید </li>
+                        <li><i class="fa icon-comment-2 fa-lg"></i> {{ $article->num_comment }} دیدگاه </li>
+                        <li class="@if($article->liked($user->id)) liked-heart @endif" ><i class="fa @if($article->liked($user->id)) icon-heart-fill @else icon-heart @endif fa-lg" id="article_like" data-article="{{ $article->id }}" data-value="1"></i><span id="num_like" >{{ $article->num_like }}</span> نفر پسندیده اند </li>
+                    </ul>
                 </div>
-
+                <div class="content">{!! $article->content !!}</div>
             </div>
-
-
-
         </div>
+        <div class="panel-footer">
+            <div class="pull-left last-edit"> آخرین ویرایش  {{ $article->shamsi_updated_at }} </div>
+            <a class="btn btn-info btn-sm" href="{{ route('profile.article.edit', $article->id ) }}"><i class="fa fa-pencil" ></i> ویرایش مقاله </a>
+            <a class="btn btn-default btn-sm" href="{{ route('profile.article.create' ) }}"><i class="fa fa-plus" ></i> افزودن مقاله جدید </a>
+        </div>
+    </div>
+</div>
+
+<div class="comment-list">
+    <div class="new-comment">
+
+        {!! Form::open(['route'=>['profile.article.comment.add', $article->id], 'method'=>'post']) !!}
+            <div class="media">
+                <div class="media-right">
+                    <a href="#">
+                        <img class="media-object" src="{{asset('img/persons/'.$user->avatar)}}" alt="...">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <textarea name="body" placeholder="شما هم می توانید دیدگاه خود را درباره این مقاله بیان نمایید."></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-violet btn-sm"><i class="fa fa-paper-plane-o"></i> ثبت دیدگاه </button>
+        {!! Form::close() !!}<hr>
+
+    </div>
+    <div class="comments">
+
+        @foreach($article->comments as $comment)
+        <div class="media">
+            <div class="media-right">
+                <a href="#">
+                    <img class="media-object" src="{{asset('img/persons/'.$comment->user->avatar)}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h5 class="media-heading"><a href="#">{{ $comment->user->first_name }} {{ $comment->user->last_name }}</a><span class="info">{{ $comment->shamsi_human_created_at }}</span></h5>
+                <p>{{ $comment->body }}</p>
+            </div>
+        </div>
+        @endforeach
+
+
+    </div>
 
 </div>

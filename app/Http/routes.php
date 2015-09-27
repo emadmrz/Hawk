@@ -39,6 +39,7 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::post('/cover','CoverController@index');
     Route::post('/userinfo','InfoController@edit');
     Route::post('/education','EducationController@create');
+    Route::post('/education/update','EducationController@update');
     Route::get('/education/delete','EducationController@delete');
     Route::post('/biography','BiographyController@update');
     Route::get('/article',['as'=>'articles', 'uses'=>'ArticleController@index']);
@@ -49,12 +50,74 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::delete('/article/{article}/delete',['as'=>'article.delete', 'uses'=>'ArticleController@delete']);
     Route::post('/article/{article}/banner', 'ArticleController@banner');
     Route::post('/article',['as'=>'article.add', 'uses'=>'ArticleController@add']);
+    Route::post('/article/{article}/comment',['as'=>'article.comment.add', 'uses'=>'ArticleController@comment']);
+    Route::post('/article/{article}/like',['as'=>'article.like.add', 'uses'=>'ArticleController@like']);
+
+    Route::post('/location',['as'=>'location.store', 'uses'=>'LocationController@store']);
 
     Route::post('/post',['as'=>'post.add', 'uses'=>'PostController@add']);
-
     Route::post('/post/image','PostController@image');
 
     Route::get('/test','ProfileController@test');
+
+    Route::group(['prefix' => 'skill', 'as'=>'skill.'], function () {
+        Route::get('/','SkillController@index');
+        Route::get('create',['as'=>'create', 'uses'=>'SkillController@create']);
+        Route::get('{skill}/step1',['as'=>'edit.step1', 'uses'=>'SkillController@edit']);
+        Route::post('create',['as'=>'add', 'uses'=>'SkillController@add']);
+        Route::put('/{skill}/update',['as'=>'update', 'uses'=>'SkillController@update']);
+
+        Route::get('/{skill}/step2',['as'=>'edit.step2', 'uses'=>'SkillController@skillTables']);
+        Route::post('/{skill}/experience',['as'=>'add.experience', 'uses'=>'SkillController@addExperience']);
+        Route::delete('experience','SkillController@deleteExperience');
+        Route::post('experience/update','SkillController@updateExperience');
+        Route::post('experience/preview','SkillController@previewExperience');
+        Route::post('experience/like','SkillController@likeExperience');
+
+        Route::post('/{skill}/degree',['as'=>'add.degree', 'uses'=>'SkillController@addDegree']);
+        Route::delete('degree','SkillController@deleteDegree');
+        Route::post('degree/update','SkillController@updateDegree');
+        Route::post('degree/preview','SkillController@previewDegree');
+        Route::post('degree/like','SkillController@likeDegree');
+
+        Route::post('/{skill}/honor',['as'=>'add.honor', 'uses'=>'SkillController@addHonor']);
+        Route::delete('honor','SkillController@deleteHonor');
+        Route::post('honor/update','SkillController@updateHonor');
+        Route::post('honor/preview','SkillController@previewHonor');
+        Route::post('honor/like','SkillController@likeHonor');
+
+        Route::post('/{skill}/history',['as'=>'add.history', 'uses'=>'SkillController@addHistory']);
+        Route::delete('history','SkillController@deleteHistory');
+        Route::post('history/update','SkillController@updateHistory');
+
+        Route::get('/{skill}/step3',['as'=>'edit.step3', 'uses'=>'SkillController@ScheduleInfo']);
+
+        Route::post('/{skill}/schedule',['as'=>'add.schedule', 'uses'=>'SkillController@addSchedule']);
+        Route::delete('schedule','SkillController@deleteSchedule');
+        Route::post('schedule/update','SkillController@updateSchedule');
+
+        Route::post('/{skill}/paper',['as'=>'add.paper', 'uses'=>'SkillController@addPaper']);
+        Route::delete('paper','SkillController@deletePaper');
+        Route::post('paper/update','SkillController@updatePaper');
+
+        Route::post('/{skill}/amount',['as'=>'add.amount', 'uses'=>'SkillController@addAmount']);
+        Route::delete('amount','SkillController@deleteAmount');
+        Route::post('amount/update','SkillController@updateAmount');
+
+        Route::post('/{skill}/area',['as'=>'add.area', 'uses'=>'SkillController@addArea']);
+        Route::delete('area','SkillController@deleteArea');
+        Route::post('area/change','SkillController@updateArea');
+
+        Route::post('/{skill}/gallery',['as'=>'add.gallery', 'uses'=>'SkillController@addGallery']);
+        Route::delete('gallery','SkillController@deleteGallery');
+        Route::post('gallery/update','SkillController@updateGallery');
+
+        Route::post('{skill}/recommendation', ['as'=>'recommendation.store', 'uses'=>'RecommendationController@store']);
+
+        Route::post('{skill}/endorse', ['as'=>'endorse.store', 'uses'=>'EndorseController@store']);
+    });
+
+
 
 
 
@@ -65,7 +128,6 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::group(['prefix' => 'setting', 'as'=>'setting.'], function () {
         Route::get('/password',['as'=>'password', 'uses'=>'SettingController@password']);
         Route::post('/password',['as'=>'changePassword', 'uses'=>'SettingController@changePassword']);
-
     });
 
 });
@@ -165,6 +227,19 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::post('/cities/{province}',['as'=>'city.create', 'uses'=>'Admin\ProvinceController@cityCreate']);
         Route::put('/cities/{province}/{city}',['as'=>'city.update', 'uses'=>'Admin\ProvinceController@cityUpdate']);
 
+
+        Route::get('/category',['as'=>'categories', 'uses'=>'Admin\CategoryController@index']);
+        Route::post('/category',['as'=>'category.create', 'uses'=>'Admin\CategoryController@categoryCreate']);
+        Route::put('/category/{category}',['as'=>'category.update', 'uses'=>'Admin\CategoryController@categoryUpdate']);
+        Route::get('/category/{category}/edit',['as'=>'category.edit', 'uses'=>'Admin\CategoryController@categoryEdit']);
+        Route::get('/category/{category}/delete',['as'=>'category.delete', 'uses'=>'Admin\CategoryController@categoryDelete']);
+        Route::get('/sub_categories/{category}/{sub_category}/edit',['as'=>'sub_category.edit', 'uses'=>'Admin\CategoryController@subCategoryEdit']);
+        Route::get('/sub_categories/{category}/{sub_category}/delete',['as'=>'sub_category.delete', 'uses'=>'Admin\CategoryController@subCategoryDelete']);
+        Route::get('/sub_categories/{category}',['as'=>'sub_categories', 'uses'=>'Admin\CategoryController@subCategories']);
+        Route::post('/sub_categories/{category}',['as'=>'sub_category.create', 'uses'=>'Admin\CategoryController@subCategoryCreate']);
+        Route::put('/sub_categories/{category}/{sub_category}',['as'=>'sub_category.update', 'uses'=>'Admin\CategoryController@subCategoryUpdate']);
+
+
         Route::get('/university',['as'=>'universities', 'uses'=>'Admin\UniversityController@index']);
         Route::post('/university',['as'=>'university.create', 'uses'=>'Admin\UniversityController@create']);
         Route::get('/university/{university}/edit',['as'=>'university.edit', 'uses'=>'Admin\UniversityController@edit']);
@@ -185,6 +260,11 @@ Route::group(['prefix' => 'api', 'as'=>'api.'], function () {
 
     Route::group(['prefix' => 'location', 'as'=>'location.'], function () {
         Route::get('cities',['as'=>'cities', 'uses'=>'Api\LocationController@cities']);
+    });
+
+    Route::group(['prefix' => 'category', 'as'=>'category.'], function () {
+        Route::get('sub',['as'=>'sub', 'uses'=>'Api\CategoryController@sub']);
+        Route::get('tags',['as'=>'tags', 'uses'=>'Api\CategoryController@tags']);
     });
 
 });

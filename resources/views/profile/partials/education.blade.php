@@ -1,11 +1,11 @@
 <div class="timeline-block">
-    <div class="panel panel-default share clearfix-xs" id="collapseListGroupHeading2" role="tab">
+    <div class="panel panel-default share clearfix-xs" id="collapseListGroupHeadingEducation" role="tab">
         <div class="panel-heading panel-heading-gray title">
-            <a class="collapse-title collapsed" aria-expanded="true" data-toggle="collapse" href="#collapseListGroup2" aria-expanded="true" aria-controls="collapseListGroup2">تحصیلات
+            <a class="collapse-title collapsed" aria-expanded="true" data-toggle="collapse" href="#collapseListGroupEducation" aria-expanded="true" aria-controls="collapseListGroupEducation">تحصیلات
                 <i class="status fa fa-chevron-circle-up"></i>
             </a>
         </div>
-        <div class="collapse in" id="collapseListGroup2" aria-labelledby="collapseListGroupHeading2" aria-expanded="true">
+        <div class="collapse in" id="collapseListGroupEducation" aria-labelledby="collapseListGroupHeadingEducation" aria-expanded="true">
             <div class="panel-body" id="education_form">
 
                 <div class="" data-role="preview">
@@ -133,11 +133,11 @@
                         @foreach($educations as $education)
                             <tr data-education="{{ $education->id }}">
                                 <td>{{ $education->degree_name }}</td>
-                                <td>{{ $education->field }}</td>
-                                <td>{{ $education->status_name }}</td>
+                                <td><a href="#" data-editable id="field" data-type="text" data-pk="{{ $education->id }}">{{ $education->field }}</a></td>
+                                <td><a href="#" id="status" data-type="select"  data-pk="{{ $education->id }}">{{ $education->status_name }}</a></td>
                                 <td>{{ $education->university->name }}</td>
-                                <td>{{ $education->entrance_year }}</td>
-                                <td>{{ $education->graduate_year }}</td>
+                                <td><a href="#" data-editable id="entrance_year" data-type="number" data-pk="{{ $education->id }}">{{ $education->entrance_year }}</a></td>
+                                <td><a href="#" data-editable id="graduate_year" data-type="number" data-pk="{{ $education->id }}">{{ $education->graduate_year }}</a></td>
                                 <td>
                                     <form method="get">
                                         <input type='hidden' name='education_id' value="{{ $education->id }}" >

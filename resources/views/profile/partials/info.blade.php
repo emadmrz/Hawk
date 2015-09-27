@@ -13,7 +13,7 @@
                 @role('user')
                     <div class="form-horizontal panel-form panel-view"   data-role="preview" >
 
-                        <div class="row">
+                        <div class="">
 
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -105,7 +105,7 @@
 
                     </div>
                     {!! Form::model($info, ['url'=>'profile/userinfo', 'method'=>'post', 'class'=>'form-horizontal panel-form', 'style'=>'display: none', 'data-role'=>'editor', 'data-remote']) !!}
-                        <div class="row">
+                        <div class="">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     {!! Form::label('user[first_name]', 'نام : ', ['class'=>'control-label pull-right']) !!}
@@ -196,7 +196,7 @@
                 @role('legal')
                 <div class="form-horizontal panel-form panel-view"   data-role="preview" >
 
-                    <div class="row">
+                    <div class="">
 
                         <div class="col-md-4">
                             <div class="form-group">
@@ -306,7 +306,7 @@
 
                 </div>
                 {!! Form::model($info, ['url'=>'profile/userinfo', 'method'=>'post', 'class'=>'form-horizontal panel-form', 'style'=>'display: none', 'data-role'=>'editor', 'data-remote']) !!}
-                <div class="row">
+                <div class="">
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('user[company]', 'نام مجموعه :', ['class'=>'control-label pull-right']) !!}

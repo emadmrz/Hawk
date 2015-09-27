@@ -23,9 +23,10 @@ class ProfileController extends Controller
         if(!is_null($info->province_id)) {
             $cities = Province::where('parent_id', $info->province_id)->lists('name', 'id');
         }else{
-            $cities = [];
+            $cities = Province::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');;
         }
-        return view('profile.index', compact('info', 'provinces', 'cities'))->with(['title'=>$user->first_name]);
+        $location = $user->location()->firstOrCreate(['user_id'=>$user->id]);
+        return view('profile.index', compact('info', 'provinces', 'cities','location'))->with(['title'=>$user->first_name]);
     }
 
     public function description(Request $request){

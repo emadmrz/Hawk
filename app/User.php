@@ -128,6 +128,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasOne('App\Info');
     }
 
+    public function location(){
+        return $this->hasOne('App\Location');
+    }
+
     public function educations(){
         return $this->hasMany('App\Education');
     }
@@ -146,6 +150,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function posts(){
         return $this->hasMany('App\Post');
+    }
+
+    public function skills(){
+        return $this->hasMany('App\Skill');
+    }
+
+    public function recommendations(){
+        return $this->hasMany('App\Recommendation');
+    }
+
+    public function endorses(){
+        return $this->hasMany('App\Endorse');
     }
 
 }

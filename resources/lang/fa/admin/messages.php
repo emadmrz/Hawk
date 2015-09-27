@@ -23,6 +23,12 @@ return [
     'universityAdded' => 'University was created successfully',
     'universityUpdated' => 'University was updated successfully',
     'universityDeleted' => 'University was deleted successfully',
+    'categoryAdded' => 'Category was created successfully',
+    'categoryUpdated' => 'Category was updated successfully',
+    'categoryDeleted' => 'Category was deleted successfully',
+    'sub_categoryAdded' => 'Sub_category was created successfully',
+    'sub_categoryUpdated' => 'Sub_category was updated successfully',
+    'sub_categoryDeleted' => 'Sub_category was deleted successfully',
 
 
 ];

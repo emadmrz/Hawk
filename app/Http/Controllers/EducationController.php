@@ -35,4 +35,8 @@ class EducationController extends Controller
             return null;
         }
     }
+
+    public function update(Request $request){
+        Education::find($request->input('pk'))->update([$request->input('name')=>$request->input('value')]);
+    }
 }

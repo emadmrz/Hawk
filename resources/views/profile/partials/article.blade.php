@@ -21,23 +21,23 @@
                     {!! Form::model($article, ['route'=>['profile.article.update',$article->id], 'method'=>'put', 'enctype'=>'multipart/form-data', 'id'=>'article_edit_form']) !!}
                     <input type="hidden" name="article_id" id="article_id" value="{{$article->id}}">
                 @endif
-                    <div class="panel-form clearfix form-horizontal">
-                        <div class="form-group">
-                            {!! Form::label('title', 'عنوان مقاله : ', ['class'=>'control-label pull-right']) !!}
+                    <div class="clearfix form-horizontal">
+                        <div class="form-group panel-form">
+                            {!! Form::label('title', 'عنوان مقاله : ', ['class'=>'control-label pull-right col-sm-2']) !!}
                             <div class="col-sm-7">
                                 {!! Form::text('title', null, ['class'=>'form-control', 'placeholder'=>'']) !!}
                                 <i class="input-icon fa fa-edit"></i>
                             </div>
                         </div>
-                        <div class="form-group">
-                            {!! Form::label('status', ' وضعیت : ', ['class'=>'control-label pull-right']) !!}
+                        <div class="form-group panel-form">
+                            {!! Form::label('status', ' وضعیت : ', ['class'=>'control-label pull-right col-sm-2']) !!}
                             <div class="col-sm-3">
                                 {!! Form::select('status', [1=>'منتشر شده', 0=>'منتشر نشده'], null, ['class'=>'form-control', 'placeholder'=>'']) !!}
                             </div>
                         </div>
                         @if($for == 'edit')
-                            <div class="form-group">
-                                {!! Form::label('article_banner', ' تصویر بالای مقاله : ', ['class'=>'control-label pull-right']) !!}
+                            <div class="form-group panel-form">
+                                {!! Form::label('article_banner', ' تصویر بالای مقاله : ', ['class'=>'control-label pull-right col-sm-2']) !!}
                                 {!! Form::File('article_banner', ['class'=>'pull-right col-sm-4']) !!}
                                 <span class="inline-loader" id="article_banner_uploader"><i class="fa fa-spinner fa-spin" ></i> در حال آپلود ... </span>
                                 <a target="_blank" href="{{asset('img/files/'.$article->banner)}}" id="article_image_banner" @if(empty($article->banner))style="display: none"@endif ><button type="button" data class="btn btn-default btn-sm" >مشاهده عکس مقاله</button></a>
@@ -82,6 +82,7 @@
                         {!! Form::open(['route'=>['profile.article.delete',$article->id] , 'method'=>'delete', 'class'=>'form-inline pull-left']) !!}
                             {!! Form::button('حذف مقاله', ['class'=>'btn btn-danger pull-left', 'type'=>'submit', 'data-delete-confirm', 'data-delete-message'=>'آیا مطمئن هستید این مقاله حذف شود ؟']) !!}
                         {!! Form::close() !!}
+
                     @endif
 
             </div>
@@ -95,3 +96,53 @@
         {{--</div>--}}
     </div>
 </div>
+
+@if( $for == 'edit' )
+<div class="timeline-block">
+    <div class="panel panel-default share clearfix-xs" id="collapseListGroupHeadingDiagram" role="tab">
+        <div class="panel-heading panel-heading-gray title">
+            <a class="collapse-title collapsed" aria-expanded="true" data-toggle="collapse" href="#collapseListGroupDiagram" aria-expanded="true" aria-controls="collapseListGroupDiagram" >
+                نمودار آماری بازدید از مقاله
+                <i class="status fa fa-chevron-circle-up"></i>
+            </a>
+        </div>
+        <div class="collapse in" id="collapseListGroupDiagram" aria-labelledby="collapseListGroupHeadingDiagram" aria-expanded="true">
+            <div class="panel-body">
+                <div id="articleVisitorDiagram" style="height: 250px;"></div>
+            </div>
+        </div>
+        {{--<div class="panel-footer info">--}}
+
+        {{--</div>--}}
+    </div>
+</div>
+
+
+@section('script')
+    <link href="{{ asset('css/admin/morris.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/admin/raphael-min.js') }}"></script>
+    <script src="{{ asset('js/admin/morris.min.js') }}"></script>
+    <script>
+        new Morris.Line({
+            // ID of the element in which to draw the chart.
+            element: 'articleVisitorDiagram',
+            // Chart data records -- each entry in this array corresponds to a point on
+            // the chart.
+            data: [
+                @foreach($visitDiagramInfo as $date=>$value)
+                {day: '{{$date}}', value: {{$value}} },
+                @endforeach
+        ],
+            // The name of the data record attribute that contains x-values.
+            xkey: 'day',
+            // A list of names of data record attributes that contain y-values.
+            ykeys: ['value'],
+            // Labels for the ykeys -- will be displayed when you hover over the
+            // chart.
+            labels: ['visit']
+        });
+    </script>
+
+@endsection
+
+@endif

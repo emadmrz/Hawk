@@ -27,13 +27,69 @@ $(document).ready(function(){
                     window[data.callback](data.returns);
                 }
                 if(data.hasMsg){
-                    $.notify(data.msg, {type:'success'});
+                    var type = 'success';
+                    if(data.msgType){
+                        type = data.msgType;
+                    }
+                    $.notify(data.msg, {type:type});
                 }
             },
             error: function(xhr){
                 alert("An error occured: " + xhr.status + " " + xhr.statusText);
             }
         });
+    });
+
+    //Program a custom submit function for the form
+    $("form[data-remote-file]").submit(function(event){
+
+        //disable the default form submission
+        event.preventDefault();
+
+        //grab all form data
+        var formData = new FormData($(this)[0]);
+
+        var $this = $(this);
+        var action = $this.attr('action');
+        var method = $this.attr('method');
+        if($this.find('input[name="_method"]').length>0){
+            method = $this.find('input[name="_method"]').val();
+        }
+        console.log(method);
+        var current_text = $this.find('button[type=submit]').html();
+
+        $.ajax({
+            url: action,
+            type: method,
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function(){
+                $this.find('button[type="submit"]').find('i').attr('class', '').addClass('fa fa-spinner fa-spin');
+            },
+            complete: function(){
+                $this.find('button[type="submit"]').html(current_text);
+            },
+            success: function(data){
+                if(data.hasCallback){
+                    window[data.callback](data.returns);
+                }
+                if(data.hasMsg){
+                    var type = 'success';
+                    if(data.msgType){
+                        type = data.msgType;
+                    }
+                    $.notify(data.msg, {type:type});
+                }
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+
+        return false;
     });
 
     $('[data-delete-confirm]').click(function(){
@@ -111,13 +167,14 @@ $(document).ready(function(){
     });
 
     $('input#article_banner').change(function(){
-        $this = $(this);
+        var $this = $(this);
+        var article_id = $('input#article_id').val();
         var file_data = $this.prop("files")[0];
         var form_data = new FormData();
         form_data.append("image", file_data);
         form_data.append("_token", $('input[name="_token"]').val());
         $.ajax({
-            url: "/profile/article/"+$('input#article_id').val()+"/banner",
+            url: "/profile/article/"+article_id+"/banner",
             cache: false,
             contentType: false,
             processData: false,
@@ -169,7 +226,7 @@ $(document).ready(function(){
             },
             success: function(data){
                 console.log(data);
-                $("#add_new_post").find('#post_banner').html('<img class="img-rounded" src="'+data+'" >');
+                $("#add_new_post").find('#post_banner').html('<img class="img-rounded" src="'+data+'" ><i id="delete_image" class="fa fa-times fa-lg"></i>');
                 $("#add_new_post").find('#post_banner').addClass('has-banner');
                 $("#add_new_post").find('#post_text_container').addClass('has-banner');
                 $("#add_new_post").find('#post_image_value').val(data);
@@ -178,6 +235,21 @@ $(document).ready(function(){
                 alert("An error occured: " + xhr.status + " " + xhr.statusText);
             }
         })
+    })
+
+    $("#add_new_post").find('#post_banner').on('click', '#delete_image', function () {
+        var $this =$(this);
+        $this.siblings('img').remove();
+        $this.remove();
+        $("#add_new_post").find('#post_banner').removeClass('has-banner');
+        $("#add_new_post").find('#post_text_container').removeClass('has-banner');
+        $("#add_new_post").find('#post_image_value').val('');
+    });
+
+    $("#add_new_post").on('click', '.post-location-box #delete_location', function(){
+        var $this = $(this);
+        $this.closest(".post-location-box").remove();
+        $("#add_new_post").find("#my_location_value").val('');
     })
 
     $("textarea#flex_textarea").flexText();
@@ -215,7 +287,7 @@ $(document).ready(function(){
                         //formatted address
                         //alert(results[2].formatted_address);
                         $("#add_new_post").find("#my_location_value").val(results[2].formatted_address);
-                        $("#add_new_post").find("#post_text_container").append('<div class="post-location-box"><span><i class="fa fa-map-marker"></i> ارسال شده از : </span><span class="location">'+results[2].formatted_address+'</span></div>');
+                        $("#add_new_post").find("#post_text_container").append('<div class="post-location-box"><span><i class="fa fa-map-marker"></i> ارسال شده از : </span><span class="location">'+results[2].formatted_address+'</span><i id="delete_location" class="fa fa-times"></i></div>');
                         $this.find('i').removeClass('fa-spin fa-spinner').addClass('fa-map-marker');
 
                         //find country name
@@ -242,6 +314,247 @@ $(document).ready(function(){
                 }
             });
         }
+    });
+
+    $("div#show-case-degrees").find("#item_list").children('li').click(function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var container = $this.closest("#show-case-degrees");
+        $.ajax({
+            url : '/profile/skill/degree/preview',
+            type : 'post',
+            data : {id: $this.attr('data-value'),  _token:$('input[name="_token"]').val() },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('a').addClass('loading');
+                $this.find('a').append('<i class="fa fa-spinner fa-spin" ></i>');
+            },
+            complete: function(){
+                $this.find('a').removeClass('loading');
+                $this.find('a').find('i').remove();
+            },
+            success: function(data){
+                console.log(data)
+                container.find("#license_name").html(data.title);
+                container.find('.image').find('img').attr('src', $this.find('img').attr('src'));
+                container.find('.image').find('.title').find('.name').html(data.title);
+                container.find('.popularity').find('#view_item').attr('href', $this.find('a').attr('href') );
+                container.find('.popularity').find('#like').attr('data-value', data.id );
+                container.find('.popularity').find('#dislike').attr('data-value', data.id );
+                container.find('#properties_list').html('');
+                container.find('#properties_list').append('<p>  صادر کننده :  '+data.creator+'</p>');
+                container.find('#properties_list').append('<p> تاریخ اخذ مدرک : '+data.get_date+'</p>');
+                container.find('#properties_list').append('<p> مدت اعتبار : '+data.expiration_date+'</p>');
+                container.find('#properties_list').append('<p>'+data.description+'</p>');
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+
+    });
+
+    $("div#show-case-experience").find("#item_list").children('li').click(function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var container = $this.closest("#show-case-experience");
+        $.ajax({
+            url : '/profile/skill/experience/preview',
+            type : 'post',
+            data : {id: $this.attr('data-value'),  _token:$('input[name="_token"]').val() },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('a').addClass('loading');
+                $this.find('a').append('<i class="fa fa-spinner fa-spin" ></i>');
+            },
+            complete: function(){
+                $this.find('a').removeClass('loading');
+                $this.find('a').find('i').remove();
+            },
+            success: function(data){
+                console.log(data)
+                container.find("#license_name").html(data.title);
+                container.find('.image').find('img').attr('src', $this.find('img').attr('src'));
+                container.find('.image').find('.title').find('.name').html(data.title);
+                container.find('.popularity').find('#view_item').attr('href', $this.find('a').attr('href') );
+                container.find('.popularity').find('#like').attr('data-value', data.id );
+                container.find('.popularity').find('#like').find('#num').html(' '+data.num_like+' ');
+                container.find('.popularity').find('#dislike').attr('data-value', data.id );
+                container.find('.popularity').find('#dislike').find('#num').html(' '+data.num_dislike+' ');
+                container.find('#properties_list').html('');
+                container.find('#properties_list').append('<p>'+data.description+'</p>');
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+
+    });
+
+    $("div#show-case-honor").find("#item_list").children('li').click(function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var container = $this.closest("#show-case-honor");
+        $.ajax({
+            url : '/profile/skill/honor/preview',
+            type : 'post',
+            data : {id: $this.attr('data-value'),  _token:$('input[name="_token"]').val() },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('a').addClass('loading');
+                $this.find('a').append('<i class="fa fa-spinner fa-spin" ></i>');
+            },
+            complete: function(){
+                $this.find('a').removeClass('loading');
+                $this.find('a').find('i').remove();
+            },
+            success: function(data){
+                console.log(data)
+                container.find("#license_name").html(data.title);
+                container.find('.image').find('img').attr('src', $this.find('img').attr('src'));
+                container.find('.image').find('.title').find('.name').html(data.title);
+                container.find('.popularity').find('#view_item').attr('href', $this.find('a').attr('href') );
+                container.find('.popularity').find('#like').attr('data-value', data.id );
+                container.find('.popularity').find('#dislike').attr('data-value', data.id );
+                container.find('#properties_list').html('');
+                container.find('#properties_list').append('<p>'+data.description+'</p>');
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+
+    });
+
+    $(".article_show").on('click', "#article_like", function(){
+        var $this = $(this);
+        var value_id = $this.attr('data-value');
+        var article_id = $this.attr('data-article');
+        $.ajax({
+            url : '/profile/article/'+article_id+'/like',
+            type : 'post',
+            data : {article:article_id, value:value_id, _token:$('input[name="_token"]').val() },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.attr('class','');
+                $this.addClass('fa fa-spin fa-spinner fa-lg');
+            },
+            complete: function(){
+                if($this.hasClass('fa-spin')){
+                    $this.removeClass('fa-spin fa-spinner').addClass('icon-heart').closest('li').removeClass('liked-heart');
+                }
+            },
+            success: function(data){
+                if(data.is_liked){
+                    $this.attr('class','');
+                    $this.removeClass('icon-heart').addClass('fa icon-heart-fill fa-lg liked-heart').closest('li').addClass('liked-heart');
+                }
+                $this.siblings("#num_like").html(data.num_like);
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    })
+
+    $("div#show-case-experience").on('click', '#like,#dislike', function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var container = $this.closest("#show-case-experience");
+        var current = $this.find('i').attr('class');
+        $.ajax({
+            url : '/profile/skill/experience/like',
+            type : 'post',
+            data : {id: $this.attr('data-value'), type:$this.attr('data-type'),  _token:$('input[name="_token"]').val() },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('i').attr('class', '').addClass('fa fa-spin fa-spinner');
+            },
+            complete: function(){
+                if($this.find('i').hasClass('fa-spinner')){
+                    $this.find('i').attr('class', '').addClass(current);
+                }
+            },
+            success: function(data){
+                console.log(data)
+                container.find("#like").find("#num").html(' '+data.num_like+' ');
+                container.find("#dislike").find("#num").html(' '+data.num_dislike+' ');
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $("div#show-case-degrees").on('click', '#like,#dislike', function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var container = $this.closest("#show-case-degrees");
+        var current = $this.find('i').attr('class');
+        $.ajax({
+            url : '/profile/skill/degree/like',
+            type : 'post',
+            data : {id: $this.attr('data-value'), type:$this.attr('data-type'),  _token:$('input[name="_token"]').val() },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('i').attr('class', '').addClass('fa fa-spin fa-spinner');
+            },
+            complete: function(){
+                if($this.find('i').hasClass('fa-spinner')){
+                    $this.find('i').attr('class', '').addClass(current);
+                }
+            },
+            success: function(data){
+                console.log(data)
+                container.find("#like").find("#num").html(' '+data.num_like+' ');
+                container.find("#dislike").find("#num").html(' '+data.num_dislike+' ');
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $("div#show-case-honor").on('click', '#like,#dislike', function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var container = $this.closest("#show-case-honor");
+        var current = $this.find('i').attr('class');
+        $.ajax({
+            url : '/profile/skill/honor/like',
+            type : 'post',
+            data : {id: $this.attr('data-value'), type:$this.attr('data-type'),  _token:$('input[name="_token"]').val() },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('i').attr('class', '').addClass('fa fa-spin fa-spinner');
+            },
+            complete: function(){
+                if($this.find('i').hasClass('fa-spinner')){
+                    $this.find('i').attr('class', '').addClass(current);
+                }
+            },
+            success: function(data){
+                console.log(data)
+                container.find("#like").find("#num").html(' '+data.num_like+' ');
+                container.find("#dislike").find("#num").html(' '+data.num_dislike+' ');
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $('#skill-carousel').on('slid.bs.carousel', function () {
+        var name = $('.carousel-inner').find('.active').attr('data-title');
+        var index = $('.carousel-inner').find('.active').attr('data-index');
+        $('.skill-carousel-nav').find('.name').find('span').html(name);
+        $('ul.skill-list').find('li').removeClass('current');
+        $('ul.skill-list').find('li[data-slide-to='+index+']').addClass('current');
+    })
+
+    $("button#open_recommendation").click(function(){
+        var $this = $(this);
+        $this.siblings('#add_recommendation_form').find('.recommendation-form').slideToggle(200);
     });
 
 });
@@ -368,12 +681,11 @@ var edit = function() {
             toolbar: [
                 //[groupname, [button list]]
                 ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['fontsize', ['fontsize']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']],
                 ['color', ['color']],
                 ['insert', ['link', 'picture', 'hr']],
-                ['view', ['fullscreen', 'codeview']],
+                ['view', ['fullscreen']],
                 ['help', ['help']]
             ],
             onImageUpload: function(files) {

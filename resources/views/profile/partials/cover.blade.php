@@ -10,13 +10,13 @@
                         {!! Form::button("<i class='fa fa-times-circle'></i>", ['type'=>'submit']) !!}
                     {!! Form::close() !!}
                 </div>
+                <div class="description">
+                    {!! Form::model($user, ['url'=>'profile/description', 'data-remote']) !!}
+                    {!! Form::text('description', null, ['placeholder'=>'درباره من...']) !!}
+                    {!! Form::button("<i class='fa fa-save'></i>", ['type'=>'submit']) !!}
+                    {!! Form::close() !!}
+                </div>
                 <div class="curve">
-                    <div class="description">
-                        {!! Form::model($user, ['url'=>'profile/description', 'data-remote']) !!}
-                            {!! Form::text('description', null, ['placeholder'=>'درباره من...']) !!}
-                            {!! Form::button("<i class='fa fa-save'></i>", ['type'=>'submit']) !!}
-                        {!! Form::close() !!}
-                    </div>
                 </div>
             </div>
             @include('profile.partials.cropper', ['type'=>'cover'])

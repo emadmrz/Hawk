@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Repositories\EducationRepository;
+use App\Repositories\ProfileProgressRepository;
 use App\University;
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +28,12 @@ class ViewComposerServiceProvider extends ServiceProvider
         $this->composeBiography();
 
         $this->composeMyArticles();
+
+        $this->composeSkill();
+
+        $this->composeLatestPosts();
+
+        $this->composeProfileProgress();
     }
 
     /**
@@ -67,6 +76,49 @@ class ViewComposerServiceProvider extends ServiceProvider
             $user = Auth::user();
             $articles = $user->articles()->latest()->take(5)->get();
             $view->with(['articles'=>$articles]);
+        });
+    }
+
+    private function composeSkill(){
+        view()->composer('profile.partials.skill', function($view) {
+            $user = Auth::user();
+            $skills = $user->skills()->with(
+                'experiences',
+                'experiences.files',
+                'degrees',
+                'degrees.files',
+                'honors',
+                'honors.files',
+                'histories',
+                'histories.files',
+                'tags',
+                'schedules'
+            )->get();
+            $view->with(['skills'=>$skills]);
+        });
+    }
+
+    private function composeProfileProgress(){
+        view()->composer('partials.profileProgress', function($view){
+            $viewdata= $view->getData();
+            if(isset($viewdata['userProfile'])){
+                //it mean's this in not my profile
+                $user_id = $viewdata['userProfile'];
+                $user = User::find($user_id)->first();
+            }else{
+                $user = Auth::user();
+            }
+            $profileProgressRepository = new ProfileProgressRepository();
+            $progress_value = $profileProgressRepository->calculate($user);
+            $view->with(['progress_value'=>$progress_value]);
+        });
+    }
+
+    private function composeLatestPosts(){
+        view()->composer('profile.partials.latestPosts', function($view){
+            $user = Auth::user();
+            $posts = $user->posts()->latest()->take(5)->get();
+            $view->with(['posts'=>$posts]);
         });
     }
 }
