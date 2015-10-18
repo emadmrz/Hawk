@@ -23,4 +23,5 @@ return array(
     'Carbon' => array($vendorDir . '/nesbot/carbon/src'),
     'Bican\\Roles' => array($vendorDir . '/bican/roles/src'),
     'Baum' => array($vendorDir . '/baum/baum/src'),
+    'Artisaninweb\\SoapWrapper' => array($vendorDir . '/artisaninweb/laravel-soap/src'),
 );

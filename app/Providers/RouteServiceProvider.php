@@ -50,9 +50,14 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('city' , 'App\Province');
         $router->model('university' , 'App\University');
         $router->model('article' , 'App\Article');
+        $router->model('post' , 'App\Post');
         $router->model('category' , 'App\Category');
         $router->model('sub_category' , 'App\Category');
         $router->model('skill' , 'App\Skill');
+        $router->model('profile' , 'App\User');
+        $router->model('comment' , 'App\Comment');
+        $router->model('poll' , 'App\Poll');
+        $router->model('questionnaire' , 'App\Questionnaire');
 
 
     }

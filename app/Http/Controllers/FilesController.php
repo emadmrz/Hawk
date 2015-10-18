@@ -23,14 +23,16 @@ class FilesController extends Controller
         $real_name = $request->file('file')->getClientOriginalName();
         $size = $request->file('file')->getClientSize()/(1024*1024); //calculate the file size in MB
         $imageName = str_random(20) . '.' .$request->file('file')->getClientOriginalExtension();
-        $request->file('file')->move(public_path() . '/img/files/', $imageName);
+        $request->file('file')->move(public_path() . '/img/files/'.$user->id.'/', $imageName);
         $biography->files()->create([
             'user_id' => $user->id,
             'real_name'=>$real_name,
-            'name' => $imageName,
+            'name' => $user->id.'/'.$imageName,
             'size'=>$size,
         ]);
-        return asset('img/files/'.$imageName);
+        $user->usage->add(filesize(public_path() . '/img/files/'.$user->id.'/'.$imageName)/(1024*1024));// storage add
+
+        return asset('img/files/'.$user->id.'/'.$imageName);
     }
 
     /**
@@ -43,13 +45,15 @@ class FilesController extends Controller
         $real_name = $request->file('aaa')->getClientOriginalName();
         $size = $request->file('aaa')->getClientSize()/(1024*1024); //calculate the file size in MB
         $imageName = str_random(20) . '.' .$request->file('aaa')->getClientOriginalExtension();
-        $request->file('aaa')->move(public_path() . '/img/files/', $imageName);
+        $request->file('aaa')->move(public_path() . '/img/files/'.$user->id.'/', $imageName);
         $biography->files()->create([
             'user_id' => $user->id,
             'real_name'=>$real_name,
-            'name' => $imageName,
+            'name' => $user->id.'/'.$imageName,
             'size'=>$size,
         ]);
+        $user->usage->add(filesize(public_path() . '/img/files/'.$user->id.'/'.$imageName)/(1024*1024));// storage add
+
         return $biography->files;
     }
 
@@ -67,13 +71,15 @@ class FilesController extends Controller
         $real_name = $request->file('aaa')->getClientOriginalName();
         $size = $request->file('aaa')->getClientSize()/(1024*1024); //calculate the file size in MB
         $imageName = str_random(20) . '.' .$request->file('aaa')->getClientOriginalExtension();
-        $request->file('aaa')->move(public_path() . '/img/files/', $imageName);
+        $request->file('aaa')->move(public_path() . '/img/files/'.$user->id.'/', $imageName);
         $article->files()->create([
             'user_id' => $user->id,
             'real_name'=>$real_name,
-            'name' => $imageName,
+            'name' => $user->id.'/'.$imageName,
             'size'=>$size,
         ]);
+        $user->usage->add(filesize(public_path() . '/img/files/'.$user->id.'/'.$imageName)/(1024*1024));// storage add
+
         return $article->files;
     }
 

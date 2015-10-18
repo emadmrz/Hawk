@@ -2,10 +2,14 @@
 
 namespace App;
 
+use App\Repositories\LikeRepository;
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\Facades\jDate;
 
 class Post extends Model
 {
+    use LikeRepository;
+
     protected $tabel = 'posts';
     protected $fillable = ['user_id', 'content', 'location', 'image', 'num_like', 'num_comment'];
 
@@ -15,5 +19,10 @@ class Post extends Model
 
     public function getShamsiCreatedAtAttribute(){
         return jDate::forge($this->attributes['created_at'])->format('%A %d %B %Y ');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany('App\Comment', 'commentable');
     }
 }

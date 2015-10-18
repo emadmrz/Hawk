@@ -15,6 +15,7 @@ class CreateAmountsTable extends Migration
         Schema::create('amounts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('skill_id')->unsigned();
+            $table->string('title');
             $table->integer('pricing_type')->unsigned();
             $table->integer('price');
             $table->integer('price_unit')->unsigned();

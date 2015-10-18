@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -31,4 +32,21 @@ class PostController extends Controller
         Flash::success(trans('profile.postAdded'));
         return redirect()->back();
     }
+
+    public function index(){
+        $user = Auth::user();
+        $posts = $user->posts()->paginate(10);
+        return view('profile.postsList',compact('posts'))->with(['title'=>'لیست پست های من']);
+    }
+
+    public function delete(Post $post){
+        $post->delete();
+        Flash::success(trans('profile.postDelete'));
+        return redirect()->back();
+    }
+
+    public function preview(Post $post){
+        return view('profile.postPreview', compact('post'))->with(['title'=>'پست من']);
+    }
+
 }

@@ -27,10 +27,9 @@
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('get_date', 'تاریخ اخذ مدرک : ', ['class'=>'col-md-2 pull-right form-control-static']) !!}
-                    <div class="col-md-4 pull-right panel-form">
-                        {!! Form::text('get_date', null, ['class'=>'form-control']) !!}
-                        <i class="input-icon fa fa-edit"></i>
+                    {!! Form::label('get_date', 'سال اخذ مدرک : ', ['class'=>'col-md-2 pull-right form-control-static']) !!}
+                    <div class="col-md-2 pull-right panel-form">
+                        {!! Form::select('get_date', $years_list, null, ['class'=>'form-control', 'data-select2']) !!}
                     </div>
                 </div>
 

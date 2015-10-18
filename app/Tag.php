@@ -12,4 +12,8 @@ class Tag extends Model
     public function skills(){
         return $this->belongsToMany('App\Skill');
     }
+
+    public function polls(){
+        return $this->belongsToMany('App\Poll');
+    }
 }

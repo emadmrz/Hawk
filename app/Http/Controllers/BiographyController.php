@@ -21,4 +21,11 @@ class BiographyController extends Controller
             'returns'=>''
         ];
     }
+
+    public function preview(){
+        $user = Auth::user();
+        return [
+            'biography'=> $user->biography->text
+        ];
+    }
 }

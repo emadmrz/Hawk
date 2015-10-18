@@ -44,4 +44,10 @@ class SettingController extends Controller
         return redirect()->back();
 
     }
+
+    public function storage(){
+        $user = Auth::user();
+        $usage = $user->usage;
+        return view('profile.storageStatus', compact('user', 'usage'))->with(['title'=>'وضعیت حجم حساب کاربری']);
+    }
 }

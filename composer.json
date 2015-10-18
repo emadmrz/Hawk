@@ -11,7 +11,10 @@
         "laracasts/flash": "^1.3",
         "bican/roles": "^2.1",
         "morilog/jalali": "^1.0",
-        "baum/baum": "~1.1"
+        "baum/baum": "~1.1",
+        "jenssegers/agent": "^2.2",
+        "intervention/image": "^2.3",
+        "artisaninweb/laravel-soap": "0.2.5.10"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

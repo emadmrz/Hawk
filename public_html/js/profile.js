@@ -20,7 +20,9 @@ $(document).ready(function(){
                 $this.find('button[type="submit"]').find('i').attr('class', '').addClass('fa fa-spinner fa-spin');
             },
             complete: function(){
-                $this.find('button[type="submit"]').html(current_text);
+                if($this.find('button[type="submit"]').find('i').hasClass('fa fa-spinner fa-spin')){
+                    $this.find('button[type="submit"]').html(current_text);
+                }
             },
             success: function(data){
                 if(data.hasCallback){
@@ -62,7 +64,7 @@ $(document).ready(function(){
             url: action,
             type: method,
             data: formData,
-            async: false,
+            //async: false,
             cache: false,
             contentType: false,
             processData: false,
@@ -189,8 +191,13 @@ $(document).ready(function(){
             },
             success: function(data){
                 console.log(data);
-                $("#article_image_banner").attr('href',data).fadeIn(200);
-                $this.val('');
+                if(data.returns.status == 1){
+                    $("#article_image_banner").attr('href',data.returns.url).fadeIn(200);
+                    $this.val('');
+                }else{
+                    notify_create(data);
+                }
+
             },
             error: function(xhr){
                 alert("An error occured: " + xhr.status + " " + xhr.statusText);
@@ -337,6 +344,7 @@ $(document).ready(function(){
                 console.log(data)
                 container.find("#license_name").html(data.title);
                 container.find('.image').find('img').attr('src', $this.find('img').attr('src'));
+                container.find('.image').find('.magnify-large').css('background', 'url(' + $this.find('img').attr('src') + ')');
                 container.find('.image').find('.title').find('.name').html(data.title);
                 container.find('.popularity').find('#view_item').attr('href', $this.find('a').attr('href') );
                 container.find('.popularity').find('#like').attr('data-value', data.id );
@@ -346,6 +354,7 @@ $(document).ready(function(){
                 container.find('#properties_list').append('<p> تاریخ اخذ مدرک : '+data.get_date+'</p>');
                 container.find('#properties_list').append('<p> مدت اعتبار : '+data.expiration_date+'</p>');
                 container.find('#properties_list').append('<p>'+data.description+'</p>');
+
             },
             error: function(xhr){
                 alert("An error occured: " + xhr.status + " " + xhr.statusText);
@@ -374,7 +383,15 @@ $(document).ready(function(){
             success: function(data){
                 console.log(data)
                 container.find("#license_name").html(data.title);
+                if(data.file_type == 'image'){
+                    container.find('.image').find('img').css({'width': '100%', 'padding': '0'});
+                    container.find('.popularity').find('#view_item').html('<i class="fa fa-file-image-o"></i>  مشاهده تصویر  ' );
+                }else{
+                    container.find('.image').find('img').css({'width': '50%', 'padding': '20px 0'});
+                    container.find('.popularity').find('#view_item').html('<i class="fa fa-download"></i>    دریافت فایل ' );
+                }
                 container.find('.image').find('img').attr('src', $this.find('img').attr('src'));
+                container.find('.image').find('.magnify-large').css('background', 'url(' + $this.find('img').attr('src') + ')');
                 container.find('.image').find('.title').find('.name').html(data.title);
                 container.find('.popularity').find('#view_item').attr('href', $this.find('a').attr('href') );
                 container.find('.popularity').find('#like').attr('data-value', data.id );
@@ -412,6 +429,7 @@ $(document).ready(function(){
                 console.log(data)
                 container.find("#license_name").html(data.title);
                 container.find('.image').find('img').attr('src', $this.find('img').attr('src'));
+                container.find('.image').find('.magnify-large').css('background', 'url(' + $this.find('img').attr('src') + ')');
                 container.find('.image').find('.title').find('.name').html(data.title);
                 container.find('.popularity').find('#view_item').attr('href', $this.find('a').attr('href') );
                 container.find('.popularity').find('#like').attr('data-value', data.id );
@@ -557,6 +575,191 @@ $(document).ready(function(){
         $this.siblings('#add_recommendation_form').find('.recommendation-form').slideToggle(200);
     });
 
+    $("#show-case .license-list li a").click(function(e){
+        e.preventDefault();
+        var img=$(this).find('img').attr('src');
+        $("#show-case .image img").attr('src' , img );
+        $("#show-case .image .magnify-large").css('background', 'url(' + img + ')');
+    });
+
+    $("ul#friendship_list, div#friendship_list").on('click', '#delete_friend', function(e){
+        e.stopPropagation();
+        var $this = $(this);
+        var container = $this.closest("li");
+        var current = $this.find('i').attr('class');
+        $.ajax({
+            url : '/profile/friend/unfriend',
+            type : 'post',
+            data : {
+                friendship_id: $this.attr('data-value'),
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('i').attr('class', '').addClass('fa fa-spin fa-spinner');
+            },
+            complete: function(){
+                if($this.find('i').hasClass('fa-spinner')){
+                    $this.find('i').attr('class', '').addClass(current);
+                }
+            },
+            success: function(data){
+                console.log(data)
+                if(data.returns.status == 1){
+                    container.slideUp(200, function(){
+                        container.remove();
+                    })
+                }
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $("ul#friendship_list, div#friendship_list").on('click', '#accept_friend', function(e){
+        e.stopPropagation();
+        var $this = $(this);
+        var container = $this.closest("li");
+        var current = $this.find('i').attr('class');
+        $.ajax({
+            url : '/profile/friend/accept',
+            type : 'post',
+            data : {
+                friendship_id: $this.attr('data-value'),
+                _token:$('input[name="_token"]').val()
+            },
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('i').attr('class', '').addClass('fa fa-spin fa-spinner');
+            },
+            complete: function(){
+                if($this.find('i').hasClass('fa-spinner')){
+                    $this.find('i').attr('class', '').addClass(current);
+                }
+            },
+            success: function(data){
+                console.log(data)
+                if(data.returns.status == 1){
+                    if(container.closest('ul').hasClass('dropdown-menu')){
+                        container.slideUp(200, function(){
+                            container.remove();
+                            if($("#friendship_list").html().trim.length == 0){
+                                $('#friends_request_nav').removeClass('open');
+                            }
+                        });
+                    }else{
+                        container.find('.label').removeClass('label-info').addClass('label-success').html('دوست');
+                        $this.fadeOut(200,function(){
+                            $this.remove();
+                        })
+                    }
+                }
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $('form[data-remote-multiple]').submit(function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var data = $this.serialize();
+        var action = $this.attr('action');
+        var method = $this.attr('method');
+        if($this.find('input[name="_method"]').length>0){
+            method = $this.find('input[name="_method"]').val();
+        }
+        console.log(method);
+        var current_text = $this.find('button[type=submit]').html();
+        $.ajax({
+            url : action,
+            type : method,
+            data : data,
+            dataType: 'json',
+            beforeSend: function(){
+                $this.find('button[type="submit"]').find('i').attr('class', '').addClass('fa fa-spinner fa-spin');
+            },
+            complete: function(){
+                if($this.find('button[type="submit"]').find('i').hasClass('fa fa-spinner fa-spin')){
+                    $this.find('button[type="submit"]').html(current_text);
+                }
+            },
+            success: function(data){
+                if(data.hasCallback){
+                    window[data.callback](data.returns, $this);
+                }
+                if(data.hasMsg){
+                    var type = 'success';
+                    if(data.msgType){
+                        type = data.msgType;
+                    }
+                    $.notify(data.msg, {type:type});
+                }
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $('div[data-nicescroll]').niceScroll({
+        railalign : 'left',
+        cursorcolor : '#EEE',
+        railpadding: {
+            top: 5,
+            right: 0,
+            left: 0,
+            bottom: 0
+        }
+    })
+
+    $('a[data-post-inline-editable]').editable({
+        anim: 150,
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    })
+
+    $("#legal_address").on('keyup', 'input.new-address', function(){
+        var $this = $(this);
+        var num = $("#legal_address").find('input:text').filter(function() { return $(this).val() == ""; }).length;
+        var total_num = $("#legal_address").find('input:text').length;
+        if(num == 0 && total_num <= 4){
+            $("#legal_address").append('<div class="form-group"><label for="other_address[]" class="control-label pull-right">آدرس  :</label><div class="col-sm-8"><input class="form-control new-address" placeholder="درصورتی که آدرس دیگری نیز دارید می توانید در این بخش ثبت نمایید." name="other_address[]" type="text" id="other_address"><i class="input-icon fa fa-edit"></i></div></div>');
+        }
+
+    });
+
+    $("select#tags_list").select2({
+        placeholder: "تگ های مرتبط را انتخاب نمایید.",
+        tags: false
+    });
+
+    $('#parameter_table_list a[data-editable]').editable({
+        url: '/profile/management/addon/poll/parameter/update',
+        title: 'ویرایش',
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    })
+
+    $('#questionnaire_questions_list a[data-editable]').editable({
+        url: '/profile/management/addon/poll/parameter/update',
+        title: 'ویرایش',
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    })
+
 });
 
 
@@ -632,6 +835,14 @@ function user_info(info){
     container.find('span[data-get="address"]').html(info.address);
     container.find('span[data-get="province"]').html(info.province);
     container.find('span[data-get="city"]').html(info.city);
+    if(info.other_address){
+        container.find('#legal_other_address').html('');
+        $.each(info.other_address, function(key, value){
+            if(value != ''){
+                container.find('#legal_other_address').prepend('<div class="form-group"><label class="control-label pull-right"> آدرس : </label><div class="col-sm-8"><span class="form-control-static">'+value+'</span></div></div>');
+            }
+        });
+    }
 
 }
 
@@ -645,7 +856,7 @@ function user_educations(info){
         tr.append("<td>" + info[i].degree_name + "</td>");
         tr.append("<td>" + info[i].field + "</td>");
         tr.append("<td>" + info[i].status_name + "</td>");
-        tr.append("<td>" + info[i].university.name + "</td>");
+        tr.append("<td>" + info[i].university.name + "<img src='/img/icons/universities/"+info[i].university.logo+"'></td>");
         tr.append("<td>" + info[i].entrance_year + "</td>");
         tr.append("<td>" + info[i].graduate_year + "</td>");
         $('#education_table_preview').find('tbody').append(tr);
@@ -693,6 +904,7 @@ var edit = function() {
             }
         });
         $("#biography-save-btn").show();
+        $("#biography-cancel").show();
         $('.panel-body.biopraphy').find('.attachment').show();
         $("#biography-toggle").html('<i class="fa fa-save"></i> ذخیره تغییرات');
         $summernote.attr('data-status','edit');
@@ -713,6 +925,7 @@ var edit = function() {
                 console.log(data);
                 $('.summernote').destroy();
                 $("#biography-save-btn").hide();
+                $("#biography-cancel").hide();
                 $(".panel-body.biopraphy").find('.attachment').hide();
                 $("#biography-toggle").html('<i class="fa fa-pencil"></i> ویرایش بیوگرافی ');
                 $summernote.attr('data-status','preview');
@@ -724,6 +937,36 @@ var edit = function() {
     }
 
 };
+
+var cancel_edit = function(){
+    var $summernote = $('.summernote');
+    $.ajax({
+        url : 'profile/biography/preview',
+        type : 'post',
+        data : { '_token':$('input[name="_token"]').val() },
+        dataType: 'json',
+        beforeSend: function(){
+            $("#biography-cancel").find('i').attr('class', '').addClass('fa fa-spinner fa-spin');
+        },
+        complete: function(){
+            $("#biography-cancel").html('<i class="fa fa-times"></i> انصراف و عدم ذخیره  ');
+        },
+        success: function(data){
+            console.log(data);
+            $summernote.destroy();
+            $("#biography-save-btn").hide();
+            $("#biography-cancel").hide();
+            $(".panel-body.biopraphy").find('.attachment').hide();
+            $("#biography-cancel").html('<i class="fa fa-times"></i> انصراف و عدم ذخیره  ');
+            $("#biography-toggle").html('<i class="fa fa-pencil"></i> ویرایش بیوگرافی ');
+            $summernote.attr('data-status','preview');
+            $summernote.html(data.biography);
+        },
+        error: function(xhr){
+            alert("An error occured: " + xhr.status + " " + xhr.statusText);
+        }
+    });
+}
 
 function sendFile(file, editor, welEditable) {
     data = new FormData();
@@ -776,12 +1019,16 @@ function uploadAttachment(data) {
         },
         success: function(data) {
             console.log(data);
-            $(".biopraphy").find('.attachments-list').html('');
-            var li;
-            $(".biopraphy").find('.attachments-list').append("<ul>");
-            for (var i = 0; i < data.length; i++) {
-                li = $('<li><b id="delete_attachment" data-value="'+data[i].id+'" class="fa fa-times-circle" ></b><a target="_blank" href="/img/files/'+data[i].name+'" >'+data[i].real_name+'</a><i class="fa fa-paperclip" ></i></li>');
-                $(".biopraphy").find('.attachments-list').find('ul').append(li);
+            if(data.hasMsg){
+                notify_create(data);
+            }else{
+                $(".biopraphy").find('.attachments-list').html('');
+                var li;
+                $(".biopraphy").find('.attachments-list').append("<ul>");
+                for (var i = 0; i < data.length; i++) {
+                    li = $('<li><b id="delete_attachment" data-value="'+data[i].id+'" class="fa fa-times-circle" ></b><a target="_blank" href="/img/files/'+data[i].name+'" >'+data[i].real_name+'</a><i class="fa fa-paperclip" ></i></li>');
+                    $(".biopraphy").find('.attachments-list').find('ul').append(li);
+                }
             }
         },
         error: function(xhr){
@@ -792,8 +1039,12 @@ function uploadAttachment(data) {
 
 function deleteAttachment($this){
     $.ajax({
-        data: {attachment:$this.attr('data-value'), _token:$('input[name="_token"]').val() },
-        type: "delete",
+        data: {
+            attachment:$this.attr('data-value'),
+            _token:$('input[name="_token"]').val(),
+            _method: 'delete'
+        },
+        type: "post",
         url: '/files/attachment',
         beforeSend: function () {
             $this.removeClass('fa-times-circle').addClass('fa-spinner fa-spin');
@@ -830,12 +1081,16 @@ function uploadArticleAttachment(data) {
         },
         success: function(data) {
             console.log(data);
-            $(".biopraphy.article").find('.attachments-list').html('');
-            var li;
-            $(".biopraphy.article").find('.attachments-list').append("<ul>");
-            for (var i = 0; i < data.length; i++) {
-                li = $('<li><b id="delete_attachment" data-value="'+data[i].id+'" class="fa fa-times-circle" ></b><a target="_blank" href="/img/files/'+data[i].name+'" >'+data[i].real_name+'</a><i class="fa fa-paperclip" ></i></li>');
-                $(".biopraphy.article").find('.attachments-list').find('ul').append(li);
+            if(data.hasMsg){
+                notify_create(data);
+            }else{
+                $(".biopraphy.article").find('.attachments-list').html('');
+                var li;
+                $(".biopraphy.article").find('.attachments-list').append("<ul>");
+                for (var i = 0; i < data.length; i++) {
+                    li = $('<li><b id="delete_attachment" data-value="'+data[i].id+'" class="fa fa-times-circle" ></b><a target="_blank" href="/img/files/'+data[i].name+'" >'+data[i].real_name+'</a><i class="fa fa-paperclip" ></i></li>');
+                    $(".biopraphy.article").find('.attachments-list').find('ul').append(li);
+                }
             }
         },
         error: function(xhr){
@@ -846,8 +1101,12 @@ function uploadArticleAttachment(data) {
 
 function deleteArticleAttachment($this){
     $.ajax({
-        data: {attachment:$this.attr('data-value'), _token:$('input[name="_token"]').val() },
-        type: "delete",
+        data: {
+            attachment:$this.attr('data-value'),
+            _token:$('input[name="_token"]').val(),
+            _method: 'delete'
+        },
+        type: "post",
         url: '/files/articleAttachment',
         beforeSend: function () {
             $this.removeClass('fa-times-circle').addClass('fa-spinner fa-spin');
@@ -868,6 +1127,133 @@ function deleteArticleAttachment($this){
     })
 }
 
+function friendRequest(data){
+    console.log(data)
+    if(data.status == 2){
+        $("#friending").find('button').html('<i class="fa fa-hand-peace-o"></i> منتظر تایید دوستی ');
+    }
+}
+
+function post_comment(data, form){
+    var $this = form;
+    $this.closest('ul#post_comments_list').find('.list').prepend(data.new_comment);
+    $this.closest('ul#post_comments_list').find('.list').scrollTop( 0 );
+    $this.find('input[name="body"]').val('');
+    if(data.num_comments > 0){
+        $this.closest('ul#post_comments_list').siblings('.view-all-comments').html('<a href="#" class="pull-right"><i class="fa fa-comments-o"></i></a> '+data.num_comments+' دیدگاه ')
+    }else{
+        $this.closest('ul#post_comments_list').siblings('.view-all-comments').html('<a href="#" class="pull-right"><i class="fa fa-comments-o"></i></a>  اولین نفری باشد که دیدگاهتان را ثبت می کنید. ')
+    }
 
 
+}
+
+function post_comment_delete(data, form){
+    var $this = form;
+    if(data.num_comments > 0){
+        $this.closest('ul#post_comments_list').siblings('.view-all-comments').html('<a href="#" class="pull-right"><i class="fa fa-comments-o"></i></a> '+data.num_comments+' دیدگاه ')
+    }else{
+        $this.closest('ul#post_comments_list').siblings('.view-all-comments').html('<a href="#" class="pull-right"><i class="fa fa-comments-o"></i></a>  اولین نفری باشد که دیدگاهتان را ثبت می کنید. ')
+    }
+    $this.closest('li.media').slideUp(300, function(){
+        $this.closest('li.media').remove();
+    });
+}
+
+function notify_create(data){
+    if(data.hasMsg){
+        var type = 'success';
+        if(data.msgType){
+            type = data.msgType;
+        }
+        $.notify(data.msg, {type:type});
+    }
+}
+
+
+function poll_parameter_add(info){
+    $('#parameter_table_list').find('tbody').html('');
+    var tr;
+    for (var i = 0; i < info.length; i++) {
+        tr = $('<tr />');
+        tr.append('<td><a href="#" data-editable id="name" data-type="text" data-pk="' + info[i].id + '">' + info[i].name + '</a></td>');
+        tr.append('<td width="5%" ><button id="delete_parameter" data-value="' + info[i].id + '" type="button" class="btn btn-danger btn-xs " ><p class="fa fa-trash-o fa-lg" ></p></button></td>');
+        $('#parameter_table_list').find('tbody').append(tr);
+    }
+    $('#parameter_table_list').siblings('form').find('input[name="name"]').val('');
+
+    $('#parameter_table_list a[data-editable]').editable({
+        url: '/profile/management/addon/poll/parameter/update',
+        title: 'ویرایش',
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    })
+}
+
+$('#parameter_table_list').on('click', 'button#delete_parameter', function(e){
+    e.preventDefault();
+    var $this=$(this);
+    var pk = $this.attr('data-value');
+    $.ajax({
+        data: {
+            id:pk,
+            _token:$('input[name="_token"]').val(),
+            _method: 'delete'
+        },
+        type: "post",
+        url: '/profile/management/addon/poll/parameter/delete',
+        beforeSend: function () {
+            $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+        },
+        complete: function () {
+            $this.find('p').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+        },
+        success: function (data) {
+            console.log(data)
+            $this.closest('tr').remove();
+        },
+        error: function (xhr) {
+            alert("An error occured: " + xhr.status + " " + xhr.statusText);
+        }
+    })
+})
+
+function poll_voted(data, container){
+    var parameters = data.parameters;
+    var total_votes = data.total_votes;
+    $.each(parameters, function(key, value){
+        var content = container.find("#parameter_"+value.id);
+        var progress = content.find('.progress');
+        var value = (value.num_vote*100/total_votes).toFixed(2);
+        progress.find('.progress-bar').attr('aria-valuenow', value).css('width',value+'%').html(value+'%');
+    });
+}
+
+function questionnaire_question_added(info){
+    var ul = $('<ul />')
+    $.each(info, function(key, value){
+        var li = $('<li/>').appendTo(ul);
+        var aaa = $('<a/>').text(value.title).attr('id','title').attr('href','#').attr('data-type','text').attr('data-editable','').attr('data-pk',value.id).appendTo(li);
+            sub_ul = $('<ul />');
+            $.each(value.options, function(skey, svalue){
+                var sub_li = $('<li/>').appendTo(sub_ul);
+                var sub_aaa = $('<a/>').text(svalue.name).attr('id','name').attr('href','#').attr('data-type','text').attr('data-editable','').attr('data-pk',svalue.id).appendTo(sub_li);
+            });
+            sub_ul.appendTo(li);
+    });
+    $("#questionnaire_questions_list").html(ul);
+
+    $('#questionnaire_questions_list a[data-editable]').editable({
+        url: '/profile/management/addon/poll/parameter/update',
+        title: 'ویرایش',
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    })
+}
 

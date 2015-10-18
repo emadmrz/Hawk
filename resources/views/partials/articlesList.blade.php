@@ -11,7 +11,7 @@
                     <div class="info-bar">
                         <ul>
                             <li><span>ارسال شده توسط : </span> <a href="#" >{{ $article->user->first_name  }} {{ $article->user->last_name  }} </a></li>
-                            <li><span>ناریخ : </span> {{ $article->created_at }} </li>
+                            <li><span>تاریخ : </span> {{ $article->shamsi_created_at }} </li>
                             <li><a href="#" > دیدگاه ( {{ $article->num_comment  }} ) </a></li>
                         </ul>
                     </div>
@@ -30,8 +30,10 @@
                 </ul>
             </div>
             <div class="actions">
-                <a href="{{ route('profile.article.preview', ['article'=>$article->id]) }}" ><button class="btn-violet btn btn-sm">مطالعه ادامه مطلب</button></a>
-                <a href="{{ route('profile.article.edit', ['article'=>$article->id]) }}" ><button class="btn-success btn btn-sm">ویرایش</button></a>
+                <a href="@if($canEdit) {{ route('profile.article.preview', ['article'=>$article->id]) }} @else {{ route('home.article.preview', [$user->id, $article->id]) }}  @endif" ><button class="btn-violet btn btn-sm">مطالعه ادامه مطلب</button></a>
+                @if($canEdit)
+                    <a href="{{ route('profile.article.edit', ['article'=>$article->id]) }}" ><button class="btn-success btn btn-sm">ویرایش</button></a>
+                @endif
             </div>
         </article>
     @endforeach

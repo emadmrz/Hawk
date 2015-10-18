@@ -2,19 +2,22 @@
 
 namespace App;
 
+use App\Repositories\FriendRepository;
 use Bican\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
 use Bican\Roles\Traits\HasRoleAndPermission;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Morilog\Jalali\jDate;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract, AuthorizableContract
 {
-    use Authenticatable, CanResetPassword, HasRoleAndPermission;
+    use Authenticatable, CanResetPassword, Authorizable, HasRoleAndPermission;
 
     /**
      * The database table used by the model.
@@ -72,10 +75,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->roles()->first()->name;
     }
 
-/**
- * Created by Emad Mirzaie on 01/09/2015.
- * User status and email confirmation status
- */
+    /**
+     * Created by Emad Mirzaie on 01/09/2015.
+     * User status and email confirmation status
+     */
     public function getUserStatusAttribute(){
         $statuses=[
             0 => ['name'=>trans('users.deactiveStatus'), 'type'=>'danger'],
@@ -128,6 +131,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasOne('App\Info');
     }
 
+    public function usage(){
+        return $this->hasOne('App\Usage');
+    }
+
+
     public function location(){
         return $this->hasOne('App\Location');
     }
@@ -162,6 +170,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function endorses(){
         return $this->hasMany('App\Endorse');
+    }
+
+
+    public function friends(){
+        $friendRepository = new FriendRepository();
+        return $friendRepository->friendsOf($this->attributes['id']);
+    }
+
+    public function addresses(){
+        return $this->hasMany('App\Address');
+    }
+
+    public function payments(){
+        return $this->hasMany('App\Payment');
+    }
+
+    public function storages(){
+        return $this->hasMany('App\Storage');
+    }
+
+    public function polls(){
+        return $this->hasMany('App\Poll');
+    }
+
+    public function questionnaires(){
+        return $this->hasMany('App\Questionnaire');
+    }
+
+
+    /**
+     * Created by Emad Mirzaie on 06/10/2015.
+     * Check if auth user is friend with user
+     */
+
+    public function getIsFriendAttribute (){
+        $friendRepository = new FriendRepository();
+        return $friendRepository->isFriend($this->attributes['id']);
     }
 
 }

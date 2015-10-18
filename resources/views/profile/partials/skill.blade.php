@@ -45,6 +45,25 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home{{ $skill->id }}">
                             <div class="text-content">{{ $skill->description }}</div>
+                            @if(count($skill->services))
+                                <hr>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="30%" class="text-right" >عنوان امکانات</th>
+                                        <th width="70%" class="text-right">توضیحات</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($skill->services as $service)
+                                        <tr>
+                                            <td>{{ $service->title }}</td>
+                                            <td>{{ $service->description }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
                             @if(!empty($skill->requirements))
                                 <hr>
                                 <div class="text-content">
@@ -206,7 +225,7 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th width="30%" class="text-right" >عنوان</th>
+                                    <th width="20%" class="text-right" >عنوان</th>
                                     <th width="15%" class="text-right">قیمت</th>
                                     <th width="10%" class="text-right">واحد پولی</th>
                                     <th width="10%" class="text-right">به ازای هر</th>
@@ -217,7 +236,7 @@
                                 <tbody>
                                 @foreach($skill->amounts as $amount)
                                     <tr>
-                                        <td>{{ $skill->title }}</td>
+                                        <td>{{ $amount->title }}</td>
                                         <td>{{ $amount->price_value }}</td>
                                         <td>{{ $amount->unit_name }}</td>
                                         <td>{{ $amount->price_per }}</td>
@@ -262,7 +281,7 @@
                                                 @if($experience->files->first()->extension == 'image')
                                                     <li class="col-sm-3" data-value="{{ $experience->id }}" ><a href="{{ asset('img/files/'.$experience->files->first()->name )}}" ><img src="{{ asset('img/files/'.$experience->files->first()->name )}}"></a></li>
                                                 @else
-                                                    <li class="col-sm-2"  data-value="{{ $experience->id }}" ><a href="{{ asset('img/files/'.$experience->files->first()->name) }}" ><img class="file" src="{{ asset('img/icons/'.$experience->files->first()->extension.'.png' )}}"></a></li>
+                                                    <li class="col-sm-3"  data-value="{{ $experience->id }}" ><a class="file" href="{{ asset('img/files/'.$experience->files->first()->name) }}" ><img class="file" src="{{ asset('img/icons/'.$experience->files->first()->extension.'.png' )}}"></a></li>
                                                 @endif
                                             @endforeach
                                         </ul>
@@ -435,7 +454,7 @@
     <div class="endorse-person">
         <ul>
             @foreach($skill->endorses as $endorse)
-            <li><img src="{{ asset('img/persons/'.$endorse->user->avatar) }}" class="img-circle"  ></li>
+            <li><img data-toggle="tooltip" data-placement="bottom" title="{{ $endorse->user->first_name}} " src="{{ asset('img/persons/'.$endorse->user->avatar) }}" class="img-circle"  ></li>
             @endforeach
         </ul>
     </div>

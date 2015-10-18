@@ -1,7 +1,12 @@
 <div class="timeline-block">
     <div class="panel panel-default share clearfix-xs" id="collapseListGroupHeadingBio" role="tab">
         <div class="panel-heading panel-heading-gray title">
-            <a class="collapse-title collapsed" aria-expanded="true" data-toggle="collapse" href="#collapseListGroupBio" aria-expanded="true" aria-controls="collapseListGroupBio" >بیوگرافی
+            <a class="collapse-title collapsed" aria-expanded="true" data-toggle="collapse" href="#collapseListGroupBio" aria-expanded="true" aria-controls="collapseListGroupBio" >
+                @if($role == 'legal')
+                    تاریخچه
+                @else
+                    بیوگرافی
+                @endif
                 <i class="status fa fa-chevron-circle-up"></i>
             </a>
         </div>
@@ -34,6 +39,7 @@
             {{--<a href="#"><i class="fa fa-video-camera"></i></a>--}}
             {{--<a href="#"><i class="fa fa-file"></i></a>--}}
             <button type="button" id="biography-toggle" onclick="edit()" class="btn btn-teal btn-xs pull-right display-none" ><i class="fa fa-pencil" ></i> ویرایش بیوگرافی </button>
+            <button type="button" id="biography-cancel" onclick="cancel_edit()" style="display: none" class="btn btn-danger btn-xs pull-right display-none" ><i class="fa fa-times" ></i> انصراف و عدم ذخیره </button>
         </div>
     </div>
 </div>

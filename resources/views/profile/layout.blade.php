@@ -62,6 +62,7 @@
 <script src="{{ asset('js/cropper.js') }}"></script>
 <script src="{{ asset('js/crop/main.js') }}"></script>
 <script src="{{ asset('js/bootstrap-notify.js') }}"></script>
+<script src="{{ asset('js/navbar.js') }}"></script>
 <script src="{{ asset('js/profile.js') }}"></script>
 <script src="{{ asset('js/summernote/summernote.min.js') }}"></script>
 <script src="{{ asset('js/summernote/summernote-fa-IR.js') }}"></script>
@@ -71,6 +72,7 @@
 <script src="{{ asset('js/jquery.nicescroll.min.js') }}"></script>
 <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('js/circle-progress.js') }}"></script>
+<script src="{{ asset('js/magnifying.js') }}"></script>
 
 <script>
     $(document).ready(function(){
@@ -117,10 +119,11 @@
         });
 
         $('#skill-carousel').carousel({
-            interval: false,
-        })
+            interval: false
+        });
 
     });
+
 
     $('#circle_progress').circleProgress({
         size: 190 ,

@@ -12,7 +12,12 @@
                 </div>
                 <div class="description">
                     {!! Form::model($user, ['url'=>'profile/description', 'data-remote']) !!}
+                    @role('user')
                     {!! Form::text('description', null, ['placeholder'=>'درباره من...']) !!}
+                    @endrole
+                    @role('legal')
+                    {!! Form::text('description', null, ['placeholder'=>'درباره ما...']) !!}
+                    @endrole
                     {!! Form::button("<i class='fa fa-save'></i>", ['type'=>'submit']) !!}
                     {!! Form::close() !!}
                 </div>

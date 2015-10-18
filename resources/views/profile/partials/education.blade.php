@@ -16,7 +16,7 @@
                                 <th width="15%" >مقطع</th>
                                 <th width="20%" >رشته تحصیلی</th>
                                 <th width="15%" >وضعیت</th>
-                                <th width="25%" >دانشگاه</th>
+                                <th width="25%" >دانشگاه/موسسه تحصیلی</th>
                                 <th width="15%" >شروع</th>
                                 <th width="15%" >اتمام</th>
                             </tr>
@@ -27,7 +27,7 @@
                                     <td>{{ $education->degree_name }}</td>
                                     <td>{{ $education->field }}</td>
                                     <td>{{ $education->status_name }}</td>
-                                    <td>{{ $education->university->name }}</td>
+                                    <td>{{ $education->university->name }} <img src="{{ asset('img/icons/universities/'.$education->university->logo ) }}"></td>
                                     <td>{{ $education->entrance_year }}</td>
                                     <td>{{ $education->graduate_year }}</td>
                                 </tr>
@@ -123,7 +123,7 @@
                             <th width="15%" >مقطع</th>
                             <th width="20%">رشته تحصیلی</th>
                             <th width="15%"  >وضعیت</th>
-                            <th width="20%" >دانشگاه</th>
+                            <th width="20%" >دانشگاه/موسسه تحصیلی</th>
                             <th width="10%">شروع</th>
                             <th width="10%">اتمام</th>
                             <th width="5%"></th>

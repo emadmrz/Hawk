@@ -67,7 +67,7 @@ class ViewComposerServiceProvider extends ServiceProvider
             $user = Auth::user();
             $biography = $user->biography()->firstOrCreate(['user_id'=>$user->id]);
             $attachments = $biography->files;
-            $view->with(['biography'=>$biography, 'attachments'=>$attachments]);
+            $view->with(['biography'=>$biography, 'attachments'=>$attachments, 'role'=>$user->roles->first()->slug ]);
         });
     }
 
@@ -103,8 +103,8 @@ class ViewComposerServiceProvider extends ServiceProvider
             $viewdata= $view->getData();
             if(isset($viewdata['userProfile'])){
                 //it mean's this in not my profile
-                $user_id = $viewdata['userProfile'];
-                $user = User::find($user_id)->first();
+                $user = $viewdata['userProfile'];
+//                $user = User::find($user_id)->first();
             }else{
                 $user = Auth::user();
             }

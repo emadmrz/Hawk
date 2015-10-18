@@ -12,6 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        //
+        '*/buy/callback*', //the calback of bank payment gates
+        '*/buy/callback/*', //the calback of bank payment gates
     ];
 }

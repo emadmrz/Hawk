@@ -25,10 +25,24 @@ class File extends Model
             return 'image';
         }elseif(in_array($extension, ['pdf'])){
             return 'pdf';
-        }elseif(in_array($extension, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'txt'])){
-            return 'file';
-        }elseif(in_array($extension, ['avi', 'ogg', 'wmv'])){
-            return 'video';
+        }elseif(in_array($extension, ['doc', 'docx'])){
+            return 'doc';
+        }elseif(in_array($extension, ['ppt', 'pptx'])){
+            return 'ppt';
+        }elseif(in_array($extension, ['xls', 'xlsx'])){
+            return 'xls';
+        }elseif(in_array($extension, ['txt'])){
+            return 'txt';
+        }elseif(in_array($extension, ['accdb', 'accdbx'])){
+            return 'accdb';
+        }elseif(in_array($extension, ['avi'])){
+            return 'avi';
+        }elseif(in_array($extension, ['mov'])){
+            return 'mov';
+        }elseif(in_array($extension, ['wav'])){
+            return 'wav';
+        }elseif(in_array($extension, ['mp3'])){
+            return 'mp3';
         }
 
     }

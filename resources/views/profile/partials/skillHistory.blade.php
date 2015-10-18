@@ -21,16 +21,14 @@
                 <div class="form-group">
                     {!! Form::label('start_year', 'سال شروع فعالیت :', ['class'=>'col-md-2 pull-right form-control-static']) !!}
                     <div class="col-md-2 pull-right panel-form">
-                        {!! Form::input('number', 'start_year', null, ['class'=>'form-control']) !!}
-                        <i class="input-icon fa fa-edit"></i>
+                        {!! Form::select('start_year', $years_list, null, ['class'=>'form-control']) !!}
                     </div>
                 </div>
 
                 <div class="form-group">
                     {!! Form::label('end_year', 'سال اتمام فعالیت :', ['class'=>'col-md-2 pull-right form-control-static']) !!}
                     <div class="col-md-2 pull-right panel-form">
-                        {!! Form::input('number', 'end_year', null, ['class'=>'form-control']) !!}
-                        <i class="input-icon fa fa-edit"></i>
+                        {!! Form::select('end_year', $years_list, null, ['class'=>'form-control']) !!}
                     </div>
                 </div>
 

@@ -16,7 +16,17 @@
             <ul class="nav navbar-nav navbar-right tools-nav">
                 <li class="avatar"><a href="#"><img src="{{ asset('img/persons/1.jpg') }}" class="img-circle" ></a></li>
                 <li><a href="#"><i class="fa fa-bell-o fa-2x"></i></a></li>
-                <li><a href="#"><i class="fa fa-user-plus fa-2x"></i></a></li>
+                <li class="dropdown" id="friends_request_nav">
+                    <a id="friend_request_nav_dropdown" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user-plus fa-2x"></i>
+                    </a>
+                    <ul id="friendship_list" class="dropdown-menu" aria-labelledby="friend_request_nav_dropdown">
+
+                    </ul>
+                    <span id="new_friend_request_num">
+
+                    </span>
+                </li>
                 <li><a href="#"><i class="fa fa-envelope-o fa-2x"></i></a></li>
                 <li><a href="#"><i class="fa fa-th fa-2x"></i></a></li>
             </ul>
@@ -25,7 +35,7 @@
                 <span id="users" class="img-circle search-filter active"><i class="fa fa-shopping-cart fa-2x"></i></span>
                 <span id="products" class="img-circle search-filter"><i class="fa fa-user fa-2x"></i></span>
                 <div class="form-group">
-                    <input type="text" class="form-control glass-input" style="background: #EEE ; color:#666" size="19" placeholder=" جستجوی سریع در سایت ">
+                    <input type="text" class="form-control glass-input" style="background: #EEE ; color:#666" size="40" placeholder=" جستجوی سریع در سایت ">
                 </div>
                 <button type="submit" class="btn btn-default search-now"><i class="fa fa-search fa-lg" ></i></button>
                 <span class="advance-search" ><i class="fa fa-caret-down" ></i><a href="#" >جستجوی پیشرفته</a></span>

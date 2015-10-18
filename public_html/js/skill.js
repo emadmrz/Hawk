@@ -53,8 +53,12 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/experience',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
@@ -77,8 +81,12 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/degree',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
@@ -101,8 +109,12 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/honor',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
@@ -125,8 +137,12 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/history',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
@@ -149,8 +165,12 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/schedule',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
@@ -173,8 +193,12 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/paper',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
@@ -197,8 +221,12 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/amount',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
@@ -221,8 +249,12 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/area',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
@@ -245,9 +277,41 @@ $(document).ready(function(){
         var $this=$(this);
         var pk = $this.attr('data-value');
         $.ajax({
-            data: {id:pk, _token:$('input[name="_token"]').val() },
-            type: "delete",
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
             url: '/profile/skill/gallery',
+            beforeSend: function () {
+                $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                $this.find('p').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+            },
+            success: function (data) {
+                console.log(data)
+                $this.closest('tr').remove();
+            },
+            error: function (xhr) {
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    })
+
+    $("#service_table_list").on('click', 'button#delete_service', function(e){
+        e.preventDefault();
+        var $this=$(this);
+        var pk = $this.attr('data-value');
+        $.ajax({
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
+            url: '/profile/skill/service',
             beforeSend: function () {
                 $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
             },
@@ -354,6 +418,34 @@ $(document).ready(function(){
             return params;
         }
     });
+
+    $('#service_table_list a[data-editable]').editable({
+        url: '/profile/skill/service/update',
+        title: 'ویرایش',
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    });
+
+    $("#pricing_type").change(function(){
+        var $this = $(this);
+        var value = $this.val() ;
+        if(value == 1){
+            $('#pricing_properties').slideDown(200);
+        }else{
+            $('#pricing_properties').slideUp(200);
+        }
+    })
+
+    $("#add_service_form").find("#title").change(function(){
+        if($(this).val()== 0){
+           $("#manual_service").slideDown(300);
+        }else{
+            $("#manual_service").slideUp(300);
+        }
+    })
 
 
 });
@@ -516,10 +608,11 @@ function skill_amounts(info){
     var tr;
     for (var i = 0; i < info.length; i++) {
         tr = $('<tr />');
+        tr.append('<td width="10%" >' + info[i].title + '</td>');
         tr.append('<td width="15%" >' + info[i].type_name + '</td>');
         tr.append('<td width="15%" >' + info[i].price + '</td>');
-        tr.append('<td width="15%" >' + info[i].unit_name + '</td>');
-        tr.append('<td width="15%" >' + info[i].price_per + '</td>');
+        tr.append('<td width="10%" >' + info[i].unit_name + '</td>');
+        tr.append('<td width="10%" >' + info[i].price_per + '</td>');
         tr.append('<td width="15%" >' + info[i].per_unit_name + '</td>');
         tr.append('<td width="20%" >' + info[i].description + '</td>');
         tr.append('<td width="5%" ><button id="delete_amount" data-value="'+info[i].id+'" type="button" class="btn btn-danger btn-xs " ><p class="fa fa-trash-o fa-lg" ></p></button></td>');
@@ -540,10 +633,11 @@ function skill_amounts(info){
 function skill_areas(info){
     $('#area_table_list').find('tbody').html('');
     var tr;
+    console.log(info);
     for (var i = 0; i < info.length; i++) {
         tr = $('<tr />');
-        tr.append('<td width="25%" ></td>');
-        tr.append('<td width="25%" >' + info[i].city_id + '</td>');
+        tr.append('<td width="25%" >' + info[i].province_name+ '</td>');
+        tr.append('<td width="25%" >' + info[i].city_name + '</td>');
         tr.append('<td width="45%" ><a href="#" data-editable id="description" data-type="textarea" data-pk="'+info[i].id+'">' + info[i].description + '</a></td>');
         tr.append('<td width="5%" ><button id="delete_area" data-value="'+info[i].id+'" type="button" class="btn btn-danger btn-xs " ><p class="fa fa-trash-o fa-lg" ></p></button></td>');
         $('#area_table_list').find('tbody').append(tr);
@@ -583,5 +677,27 @@ function skill_galleries(info){
         }
     });
 
+}
+
+function skill_services(info){
+    $('#service_table_list').find('tbody').html('');
+    var tr;
+    for (var i = 0; i < info.length; i++) {
+        tr = $('<tr />');
+        tr.append('<td width="25%" ><a href="#" data-editable id="title" data-type="text" data-pk="'+info[i].id+'">' + info[i].title + '</a></td>');
+        tr.append('<td width="70%" ><a href="#" data-editable id="description" data-type="textarea" data-pk="'+info[i].id+'">' + info[i].description + '</a></td>');
+        tr.append('<td width="5%" ><button id="delete_service" data-value="'+info[i].id+'" type="button" class="btn btn-danger btn-xs " ><p class="fa fa-trash-o fa-lg" ></p></button></td>');
+        $('#service_table_list').find('tbody').append(tr);
+    }
+
+    $('#service_table_list a[data-editable]').editable({
+        url: '/profile/skill/service/update',
+        title: 'ویرایش',
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    });
 
 }

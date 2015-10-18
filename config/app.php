@@ -143,6 +143,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Bican\Roles\RolesServiceProvider::class,
@@ -151,6 +152,7 @@ return [
         Baum\Providers\BaumServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Artisaninweb\SoapWrapper\ServiceProvider::class,
 
 
     ],
@@ -207,6 +209,8 @@ return [
         'jDateTime' => Morilog\Jalali\Facades\jDateTime::class,
         'Agent'     => Jenssegers\Agent\Facades\Agent::class,
         'Image'     => Intervention\Image\Facades\Image::class,
+        'Gate' => Illuminate\Support\Facades\Gate::class,
+        'SoapWrapper' => Artisaninweb\SoapWrapper\Facades\SoapWrapper::class,
 
 
     ],

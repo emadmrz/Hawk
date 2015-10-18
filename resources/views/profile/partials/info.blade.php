@@ -198,7 +198,7 @@
 
                     <div class="">
 
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="name" class="control-label pull-right">نام مجموعه :</label>
                                 <div class="col-sm-8">
@@ -216,7 +216,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <div class="form-group">
                                 <label for="name" class="control-label pull-right">نام خانوادگی :</label>
                                 <div class="col-sm-8">
@@ -228,7 +228,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="name" class="control-label pull-right">شماره تلفن  1 :</label>
+                                <label for="name" class="control-label pull-right">شماره تلفن  ۱ :</label>
                                 <div class="col-sm-8">
                                     <span data-get="phone1" class="form-control-static">{{ $info->phone1 }}</span>
                                 </div>
@@ -237,7 +237,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="name" class="control-label pull-right">شماره تلفن  2 :</label>
+                                <label for="name" class="control-label pull-right">شماره تلفن  ۲ :</label>
                                 <div class="col-sm-8">
                                     <span data-get="phone2" class="form-control-static">{{ $info->phone2 }}</span>
                                 </div>
@@ -298,6 +298,16 @@
                                     <span data-get="address" class="form-control-static">{{ $info->address }}</span>
                                 </div>
                             </div>
+                            <div id="legal_other_address">
+                                @foreach($info->user->addresses as $address)
+                                    <div class="form-group">
+                                        <label for="name" class="control-label pull-right"> آدرس : </label>
+                                        <div class="col-sm-8">
+                                            <span class="form-control-static">{{ $address->address }}</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
 
                         <button type="button" class="btn btn-default btn-sm" data-role="edit" > <i class="fa fa-pencil"></i>  ویرایش  </button>
@@ -339,7 +349,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            {!! Form::label('phone1', 'شماره تلفن 1 : ', ['class'=>'control-label pull-right']) !!}
+                            {!! Form::label('phone1', 'شماره تلفن ۱ : ', ['class'=>'control-label pull-right']) !!}
                             <div class="col-sm-8">
                                 {!! Form::text('phone1', null, ['class'=>'form-control', 'placeholder'=>'شماره تلفن به همراه پیش شماره']) !!}
                                 <i class="input-icon fa fa-edit"></i>
@@ -349,7 +359,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            {!! Form::label('phone2', 'شماره تلفن 2 : ', ['class'=>'control-label pull-right']) !!}
+                            {!! Form::label('phone2', 'شماره تلفن ۲ : ', ['class'=>'control-label pull-right']) !!}
                             <div class="col-sm-8">
                                 {!! Form::text('phone2', null, ['class'=>'form-control', 'placeholder'=>'شماره تلفن به همراه پیش شماره']) !!}
                                 <i class="input-icon fa fa-edit"></i>
@@ -395,14 +405,36 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-12" id="legal_address">
                         <div class="form-group">
                             {!! Form::label('address', 'آدرس  :', ['class'=>'control-label pull-right']) !!}
                             <div class="col-sm-8">
-                                {!! Form::text('address', null, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                                {!! Form::text('address', null, ['class'=>'form-control new-address', 'placeholder'=>'']) !!}
                                 <i class="input-icon fa fa-edit"></i>
                             </div>
                         </div>
+                        <?php $loop_end = 0; ?>
+                        @foreach($info->user->addresses as $key=>$address)
+                            <?php $loop_end++; ?>
+                            <div class="form-group">
+                                {!! Form::label('other_address[]', 'آدرس  :', ['class'=>'control-label pull-right']) !!}
+                                <div class="col-sm-8">
+                                    {!! Form::text('other_address[]', $address->address, ['class'=>'form-control new-address', 'placeholder'=>'']) !!}
+                                    <i class="input-icon fa fa-edit"></i>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        @if(($loop_end < 4 and $loop_end > 0) or ($loop_end == 0 and !empty($info->address) ) )
+                            <div class="form-group">
+                                {!! Form::label('other_address[]', 'آدرس  :', ['class'=>'control-label pull-right']) !!}
+                                <div class="col-sm-8">
+                                    {!! Form::text('other_address[]', null, ['class'=>'form-control new-address', 'placeholder'=>'درصورتی که آدرس دیگری نیز دارید می توانید در این بخش ثبت نمایید.']) !!}
+                                    <i class="input-icon fa fa-edit"></i>
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
 
                     <button type="submit" name="submit" class="btn btn-success" > <i class="fa fa-save"></i> ذخیره تغییرات  </button>

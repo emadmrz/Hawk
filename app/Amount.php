@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Amount extends Model
 {
     protected $table = 'amounts';
-    protected $fillable = ['skill_id', 'pricing_type', 'price' ,'price_unit', 'price_per', 'per_unit', 'description'];
+    protected $fillable = ['title', 'skill_id', 'pricing_type', 'price' ,'price_unit', 'price_per', 'per_unit', 'description'];
     protected $appends = ['per_unit_name', 'unit_name', 'type_name'];
 
     public function getPerUnitNameAttribute(){

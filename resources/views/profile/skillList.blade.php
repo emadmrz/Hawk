@@ -21,9 +21,9 @@
     </div>
 
     <div class="text-center skill-carousel-nav">
-        <a href="#skill-carousel" role="button" data-slide="next"><i class="fa icon-chevron-right fa-3x" ></i></a>
+        <a href="#skill-carousel" role="button" data-slide="next" class="bounceeRight"><i class="fa icon-chevron-right fa-3x" ></i></a>
         <a class="name" href="#"><span>{{ $skills->first()->title }}</span></a>
-        <a href="#skill-carousel" role="button" data-slide="prev"><i class="fa icon-chevron-left fa-3x" ></i></a>
+        <a href="#skill-carousel" role="button" data-slide="prev" class="bounceeLeft"><i class="fa icon-chevron-left fa-3x" ></i></a>
     </div>
 
     <div class="carousel-inner" role="listbox">
@@ -405,4 +405,9 @@
 
         </div>
     </div>
+@endsection
+
+@section('side')
+    @include('profile.partials.latestArticles')
+    @include('profile.partials.latestPosts')
 @endsection

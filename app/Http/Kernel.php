@@ -38,5 +38,6 @@ class Kernel extends HttpKernel
         'permission' => \Bican\Roles\Middleware\VerifyPermission::class,
         'level' => \Bican\Roles\Middleware\VerifyLevel::class,
         'email' => \App\Http\Middleware\EmailMiddleware::class,
+        'storage' => \App\Http\Middleware\StorageMiddleware::class,
     ];
 }

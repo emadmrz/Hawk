@@ -32,6 +32,15 @@ input:focus ,  a:focus , button:focus{
 .em-hide{
     display: none;
 }
+.label{
+    font-weight: normal;
+}
+.en-number{
+    font-family: web-yekan , tahoma , "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+.en-number2{
+    font-family: yekan , tahoma , "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
 /*------------------------ 2 - Header -------------------------*/
 .site-header{
     background: url(../img/2DX85MH.jpg) no-repeat 81% center;
@@ -563,13 +572,22 @@ footer.footer .social-media li.whatsapp a{
 .profile-header .navbar-nav > li{
     float: right;
 }
+.profile-header .navbar-nav > li.open > a{
+    color: #FFF !important;
+}
+.profile-header .navbar-nav > li > a{
+    height: 51px;
+}
 .profile-header nav.navbar:hover{
     opacity: 1;
 }
-.profile-header .tools-nav li a{
+.navbar-inverse .navbar-nav > li > a:focus{
+    color: #9d9d9d;
+}
+.profile-header .tools-nav li > a{
     padding: 10px 15px 5px 15px;
 }
-.profile-header .tools-nav li a .fa-2x{
+.profile-header .tools-nav li > a .fa-2x{
     font-size: 1.7em;
 }
 .profile-header .tools-nav li.avatar a{
@@ -616,7 +634,7 @@ footer.footer .social-media li.whatsapp a{
     color: #EEE;
 }
 .profile-header .search-navbar .advance-search{
-    margin-right: 40px;
+    margin-right: 10px;
 }
 .profile-header .search-navbar .advance-search a{
     color: #999;
@@ -784,4 +802,76 @@ footer.footer .social-media li.whatsapp a{
     font-size: 12px;
 }
 
+.navbar-nav > li .notification_num{
+    width: 20px;
+    height: 20px;
+    background: #cc093b;
+    color: #FFF;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    border-radius: 10px;
+    padding: 4px;
+    font-size: 11px;
+    font-style: normal;
+    text-align: center;
+}
 
+.navbar-nav > li.dropdown .dropdown-menu{
+    width: 300px;
+    padding: 10px;
+    direction: rtl;
+}
+.navbar-nav > li.dropdown .dropdown-menu li{
+    border-bottom: 1px solid #EEE;
+    padding: 6px 0;
+}
+.navbar-nav > li.dropdown .dropdown-menu li:first-child{
+    padding-top: 0;
+}
+.navbar-nav > li.dropdown .dropdown-menu li:last-child{
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+.navbar-nav > li.dropdown .dropdown-menu .media-object{
+    width: 45px;
+    height: 45px;
+}
+.navbar-nav > li.dropdown .dropdown-menu .media-body{
+    font-size: 11px;
+    text-align: right;
+    vertical-align: middle;
+}
+.navbar-nav > li.dropdown .dropdown-menu .media-body .info{
+    margin-top: 5px;
+}
+.navbar-nav > li.dropdown .dropdown-menu .media-body .info .btn{
+    font-size: 10px;
+}
+.navbar-nav > li.dropdown .dropdown-menu .media-body .info .date{
+    color: #999;
+    margin-left: 5px;
+}
+.nav>li>a:focus, .nav>li>a:hover{
+    background: none;
+}
+.dropdown-preloader{
+    color: #999;
+    text-align: center;
+    display: block;
+}
+.dropdown-preloader > div{
+
+}
+.find-friend-dropdown{
+    color: #BBB;
+    padding: 5px;
+    font-family: web-yekan , tahoma , "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.find-friend-dropdown > div, .find-friend-dropdown > h3,.find-friend-dropdown > h5,.find-friend-dropdown > a{
+    display: block;
+    text-align: center;
+}
+.find-friend-dropdown .fa{
+    font-size: 6em;
+}

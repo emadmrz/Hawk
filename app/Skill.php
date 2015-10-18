@@ -64,4 +64,8 @@ class Skill extends Model
     public function endorses(){
         return $this->hasMany('App\Endorse');
     }
+
+    public function services(){
+        return $this->hasMany('App\Service');
+    }
 }

@@ -60,6 +60,7 @@
             console.log({{ $location->lng }});
             var  myLat = '{{ $location->lat }}';
             var  myLng = '{{ $location->lng }}';
+            var gmarkers = [];
             if(myLat != '' && myLng !=''){
                 var latlng = new google.maps.LatLng(myLat, myLng);
             }else{
@@ -78,17 +79,19 @@
                 url: '/',
                 animation: google.maps.Animation.DROP
             });
+            gmarkers.push(marker);
 
             var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
             marker.setMap(map);
             map.set('scrollwheel', false); //Disable scrollwheel from here
-
             google.maps.event.addListener(map, 'click', function(event) {
+                removeMarkers();
                 var marker = new google.maps.Marker({
                     position: event.latLng,
                     map: map,
                     animation: google.maps.Animation.DROP
                 });
+                gmarkers.push(marker);
                 console.log(event.latLng.H)
                 console.log(event.latLng.L)
                 var form = $("#my_location_form");
@@ -114,6 +117,7 @@
                 console.log(position.coords.latitude);
                 console.log(position.coords.longitude);
                 var Currentlatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                removeMarkers();
                 var marker = new google.maps.Marker({
                     position: Currentlatlng,
                     url: '/',
@@ -121,6 +125,7 @@
                 });
                 marker.setMap(map);
                 map.panTo(Currentlatlng);
+                gmarkers.push(marker);
                 var form = $("#my_location_form");
                 form.find("#lat").val(position.coords.latitude);
                 form.find("#lng").val(position.coords.longitude);
@@ -144,6 +149,12 @@
                         console.log("An unknown error occurred.")
                         $("#MapReport").html('خطای ناشناس رخ داد. اتصال به اینترنت را بررسی نمایید.');
                         break;
+                }
+            }
+
+            function removeMarkers(){
+                for(i=0; i<gmarkers.length; i++){
+                    gmarkers[i].setMap(null);
                 }
             }
 

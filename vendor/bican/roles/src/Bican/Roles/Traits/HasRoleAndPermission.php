@@ -197,7 +197,7 @@ trait HasRoleAndPermission
      * @param bool $all
      * @return bool
      */
-    public function can($permission, $all = false)
+    public function ccan($permission, $all = false) // Emad Change this because of conflict with Authorization
     {
         if ($this->isPretendEnabled()) {
             return $this->pretend('can');

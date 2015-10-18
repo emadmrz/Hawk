@@ -11,6 +11,7 @@ class Experience extends Model
 
     protected $table = 'experiences';
     protected $fillable = ['skill_id', 'title', 'description', 'num_like', 'num_dislike'];
+    protected $appends = ['file_type'];
 
     public function files()
     {
@@ -19,6 +20,10 @@ class Experience extends Model
 
     public function likes(){
         return $this->morphMany('App\Like', 'likeable');
+    }
+
+    public function getFileTypeAttribute(){
+        return $this->files()->first()->extension;
     }
 
 }

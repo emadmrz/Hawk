@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\User;
 use App\Visit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class ArticleController extends Controller
         $input = $request->all();
         if($request->hasFile('image')){
             $imageName = str_random(20) . '.' .$request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path() . '/img/files/', $imageName);
+            $request->file('image')->move(public_path() . '/img/files/'.$user->id, $imageName);
             $input['banner'] = $imageName;
         }
         $article = $user->articles()->create($input);
@@ -46,10 +47,24 @@ class ArticleController extends Controller
     }
 
     public function banner(Article $article, Request $request){
-        $imageName = str_random(20) . '.' .$request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(public_path() . '/img/files/', $imageName);
-        $article->update(['banner'=>$imageName]);
-        return asset('img/files/'.$imageName);
+        $user = Auth::user();
+        $this->validate($request, [
+            'image' => 'required|image',
+        ]);
+        $imageName = $user->id.str_random(20) . '.' .$request->file('image')->getClientOriginalExtension();
+        $request->file('image')->move(public_path() . '/img/files/'.$user->id.'/', $imageName);
+        $article->update(['banner'=>$user->id.'/'.$imageName]);
+        $user->usage->add(filesize(public_path() . '/img/files/'.$user->id.'/'.$imageName)/(1024*1024));// storage add
+        return [
+            'hasCallback'=>0,
+            'callback'=>'',
+            'hasMsg'=>0,
+            'msg'=>'',
+            'returns'=>[
+                'status'=> 1,
+                'url'=> asset('img/files/'.$user->id.'/'.$imageName)
+            ]
+        ];
     }
 
     public function index(){
@@ -71,13 +86,6 @@ class ArticleController extends Controller
         return redirect(route('profile.articles'));
     }
 
-    public function comment(Request $request, Article $article){
-        $user = Auth::user();
-        $article->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
-        $article->update(['num_comment'=>$article->comments()->count()]);
-        Flash::success(trans('message.articleCommentAdded'));
-        return redirect()->back();
-    }
 
     public function like(Article $article, Request $request){
         $user = Auth::user();
@@ -106,6 +114,17 @@ class ArticleController extends Controller
             'num_like'=>$article->num_like ,
             'is_liked'=>$isLiked
         ];
+    }
+
+    public function otherList(User $user){
+        $articles = $user->articles()->with('user')->latest()->paginate(5);
+        return view('home.articlesList', compact('articles', 'user'))->with(['title'=>'لیست مقالات']);
+    }
+
+    public function otherPreview(User $user ,Article $article){
+        $attachments = $article->files;
+        $article->visit();
+        return view('home.articlesPreview', compact('article', 'attachments','user'))->with(['title'=> $article->title ]);
     }
 
     private function visitorDiagramInfo(Article $article){
@@ -139,6 +158,8 @@ class ArticleController extends Controller
 
         return $chartDataByDay;
     }
+
+
 
 
 }

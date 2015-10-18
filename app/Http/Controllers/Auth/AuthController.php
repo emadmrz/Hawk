@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserRegistered;
 use App\User;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -68,10 +70,7 @@ class AuthController extends Controller
             'confirmation_code'=> $data['confirmation_code']
         ]);
         $newUser->attachRole($data['role']);
-        $newUser->info()->create(['user_id'=>$newUser->id]);
-        Mail::send('emails.welcome', ['user'=>$data], function ($message)use ($data)  {
-            $message->to($data['email'])->subject('welcome to skillema');
-        });
+        Event::fire(new UserRegistered($newUser));
         return $newUser;
     }
 }

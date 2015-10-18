@@ -32,7 +32,7 @@
                         <div class="form-group panel-form">
                             {!! Form::label('status', ' وضعیت : ', ['class'=>'control-label pull-right col-sm-2']) !!}
                             <div class="col-sm-3">
-                                {!! Form::select('status', [1=>'منتشر شده', 0=>'منتشر نشده'], null, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                                {!! Form::select('status', [1=>'منتشر شود', 0=>'منتشر نشود'], null, ['class'=>'form-control', 'placeholder'=>'']) !!}
                             </div>
                         </div>
                         @if($for == 'edit')

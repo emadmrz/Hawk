@@ -43,7 +43,7 @@
                             <tr>
                                 <td width="10%">{{ $university->id }}</td>
                                 <td width="35%">{{ $university->name }}</td>
-                                <td width="35%"><a href="{{ $university->logo }}">View Logo</a></td>
+                                <td width="35%"><a target="_blank" href="{{ asset('img/icons/universities/'.$university->logo ) }}">View Logo</a></td>
                                 <td width="20%">
                                     <a href="{{ route('admin.setting.university.edit', $university->id) }}" class="btn btn-info btn-sm">edit</a>
                                     <a data-delete-confirm href="{{ route('admin.setting.university.delete', $university->id) }}" class="btn btn-danger btn-sm">del</a>

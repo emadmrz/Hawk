@@ -45,6 +45,7 @@
             @include('profile.partials.skillArea')
             @role('legal')
             @include('profile.partials.skillGalleries')
+            @include('profile.partials.skillService')
             @endrole
 
             <a class="btn btn-success" href="{{ route('profile.me', ['skill'=>$skill->id]) }}">پایان ثبت مهارت</a> &ensp;
@@ -59,7 +60,8 @@
 @endsection
 
 @section('side')
-
+    @include('profile.partials.latestArticles')
+    @include('profile.partials.latestPosts')
 @endsection
 
 @section('script')
