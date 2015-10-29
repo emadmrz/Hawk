@@ -421,32 +421,32 @@
             </div>
         </div>
         <div class="panel-footer">
-            {!! Form::open(['route'=>['profile.skill.endorse.store', $skill->id], 'method'=>'post', 'style'=>'display:inline-block']) !!}
-            <button type="submit" class="btn btn-violet btn-sm"><i class="fa fa-check fa-lg" ></i> تایید مهارت </button>
-            {!! Form::close() !!}
-            <button class="btn btn-success btn-sm"><img src="{{ asset('img/icons/handshake.png') }}" > دست دادن </button>
+            {{--{!! Form::open(['route'=>['profile.skill.endorse.store', $skill->id], 'method'=>'post', 'style'=>'display:inline-block']) !!}--}}
+            {{--<button type="submit" class="btn btn-violet btn-sm"><i class="fa fa-check fa-lg" ></i> تایید مهارت </button>--}}
+            {{--{!! Form::close() !!}--}}
+            {{--<button class="btn btn-success btn-sm"><img src="{{ asset('img/icons/handshake.png') }}" > دست دادن </button>--}}
             <a href="{{ route('profile.skill.edit.step1', $skill->id) }}"><button class="btn btn-info btn-sm" ><i class="fa fa-pencil fa-lg" ></i> ویرایش مهارت  </button></a>
-            <button id="open_recommendation" class="btn btn-info btn-sm" ><i class="fa fa-pencil fa-lg" ></i> افزودن توصیه نامه </button>
+            {{--<button id="open_recommendation" class="btn btn-info btn-sm" ><i class="fa fa-pencil fa-lg" ></i> افزودن توصیه نامه </button>--}}
             @if($skill->status == 0)
                 <span class="btn btn-danger btn-xs pull-left skill-status">غیر قابل ارائه </span>
             @else
                 <span class="btn btn-success btn-xs pull-left skill-status">قابل ارائه</span>
             @endif
-            {!! Form::open(['route'=>['profile.skill.recommendation.store', $skill->id], 'method'=>'post', 'id'=>'add_recommendation_form']) !!}
-                <div class="recommendation-form">
-                    <div class="media">
-                        <div class="media-right">
-                            <a href="#">
-                                <img class="media-object" src="{{ asset('img/persons/'.$info->user->avatar) }}" alt="...">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <textarea name="text" placeholder=" شما هم می توانید مهارت این کاربر را به دیگران پیشنهاد دهید. "></textarea>
-                            <button type="submit" class="btn btn-default btn-sm" ><i class="fa fa-pencil fa-lg" ></i> ارسال توصیه نامه </button>
-                        </div>
-                    </div>
-                </div>
-            {!! Form::close() !!}
+            {{--{!! Form::open(['route'=>['profile.skill.recommendation.store', $skill->id], 'method'=>'post', 'id'=>'add_recommendation_form']) !!}--}}
+                {{--<div class="recommendation-form">--}}
+                    {{--<div class="media">--}}
+                        {{--<div class="media-right">--}}
+                            {{--<a href="#">--}}
+                                {{--<img class="media-object" src="{{ asset('img/persons/'.$info->user->avatar) }}" alt="...">--}}
+                            {{--</a>--}}
+                        {{--</div>--}}
+                        {{--<div class="media-body">--}}
+                            {{--<textarea name="text" placeholder=" شما هم می توانید مهارت این کاربر را به دیگران پیشنهاد دهید. "></textarea>--}}
+                            {{--<button type="submit" class="btn btn-default btn-sm" ><i class="fa fa-pencil fa-lg" ></i> ارسال توصیه نامه </button>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--{!! Form::close() !!}--}}
         </div>
     </div>
 

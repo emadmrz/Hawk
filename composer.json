@@ -14,7 +14,10 @@
         "baum/baum": "~1.1",
         "jenssegers/agent": "^2.2",
         "intervention/image": "^2.3",
-        "artisaninweb/laravel-soap": "0.2.5.10"
+        "artisaninweb/laravel-soap": "0.2.5.10",
+        "maatwebsite/excel": "^2.0",
+        "tom-lingham/searchy": "^2.0",
+        "nicolaslopezj/searchable": "^1.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

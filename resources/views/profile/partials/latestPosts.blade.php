@@ -8,7 +8,7 @@
                 <ul class="">
                     @foreach($posts as $post)
                     <li>
-                        <a class="title">{{ str_limit($post->content,100) }}</a>
+                        <a class="title" href="{{ route('profile.post.preview', $post->id) }}">{{ str_limit($post->content,100) }}</a>
                         <div class="date">{{ $post->shamsi_create_at }}</div>
                     </li>
                     @endforeach

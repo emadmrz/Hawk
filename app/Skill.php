@@ -9,6 +9,10 @@ class Skill extends Model
     protected $table = 'skills';
     protected $fillable = ['user_id', 'title', 'description', 'requirements', 'sub_category_id', 'my_rate', 'status'];
 
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
     public function tags(){
         return $this->belongsToMany('App\Tag')->withTimestamps();
     }
@@ -67,5 +71,9 @@ class Skill extends Model
 
     public function services(){
         return $this->hasMany('App\Service');
+    }
+
+    public function products(){
+        return $this->hasMany('App\Product');
     }
 }

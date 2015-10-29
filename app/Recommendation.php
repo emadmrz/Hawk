@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\Facades\jDate;
 
 class Recommendation extends Model
 {
@@ -15,6 +16,10 @@ class Recommendation extends Model
 
     public function skill(){
         return $this->belongsTo('App\Skill');
+    }
+
+    public function getShamsiHumanCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->ago();
     }
 
 }

@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Option;
+use App\Question;
 use App\Questionnaire;
 use App\Tag;
+use App\Tick;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Laracasts\Flash\Flash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QuestionnaireController extends Controller
 {
@@ -85,5 +92,80 @@ class QuestionnaireController extends Controller
             'msg' => 'Question updated Successfull',
             'returns' => $question->with('options')->get()
         ];
+    }
+
+    public function questionUpdate(Request $request){
+        $name = $request->input('name');
+        if($name == 'title'){
+            Question::findOrFail($request->input('pk'))->update(['title'=>$request->input('value')]);
+        }elseif($name == 'name'){
+            Option::findOrFail($request->input('pk'))->update(['name'=>$request->input('value')]);
+        }
+    }
+
+    public function questionDelete(Request $request){
+        Question::findOrFail($request->input('id'))->delete();
+    }
+
+
+    public function preview(User $user, Questionnaire $questionnaire){
+        return view('store.questionnaire.preview',compact('questionnaire','user'))->with(['title'=>$questionnaire->title]);
+    }
+
+    public function tick(Questionnaire $questionnaire, Request $request){
+        $ticks = $request->input('tick');
+        $user = Auth::user();
+        foreach($ticks as $key=>$tick){
+            if(!empty($tick)){
+                Tick::create([
+                    'user_id'=>$user->id,
+                    'questionnaire_id'=>$questionnaire->id,
+                    'question_id'=>$key,
+                    'option_id'=>$tick
+                ]);
+                Option::findOrFail($tick)->addTick();
+            }
+        }
+        Flash::success('questionnaire sent successfully');
+        return redirect(route('home.questionnaire.preview',['profile'=>$user->id, 'questionnaire'=>$questionnaire->id]));
+    }
+
+    public function result(User $user, Questionnaire $questionnaire){
+        $total_ticks = [];
+        foreach($questionnaire->questions()->get() as $question){
+            $total_ticks[$question->id]=0;
+            foreach($question->options()->get() as $option){
+                $total_ticks[$question->id] += $option->num_vote;
+            }
+            if($total_ticks[$question->id] == 0){ $total_ticks[$question->id]=1;}
+        }
+        return view('store.questionnaire.result',compact('questionnaire','total_ticks','user'))->with(['title'=>$questionnaire->title]);
+    }
+
+    public function export(Questionnaire $questionnaire){
+        $total_ticks = [];
+        foreach($questionnaire->questions()->get() as $question){
+            $total_ticks[$question->id]=0;
+            foreach($question->options()->get() as $option){
+                $total_ticks[$question->id] += $option->num_vote;
+            }
+            if($total_ticks[$question->id] == 0){ $total_ticks[$question->id]=1;}
+        }
+        Excel::create($questionnaire->title, function($excel) use ($questionnaire, $total_ticks) {
+            // Set the title
+            $excel->setTitle($questionnaire->title);
+
+            // Chain the setters
+            $excel->setCreator($questionnaire->user->username)
+                ->setCompany('Skillema');
+
+            // Call them separately
+            $excel->setDescription($questionnaire->description);
+
+            $excel->sheet('result', function($sheet) use ($questionnaire, $total_ticks) {
+                $sheet->loadView('excel.questionnaire',compact('questionnaire', 'total_ticks'));
+            });
+
+        })->export('xlsx');
     }
 }

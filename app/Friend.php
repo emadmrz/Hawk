@@ -16,4 +16,12 @@ class Friend extends Model
         return jDate::forge($this->attributes['created_at'])->ago();
     }
 
+    public function sender(){
+        return $this->belongsTo('App\User', 'sender_id', 'id');
+    }
+
+    public function receiver(){
+        return $this->belongsTo('App\User', 'receiver_id', 'id');
+    }
+
 }

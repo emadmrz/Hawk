@@ -21,6 +21,10 @@ class Post extends Model
         return jDate::forge($this->attributes['created_at'])->format('%A %d %B %Y ');
     }
 
+    public function getShamsiHumanCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->ago();
+    }
+
     public function comments()
     {
         return $this->morphMany('App\Comment', 'commentable');

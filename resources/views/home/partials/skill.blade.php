@@ -402,11 +402,10 @@
             </div>
         </div>
         <div class="panel-footer">
-            {!! Form::open(['route'=>['profile.skill.endorse.store', $skill->id], 'method'=>'post', 'style'=>'display:inline-block']) !!}
+            {!! Form::open(['route'=>['profile.skill.endorse.store', $skill->id], 'method'=>'post', 'style'=>'display:inline-block', 'data-remote-multiple']) !!}
             <button type="submit" class="btn btn-violet btn-sm"><i class="fa fa-check fa-lg" ></i> تایید مهارت </button>
             {!! Form::close() !!}
             <button class="btn btn-success btn-sm"><img src="{{ asset('img/icons/handshake.png') }}" > دست دادن </button>
-            <a href="{{ route('profile.skill.edit.step1', $skill->id) }}"><button class="btn btn-info btn-sm" ><i class="fa fa-pencil fa-lg" ></i> ویرایش مهارت  </button></a>
             <button id="open_recommendation" class="btn btn-info btn-sm" ><i class="fa fa-pencil fa-lg" ></i> افزودن توصیه نامه </button>
             @if($skill->status == 0)
                 <span class="btn btn-danger btn-xs pull-left skill-status">غیر قابل ارائه </span>
@@ -418,7 +417,7 @@
                     <div class="media">
                         <div class="media-right">
                             <a href="#">
-                                <img class="media-object" src="{{ asset('img/persons/'.$user->avatar) }}" alt="...">
+                                <img class="media-object" src="{{ asset('img/persons/'.Auth::user()->avatar) }}" alt="...">
                             </a>
                         </div>
                         <div class="media-body">
@@ -432,10 +431,10 @@
     </div>
 
     @if(count($skill->endorses))
-    <div class="endorse-person">
+    <div class="endorse-person" id="endorse_persons">
         <ul>
             @foreach($skill->endorses as $endorse)
-            <li><img data-toggle="tooltip" data-placement="bottom" title="{{ $endorse->user->first_name}} " src="{{ asset('img/persons/'.$endorse->user->avatar) }}" class="img-circle"  ></li>
+            <li><img data-toggle="tooltip" data-placement="bottom" title="{{ $endorse->user->username}} " src="{{ asset('img/persons/'.$endorse->user->avatar) }}" class="img-circle"  ></li>
             @endforeach
         </ul>
     </div>

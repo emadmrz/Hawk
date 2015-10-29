@@ -153,7 +153,8 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Artisaninweb\SoapWrapper\ServiceProvider::class,
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        TomLingham\Searchy\SearchyServiceProvider::class,
 
     ],
 
@@ -211,7 +212,8 @@ return [
         'Image'     => Intervention\Image\Facades\Image::class,
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'SoapWrapper' => Artisaninweb\SoapWrapper\Facades\SoapWrapper::class,
-
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Searchy' => TomLingham\Searchy\Facades\Searchy::class,
 
     ],
 

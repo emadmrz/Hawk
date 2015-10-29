@@ -11,7 +11,7 @@ class Questionnaire extends Model
     protected $fillable = ['user_id', 'title', 'count', 'category_id', 'scope', 'show_result', 'description', 'status'];
 
     public function user(){
-        $this->belongsTo('App\User');
+        return $this->belongsTo('App\User');
     }
 
     public function tags(){

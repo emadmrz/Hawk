@@ -36,6 +36,10 @@
                                         افزونه نظر سنجی
                                     @elseif($payment->itemable_type == 'App\Questionnaire')
                                         افزونه پرسشنامه
+                                    @elseif($payment->itemable_type == 'App\Shop')
+                                        افزونه فروشگاه ساز
+                                    @elseif($payment->itemable_type == 'App\Advertise')
+                                        افزونه تبلیغات
                                     @endif
                                 </td>
                                 <td>{{ $payment->gateway }}</td>

@@ -12,9 +12,11 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+Route::get('/','IndexController@index');
+
 
 /**
  * Created by Emad Mirzaie on 02/09/2015.
@@ -26,11 +28,26 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
     Route::get('/profile/{profile}', ['as'=>'profile', 'uses'=>'HomeController@profile']);
     Route::get('/profile/{profile}/article', ['as'=>'articles', 'uses'=>'ArticleController@otherList']);
     Route::get('/profile/{profile}/article/{article}/preview', ['as'=>'article.preview', 'uses'=>'ArticleController@otherPreview']);
+    Route::get('/profile/{profile}/post/{post}/preview',['as'=>'post.preview', 'uses'=>'PostController@otherPreview']);
     Route::post('/friend/request', ['as'=>'friend.request', 'uses'=>'FriendController@request']);
+    Route::post('/profile/related','ProfileController@related');
+    Route::post('/stream/notification','StreamController@notification');
 
     Route::get('/profile/{profile}/poll/{poll}/preview',['as'=>'poll.preview', 'uses'=>'PollController@preview']);
     Route::post('/poll/{poll}/preview',['as'=>'poll.vote', 'uses'=>'PollController@vote']);
+    Route::get('/profile/{profile}/questionnaire/{questionnaire}/preview',['as'=>'questionnaire.preview', 'uses'=>'QuestionnaireController@preview']);
+    Route::post('/questionnaire/{questionnaire}/tick',['as'=>'questionnaire.tick', 'uses'=>'questionnaireController@tick']);
+    Route::get('/profile/{profile}/questionnaire/{questionnaire}/result',['as'=>'questionnaire.result', 'uses'=>'questionnaireController@result']);
 
+    Route::group(['prefix' => 'shop', 'as'=>'shop.'], function () {
+        Route::get('{shop}',['as'=>'index', 'uses'=>'ShopController@home']);
+        Route::get('{shop}/aboutus',['as'=>'aboutus', 'uses'=>'ShopController@aboutUsPage']);
+        Route::get('{shop}/contactus',['as'=>'contactus', 'uses'=>'ShopController@contactUsPage']);
+        Route::get('{shop}/products',['as'=>'products', 'uses'=>'ShopController@showroom']);
+        Route::get('{shop}/product/{product}',['as'=>'product', 'uses'=>'ShopController@product']);
+        Route::post('{shop}/product/{product}/comment',['as'=>'product.comment', 'uses'=>'CommentController@product']);
+        Route::post('product/price','ProductController@calculatePrice');
+    });
 
 });
 
@@ -79,7 +96,7 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::get('/test','ProfileController@test');
 
     Route::group(['prefix' => 'skill', 'as'=>'skill.'], function () {
-        Route::get('/','SkillController@index');
+        Route::get('/',['as'=>'list', 'uses'=>'SkillController@index']);
         Route::get('create',['as'=>'create', 'uses'=>'SkillController@create']);
         Route::get('{skill}/step1',['as'=>'edit.step1', 'uses'=>'SkillController@edit']);
         Route::post('create',['as'=>'add', 'uses'=>'SkillController@add']);
@@ -175,12 +192,53 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('/addon/poll/{poll}/publish',['as'=>'addon.poll.publish', 'uses'=>'pollController@publish']);
 
         Route::get('/addon/questionnaire',['as'=>'addon.questionnaire', 'uses'=>'AddonsController@questionnaire']);
-        Route::post('/addon/poll/parameter/update',['as'=>'addon.poll.parameter.update', 'uses'=>'pollController@parameterUpdate']);
-        Route::get('/addon/questionnaire/{questionnaire}/edit',['as'=>'addon.questionnaire.edit', 'uses'=>'questionnaireController@edit']);
-        Route::post('/addon/questionnaire/{questionnaire}/update',['as'=>'addon.questionnaire.update', 'uses'=>'questionnaireController@update']);
-        Route::post('/addon/questionnaire/{questionnaire}/question/add',['as'=>'addon.questionnaire.question.add', 'uses'=>'questionnaireController@questionAdd']);
-        Route::delete('/addon/poll/parameter/delete',['as'=>'addon.poll.parameter.delete', 'uses'=>'pollController@parameterDelete']);
-        Route::get('/addon/questionnaire/{questionnaire}/publish',['as'=>'addon.questionnaire.publish', 'uses'=>'questionnairelController@publish']);
+        Route::post('/addon/questionnaire/question/update',['as'=>'addon.questionnaire.question.update', 'uses'=>'QuestionnaireController@questionUpdate']);
+        Route::delete('/addon/questionnaire/question/delete',['as'=>'addon.questionnaire.question.delete', 'uses'=>'QuestionnaireController@questionDelete']);
+        Route::get('/addon/questionnaire/{questionnaire}/edit',['as'=>'addon.questionnaire.edit', 'uses'=>'QuestionnaireController@edit']);
+        Route::post('/addon/questionnaire/{questionnaire}/update',['as'=>'addon.questionnaire.update', 'uses'=>'QuestionnaireController@update']);
+        Route::post('/addon/questionnaire/{questionnaire}/question/add',['as'=>'addon.questionnaire.question.add', 'uses'=>'QuestionnaireController@questionAdd']);
+//        Route::delete('/addon/poll/parameter/delete',['as'=>'addon.poll.parameter.delete', 'uses'=>'pollController@parameterDelete']);
+        Route::get('/addon/questionnaire/{questionnaire}/publish',['as'=>'addon.questionnaire.publish', 'uses'=>'QuestionnaireController@publish']);
+        Route::get('/addon/questionnaire/{questionnaire}/export',['as'=>'addon.questionnaire.export', 'uses'=>'QuestionnaireController@export']);
+
+        Route::get('/addon/shop',['as'=>'addon.shop', 'uses'=>'AddonsController@shop']);
+
+        Route::get('/addon/shop/{shop}/edit',['as'=>'addon.shop.edit', 'uses'=>'ShopController@edit']);
+        Route::post('/addon/shop/{shop}/update',['as'=>'addon.shop.update', 'uses'=>'ShopController@update']);
+        Route::post('/addon/shop/{shop}/advantage',['as'=>'addon.shop.advantage', 'uses'=>'ShopController@advantage']);
+        Route::get('/addon/shop/{shop}/images',['as'=>'addon.shop.images', 'uses'=>'ShopController@images']);
+        Route::post('/addon/shop/{shop}/images/store',['as'=>'addon.shop.images.store', 'uses'=>'ShopController@imagesStore']);
+        Route::delete('/addon/shop/images/delete',['as'=>'addon.shop.images.delete', 'uses'=>'ShopController@imagesDelete']);
+
+        Route::get('/addon/shop/{shop}/products',['as'=>'addon.shop.products', 'uses'=>'ProductController@index']);
+        Route::get('/addon/shop/{shop}/product/create',['as'=>'addon.shop.product.create', 'uses'=>'ProductController@create']);
+        Route::post('/addon/shop/{shop}/product/store',['as'=>'addon.shop.product.store', 'uses'=>'ProductController@store']);
+        Route::get('/addon/shop/{shop}/product/{product}/edit/step1',['as'=>'addon.shop.product.edit.step1', 'uses'=>'ProductController@step1']);
+        Route::post('/addon/shop/{shop}/product/{product}/update',['as'=>'addon.shop.product.update', 'uses'=>'ProductController@update']);
+        Route::get('/addon/shop/{shop}/product/{product}/edit/step2',['as'=>'addon.shop.product.edit.step2', 'uses'=>'ProductController@step2']);
+        Route::post('/addon/shop/{shop}/product/{product}/attributes',['as'=>'addon.shop.product.attributes', 'uses'=>'ProductController@attributes']);
+        Route::delete('/addon/shop/product/attribute/delete',['as'=>'addon.shop.product.attribute.delete', 'uses'=>'ProductController@attributeDelete']);
+        Route::get('/addon/shop/{shop}/product/{product}/edit/step3',['as'=>'addon.shop.product.edit.step3', 'uses'=>'ProductController@step3']);
+        Route::post('/addon/shop/{shop}/product/{product}/images',['as'=>'addon.shop.product.images', 'uses'=>'ProductController@images']);
+        Route::delete('/addon/shop/product/image/delete',['as'=>'addon.shop.product.image.delete', 'uses'=>'ProductController@imageDelete']);
+
+        Route::get('/addon/shop/{shop}/commercial',['as'=>'addon.shop.commercial', 'uses'=>'ShopController@commercialCreate']);
+        Route::post('/addon/shop/{shop}/commercial/store',['as'=>'addon.shop.commercial.store', 'uses'=>'ShopController@commercialStore']);
+        Route::delete('/addon/shop/commercial/delete',['as'=>'addon.shop.commercial.delete', 'uses'=>'ShopController@imageDelete']);
+
+        Route::get('/addon/shop/{shop}/aboutus',['as'=>'addon.shop.aboutus', 'uses'=>'ShopController@aboutUs']);
+        Route::post('/addon/shop/{shop}/aboutus/update',['as'=>'addon.shop.aboutus.update', 'uses'=>'ShopController@aboutUsUpdate']);
+
+        Route::get('/addon/shop/{shop}/contactus',['as'=>'addon.shop.contactus', 'uses'=>'ShopController@contactUs']);
+        Route::post('/addon/shop/{shop}/contactus/update',['as'=>'addon.shop.contactus.update', 'uses'=>'ShopController@contactUsUpdate']);
+
+        Route::post('/addon/shop/summernote/image','ShopController@textareaImage');
+
+        Route::get('/addon/advertise',['as'=>'addon.advertise', 'uses'=>'AddonsController@advertise']);
+        Route::get('/addon/advertise/{advertise}/edit',['as'=>'addon.advertise.edit', 'uses'=>'advertiseController@edit']);
+        Route::post('/addon/advertise/{advertise}/update',['as'=>'addon.advertise.update', 'uses'=>'advertiseController@update']);
+
+
     });
 
 });
@@ -311,16 +369,35 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
 Route::group(['prefix' => 'store', 'as'=>'store.'], function () {
     Route::get('/',['as'=>'index', 'uses'=>'StoreController@index']);
     Route::get('storage',['as'=>'storage', 'uses'=>'StoreController@storage']);
+    Route::post('storage/price','StoreController@storagePriceCalculator');
     Route::get('storage/buy',['as'=>'storage.buy', 'uses'=>'StoreController@storageBuy']);
     Route::any('storage/buy/callback',['as'=>'storage.buy.callback', 'uses'=>'StoreController@storageCallback']);
+    Route::any('storage/comment',['as'=>'storage.comment', 'uses'=>'CommentController@storage']);
 
     Route::get('poll',['as'=>'poll', 'uses'=>'StoreController@poll']);
+    Route::post('poll/price','StoreController@pollPriceCalculator');
     Route::get('poll/buy',['as'=>'poll.buy', 'uses'=>'StoreController@pollBuy']);
     Route::any('poll/buy/callback',['as'=>'poll.buy.callback', 'uses'=>'StoreController@pollCallback']);
+    Route::any('poll/comment',['as'=>'poll.comment', 'uses'=>'CommentController@poll']);
+
 
     Route::get('questionnaire',['as'=>'questionnaire', 'uses'=>'StoreController@questionnaire']);
+    Route::post('questionnaire/price','StoreController@questionnairePriceCalculator');
     Route::get('questionnaire/buy',['as'=>'questionnaire.buy', 'uses'=>'StoreController@questionnaireBuy']);
     Route::any('questionnaire/buy/callback',['as'=>'questionnaire.buy.callback', 'uses'=>'StoreController@questionnaireCallback']);
+    Route::any('questionnaire/comment',['as'=>'questionnaire.comment', 'uses'=>'CommentController@questionnaire']);
+
+    Route::get('shop',['as'=>'shop', 'uses'=>'StoreController@shop']);
+    Route::get('shop/buy',['as'=>'shop.buy', 'uses'=>'StoreController@shopBuy']);
+    Route::any('shop/buy/callback',['as'=>'shop.buy.callback', 'uses'=>'StoreController@shopCallback']);
+    Route::any('shop/comment',['as'=>'shop.comment', 'uses'=>'CommentController@shop']);
+
+    Route::get('advertise',['as'=>'advertise', 'uses'=>'StoreController@advertise']);
+    Route::post('advertise/price','StoreController@advertisePriceCalculator');
+    Route::get('advertise/buy',['as'=>'advertise.buy', 'uses'=>'StoreController@advertiseBuy']);
+    Route::any('advertise/buy/callback',['as'=>'advertise.buy.callback', 'uses'=>'StoreController@advertiseCallback']);
+    Route::any('advertise/comment',['as'=>'advertise.comment', 'uses'=>'CommentController@advertise']);
+
 });
 
 

@@ -2,19 +2,19 @@
 
 @section('header')
     @include('partials.navbar')
-    @include('home.partials.cover')
+    @include('profile.partials.cover')
 @endsection
 
 @section('content')
 
     <div class="col-sm-12 store">
 
-        <ul class="breadcrumb">
-            <li><a href="#">خانه</a></li>
-            <li><a href="#">پروفایل</a></li>
-            <li class="active">شلوغش کن</li>
-            <button class="pull-left btn btn-success btn-xs">راهنمای خرید</button>
-        </ul>
+        {{--<ul class="breadcrumb">--}}
+            {{--<li><a href="#">خانه</a></li>--}}
+            {{--<li><a href="#">پروفایل</a></li>--}}
+            {{--<li class="active">شلوغش کن</li>--}}
+            {{--<button class="pull-left btn btn-success btn-xs">راهنمای خرید</button>--}}
+        {{--</ul>--}}
 
         <div class="row">
 
@@ -22,17 +22,15 @@
             <div class="col-sm-3">
                 <div class="col-item">
                     <div class="photo">
-                        <img src="{{ asset('img/icons/store/infographic-free-download_23-2147489175.jpg') }}" class="img-responsive" alt="a" />
-                        <div class="name">افزونه فروشگاه ساز</div>
+                        <img src="{{ asset('img/icons/store/'.Config::get('addonShop.banner')) }}" class="img-responsive" alt="{{ Config::get('addonShop.title') }}" />
+                        <div class="name">{{ Config::get('addonShop.slug') }}</div>
                         <!--<div class="discount">50% تخفیف  <br><del>40,000 تومان</del></div>-->
                     </div>
                     <div class="info">
                         <div class="row">
                             <div class="price col-md-6">
-                                <h5>
-                                    فروشگاه ساز </h5>
-                                <h5 class="price-text-color">
-                                    30,000 تومان</h5>
+                                <h5>{{ Config::get('addonShop.title') }}</h5>
+                                <h5 class="price-text-color">{{ number_format(Config::get('addonShop.base_price')) }} تومان  </h5>
                             </div>
                             <div class="rating hidden-sm col-md-6">
                                 <div class="service-rate ltr" data-id="1" data-rating="2.2"></div>
@@ -40,9 +38,9 @@
                         </div>
                         <div class="separator clear-left">
                             <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">خرید افزونه</a></p>
+                                <i class="fa fa-shopping-cart"></i><a href="{{ route('store.shop') }}" class="hidden-sm">خرید افزونه</a></p>
                             <p class="btn-details">
-                                <i class="fa fa-list"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm"> جزئیات بیشتر </a></p>
+                                <i class="fa fa-list"></i><a href="{{ route('store.shop') }}" class="hidden-sm"> جزئیات بیشتر </a></p>
                         </div>
                         <div class="clearfix">
                         </div>
@@ -69,9 +67,9 @@
                         </div>
                         <div class="separator clear-left">
                             <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">خرید افزونه</a></p>
+                                <i class="fa fa-shopping-cart"></i><a href="{{ route('store.poll') }}" class="hidden-sm">خرید افزونه</a></p>
                             <p class="btn-details">
-                                <i class="fa fa-list"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm"> جزئیات بیشتر </a></p>
+                                <i class="fa fa-list"></i><a href="{{ route('store.poll') }}" class="hidden-sm"> جزئیات بیشتر </a></p>
                         </div>
                         <div class="clearfix">
                         </div>
@@ -98,9 +96,9 @@
                         </div>
                         <div class="separator clear-left">
                             <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">خرید افزونه</a></p>
+                                <i class="fa fa-shopping-cart"></i><a href="{{ route('store.questionnaire') }}" class="hidden-sm">خرید افزونه</a></p>
                             <p class="btn-details">
-                                <i class="fa fa-list"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm"> جزئیات بیشتر </a></p>
+                                <i class="fa fa-list"></i><a href="{{ route('store.questionnaire') }}" class="hidden-sm"> جزئیات بیشتر </a></p>
                         </div>
                         <div class="clearfix">
                         </div>
@@ -157,9 +155,9 @@
                         </div>
                         <div class="separator clear-left">
                             <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">خرید افزونه</a></p>
+                                <i class="fa fa-shopping-cart"></i><a href="{{ route('store.storage') }}" class="hidden-sm">خرید افزونه</a></p>
                             <p class="btn-details">
-                                <i class="fa fa-list"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm"> جزئیات بیشتر </a></p>
+                                <i class="fa fa-list"></i><a href="{{ route('store.storage') }}" class="hidden-sm"> جزئیات بیشتر </a></p>
                         </div>
                         <div class="clearfix">
                         </div>
@@ -171,16 +169,15 @@
             <div class="col-sm-3">
                 <div class="col-item">
                     <div class="photo">
-                        <img src="{{ asset('img/icons/store/marketing-communication-vector_23-2147501099.jpg') }}" class="img-responsive" alt="a" />
-                        <div class="name">تبلیغات در صفحه اول</div>
+                        <img src="{{ asset('img/icons/store/'.Config::get('addonAdvertise.banner')) }}" class="img-responsive" alt="{{ Config::get('addonAdvertise.title') }}" />
+                        <div class="name">{{ Config::get('addonAdvertise.slug') }}</div>
                         <!--<div class="discount">50% تخفیف  <br><del>40,000 تومان</del></div>-->
                     </div>
                     <div class="info">
                         <div class="row">
                             <div class="price col-md-6">
-                                <h5>تبلیغات   </h5>
-                                <h5 class="price-text-color">
-                                    30,000 تومان</h5>
+                                <h5>{{ Config::get('addonAdvertise.title') }}</h5>
+                                <h5 class="price-text-color">{{ number_format(Config::get('addonAdvertise.base_price')) }} تومان  </h5>
                             </div>
                             <div class="rating hidden-sm col-md-6">
                                 <div class="service-rate ltr" data-id="1" data-rating="2.2"></div>
@@ -188,9 +185,9 @@
                         </div>
                         <div class="separator clear-left">
                             <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">خرید افزونه</a></p>
+                                <i class="fa fa-shopping-cart"></i><a href="{{ route('store.advertise') }}" class="hidden-sm">خرید افزونه</a></p>
                             <p class="btn-details">
-                                <i class="fa fa-list"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm"> جزئیات بیشتر </a></p>
+                                <i class="fa fa-list"></i><a href="{{ route('store.advertise') }}" class="hidden-sm"> جزئیات بیشتر </a></p>
                         </div>
                         <div class="clearfix">
                         </div>

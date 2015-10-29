@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoryTableSeeder::class);
         $this->call(ProvinceTableSeeder::class);
         $this->call(UniversityTableSeeder::class);
+        $this->call(AttributeGroupsTableSeeder::class);
+        $this->call(AdvantageTableSeeder::class);
+        $this->call(AddonTableSeeder::class);
 
         Model::reguard();
     }

@@ -32,6 +32,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->id === $comment->user_id ;
         });
 
+        $gate->define('export-questionnaire', function ($user, $questionnaire) {
+            return $user->id === $questionnaire->user_id ;
+        });
+
 
         //
     }

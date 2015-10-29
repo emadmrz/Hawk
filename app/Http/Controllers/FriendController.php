@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Friend;
 use App\Repositories\FriendRepository;
+use App\Stream;
 use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class FriendController extends Controller
 {
@@ -71,7 +73,9 @@ class FriendController extends Controller
     }
 
     public function accept(Request $request){
-        Friend::find($request->friendship_id)->update(['status'=>1]);
+        $friend = Friend::find($request->friendship_id);
+        $friend->update(['status'=>1]);
+        $this->stream($friend);
         return [
             'hasCallback'=>0,
             'callback'=>'',
@@ -79,5 +83,31 @@ class FriendController extends Controller
             'msg'=> '',
             'returns'=>['status'=>1]
         ];
+    }
+
+    private function stream($friendship){
+        $friendRepository = new FriendRepository();
+        $friends = $friendRepository->myFriends();
+        $user = Auth::user();
+        foreach($friends as $friend){
+            Stream::create([
+                'user_id'=>$friend->friend_info->id,
+                'edge_ranke'=> 0,
+                'contentable_id'=> $friendship->id,
+                'contentable_type'=> 'App\Friend',
+                'parentable_id'=>$user->id,
+                'parentable_type'=>'App\User',
+                'is_see'=>0
+            ]);
+        }
+        Stream::create([
+            'user_id'=>$user->id,
+            'edge_ranke'=> 0,
+            'contentable_id'=> $friendship->id,
+            'contentable_type'=> 'App\Friend',
+            'parentable_id'=>$user->id,
+            'parentable_type'=>'App\User',
+            'is_see'=>1
+        ]);
     }
 }

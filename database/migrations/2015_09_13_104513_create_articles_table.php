@@ -23,6 +23,7 @@ class CreateArticlesTable extends Migration
             $table->integer('num_comment')->unsigned()->default(0);
             $table->integer('num_visit')->unsigned()->default(0);
             $table->boolean('status');
+            $table->boolean('is_published');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

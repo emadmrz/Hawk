@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-3 pull-right">
                     <div class="image">
-                        <img src="{{ asset('img/files/'.$article->banner) }}" title="{{ $article->title }}" >
+                        <img src="{{ asset('img/files/'.$article->thumbnail) }}" title="{{ $article->title }}" >
                     </div>
                 </div>
                 <div class="col-md-9 pull-right">

@@ -13,7 +13,7 @@ main .alert.alert-info a{
 main .alert.alert-danger a{
     color: #9c0019;
 }
-button i.fa{
+button i.fa, a i.fa{
     margin-left: 5px;
     top: 0;
 }
@@ -31,6 +31,9 @@ main{
 .radio input[type="radio"]:focus + label::before{
     outline: none;
 }
+.checkbox input[type="checkbox"]:focus + label::before{
+    outline: none;
+}
 /*------------------------Social Media-------------------*/
 .cover.profile {
     position: relative;
@@ -39,7 +42,7 @@ main{
     margin-top: 20px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .cover.profile .wrapper {
     position: relative;
@@ -272,6 +275,33 @@ main{
 .cover.profile .cover-info .cover-nav > li > a:hover i {
     /*color: #6c6c6c;*/
     color: #5c3d7a;
+}
+.cover.profile .dropdown-menu{
+    right: -2px;
+    left: auto;
+    border-top: 0;
+    border-radius: 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    text-align: right;
+    direction: rtl;
+    overflow: hidden;
+}
+.cover.profile .dropdown-menu{
+    padding: 0 !important;
+}
+.cover.profile .dropdown-menu li{
+    border-left: 0 !important;
+    border-bottom: 1px solid #DDD;
+    width: 100%;
+    border-radius: 0 !important;
+}
+.cover.profile .dropdown-menu li:last-child{
+    border:none;
+}
+.cover.profile .dropdown-menu li a{
+    color: #5c3d7a;
+    padding: 10px;
 }
 .panel-default {
     border-color: #e2e9e6;
@@ -736,6 +766,17 @@ section.shop .shop-info{
     border-bottom-right-radius: 5px;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    padding-left: 10px;
+    width: 260px;
+    opacity: 0.8;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+section.shop .shop-info:hover{
+    opacity: 0.95;
 }
 section.shop .shop-info h3{
     font-size: 18px;
@@ -779,6 +820,9 @@ section.shop .shop-banner .left.carousel-control{
     border-top-left-radius: 5px !important;
     border-bottom-left-radius: 5px !important;
 }
+section.shop .shop-banner .right.carousel-control{
+    right: 260px;
+}
 section.shop .shop-banner .carousel{
     border-top-left-radius: 5px !important;
     border-bottom-left-radius: 5px !important;
@@ -794,6 +838,8 @@ section.shop .shop-banner .carousel .carousel-inner  .item{
     height: 283px;
     border-top-left-radius: 5px !important;
     border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 10px !important;
+    border-top-right-radius: 10px !important;
     overflow: hidden;
 }
 section.shop .shop-properties{
@@ -818,6 +864,18 @@ section.shop .shop-properties .property-item i{
     position: absolute;
     top: -37px;
     left: 32%;
+}
+section.shop.inpanel{
+    margin-bottom: 0;
+}
+section.shop.inpanel .shop-properties .property-item i {
+    background-color: #FFF;
+}
+section.shop.inpanel .shop-properties .checkbox{
+    padding-left: 0;
+}
+section.shop.inpanel .shop-properties label{
+    font-size: 12px;
 }
 section.shop .shop-properties .property-item.disable i{
     color: #CCC;
@@ -1748,6 +1806,14 @@ section.shop .shop-properties .property-item.disable i{
     border-bottom: 1px solid #DDD;
     position: relative;
 }
+.articles-list.stream{
+    margin-bottom: 0;
+}
+.articles-list.stream article{
+    margin-bottom: 10px;
+    padding: 0 0 8px 0;
+
+}
 .articles-list article a{
     color: #8456A7;
 }
@@ -1767,9 +1833,36 @@ section.shop .shop-properties .property-item.disable i{
     font-size: 13px;
     margin-bottom: 15px;
 }
+.articles-list.stream .info-bar{
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+.articles-list.stream .info-bar ul{
+    margin: 0;
+    padding: 0;
+}
+.articles-list.stream .info-bar ul li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 20px;
+    color: #999;
+}
+.articles-list.stream .info-bar ul li i{
+    margin-left: 2px;
+}
+.articles-list.stream .info-bar ul li i.icon-user-1{
+    top: 0;
+}
+.articles-list.stream .info-bar ul li i.icon-visual-eye{
+    top: 5px;
+}
 .articles-list article h3 a{
     color: #333;
     text-decoration: none;
+}
+.articles-list.stream article h3{
+    font-size: 20px;
+    margin-top: 5px;
 }
 .articles-list article .content{
     font-size: 15px;
@@ -1782,10 +1875,16 @@ section.shop .shop-properties .property-item.disable i{
     bottom: 10px;
     left: 0;
 }
+.articles-list.stream article .social-icons{
+    bottom: 15px;
+}
 .articles-list article .actions{
     position: absolute;
     bottom: 8px;
     right: 26%;
+}
+.articles-list.stream article .actions{
+    bottom: 18px;
 }
 .articles-list article .social-icons li{
     margin-left: 5px;
@@ -2754,17 +2853,206 @@ h3.storage-usage{
 .questionnaire_questions > ul{
     list-style: none;
     padding: 0;
+    padding-right: 65px;
 }
 .questionnaire_questions > ul > li{
     list-style: none;
+    border-bottom: 1px solid #EEE;
+    margin-bottom: 10px;
+}
+.questionnaire_questions > ul > li:last-child{
+    border-bottom: none;
 }
 .questionnaire_questions > ul > li > ul{
-    margin-bottom: 8px;
-    border-bottom: 1px solid #EEE;
+    padding: 0;
     padding-bottom: 15px;
     padding-top: 10px;
 }
 .questionnaire_questions > ul > li > ul > li{
     display: inline-block;
     margin-left: 35px;
+}
+.questionnaire_questions > ul > li > ul > li  i{
+    margin-left: 3px;
+    font-size: 13px;
+    top: 2px;
+    color: #999;
+}
+.questionnaire_questions a.editable-click{
+    border: none;
+    color: #666;
+}
+.questionnaire_questions a.editable-click{
+    cursor: pointer;
+}
+.questionnaire_questions a.editable-click:hover:after{
+    content: '\f040';
+    font-family: 'FontAwesome';
+    margin: 0 3px;
+    display: inline;
+    position: absolute;
+}
+.questionnaire_questions .delete-question{
+    margin-right: 20px;
+}
+.questionnaire_questions .delete-question i{
+    top: 0;
+    color: #DDD;
+}
+.questionnaire_questions .numbering{
+    position: absolute;
+    right: 30px;
+    border: 3px solid #DDD;
+    font-size: 25px;
+    border-radius: 5px;
+    color: #DDD;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+.questionnaire_questions_list{
+    padding-bottom: 10px;
+    padding-right: 60px;
+    border-bottom: 1px solid #EEE;
+}
+.questionnaire_questions_list .numbering{
+    position: absolute;
+    right: 30px;
+    border: 3px solid #DDD;
+    font-size: 25px;
+    border-radius: 5px;
+    color: #DDD;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+.questionnaire_result_list {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #EEE;
+}
+.questionnaire_result_list label{
+    font-weight: normal;
+}
+.questionnaire_result_list .progress{
+    margin-bottom: 10px;
+}
+.questionnaire_result_list p{
+    margin-bottom: 15px;
+}
+#crop_image_preview img{
+    height: 300px;
+}
+.stream{
+    margin-bottom: 20px;
+}
+.stream.friendship{
+    border-bottom: 3px dashed #CCC;
+    position: relative;
+    height: 60px;
+}
+.stream.friendship .sender, .stream.friendship .receiver{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+}
+.stream.friendship .sender img, .stream.friendship .receiver img{
+    width: 50px;
+    height: 50px;
+    border: 1px solid #CCC;
+    border-radius: 100%;
+}
+.stream.friendship .sender{
+    right: 0;
+    z-index: 2;
+}
+.stream.friendship .receiver{
+    right: 40px;
+    z-index: 1;
+}
+.stream.friendship .tooltip{
+    width: 100px;
+    opacity: 0.7;
+}
+.stream.friendship .title{
+    color: #999;
+    padding-right: 110px;
+    padding-top: 12px;
+    font-family: web-yekan , "YekanNumbers" , tahoma;
+    font-size: 16px;
+}
+.stream.friendship .title a{
+    color: #8456A7;
+    text-decoration: none;
+}
+.stream.friendship .title.medium{
+    padding-top: 12px;
+    font-size: 16px;
+}
+.stream.recommendation{
+    margin-bottom: 0px;
+    border: none;
+    height: 56px;
+}
+.recommendation-text{
+    margin-bottom: 20px;
+    border: 3px dashed #CCC;
+    padding: 5px;
+}
+.recommendation-text .media-object{
+    width: 65px;
+    height: 65px;
+    border-radius: 5px;
+}
+.recommendation-text  .media-heading{
+    font-size: 14px;
+    padding: 3px 0;
+    color: #999;
+}
+.recommendation-text .media-body{
+    color: #999;
+}
+.stream.store{
+    border-bottom: 3px dashed #CCC;
+    position: relative;
+    height: 60px;
+}
+.stream.store .user{
+    position: absolute;
+}
+.stream.store .user img{
+    width: 50px;
+    height: 50px;
+    border: 1px solid #CCC;
+    border-radius: 100%;
+}
+.stream.store .tooltip{
+    width: 100px;
+    opacity: 0.7;
+}
+.stream.store .title{
+    color: #999;
+    padding-right: 65px;
+    padding-top: 12px;
+    font-family: web-yekan , "YekanNumbers" , tahoma;
+    font-size: 16px;
+}
+.stream.store .title a{
+    color: #8456A7;
+    text-decoration: none;
+}
+.stream.store .title.medium{
+    padding-top: 12px;
+    font-size: 16px;
+}
+.stream .stream-icon{
+    color: #CCCCCC;
+}
+.stream .stream-icon:hover{
+    color: #8456A7;
+}
+.shop-info-container{
+    position: absolute;
+    top:0;
+    z-index: 10;
 }

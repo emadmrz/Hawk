@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Addon;
+use App\Advertise;
+use App\Events\advertisePurchased;
 use App\Events\pollPurchased;
 use App\Events\questionnairePurchased;
+use App\Events\shopPurchased;
 use App\Events\storagePurchased;
 use App\Payment;
+use App\Repositories\FriendRepository;
 use App\Storage;
+use App\Stream;
 use Artisaninweb\SoapWrapper\Facades\SoapWrapper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Session;
 use Laracasts\Flash\Flash;
@@ -31,7 +39,8 @@ class StoreController extends Controller
 
     public function storage(){
         $user = Auth::user();
-        return view('store.storage', compact('user'))->with(['title'=>'افزایش حجم پروفایل']);
+        $storage = Addon::storage()->first();
+        return view('store.storage', compact('user', 'storage'))->with(['title'=>'افزایش حجم پروفایل']);
     }
 
     public function storageBuy(Request $request){
@@ -63,12 +72,22 @@ class StoreController extends Controller
         if(true){ //!empty($this->verify) and $this->verify == 1
             $payment->update(['au'=>$request->input('au')]); // tracking code
             Event::fire(new storagePurchased($payment));
+            $this->stream($payment);
             Flash::success('storage added successfully');
             return redirect(route('store.index'));
         }else{
             Flash::error($this->errorCode($this->verify));
             return redirect(route('store.storage'));
         }
+    }
+
+    public function storagePriceCalculator(Request $request){
+        $capacity = $request->input('capacity');
+        $final_amount = $this->storagePrice($capacity);
+        $capacity = explode('::', $capacity);
+        $base_amount = Config::get('addonStorage.base_price') + Config::get('addonStorage.attributes')[$capacity[0]]['values'][$capacity[1]]['add_price'];
+        $discount_amount = Config::get('addonStorage.base_price')*Config::get('addonStorage.discount');
+        return compact('final_amount', 'base_amount', 'discount_amount');
     }
 
     private function storagePrice($capacity){
@@ -78,7 +97,8 @@ class StoreController extends Controller
 
     public function poll(){
         $user = Auth::user();
-        return view('store.poll', compact('user'))->with(['title'=>'افزونه نظر سنجی']);
+        $poll = Addon::poll()->first();
+        return view('store.poll', compact('user', 'poll'))->with(['title'=>'افزونه نظر سنجی']);
     }
 
     public function pollBuy(Request $request){
@@ -110,12 +130,22 @@ class StoreController extends Controller
         if(true){ //!empty($this->verify) and $this->verify == 1
             $payment->update(['au'=>$request->input('au')]); // tracking code
             Event::fire(new pollPurchased($payment));
+            $this->stream($payment);
             Flash::success('poll added successfully');
             return redirect(route('store.index'));
         }else{
             Flash::error($this->errorCode($this->verify));
             return redirect(route('store.poll'));
         }
+    }
+
+    public function pollPriceCalculator(Request $request){
+        $scope = $request->input('scope');
+        $final_amount = $this->pollPrice($scope);
+        $scope = explode('::', $scope);
+        $base_amount = Config::get('addonPoll.base_price') + Config::get('addonPoll.attributes')[$scope[0]]['values'][$scope[1]]['add_price'];
+        $discount_amount = Config::get('addonPoll.base_price')*Config::get('addonPoll.discount');
+        return compact('final_amount', 'base_amount', 'discount_amount');
     }
 
     private function pollPrice($scope){
@@ -125,7 +155,8 @@ class StoreController extends Controller
 
     public function questionnaire(){
         $user = Auth::user();
-        return view('store.questionnaire', compact('user'))->with(['title'=>'افزونه پرسش نامه']);
+        $questionnaire = Addon::questionnaire()->first();
+        return view('store.questionnaire', compact('user', 'questionnaire'))->with(['title'=>'افزونه پرسش نامه']);
     }
 
     public function questionnaireBuy(Request $request){
@@ -157,6 +188,7 @@ class StoreController extends Controller
         if(true){ //!empty($this->verify) and $this->verify == 1
             $payment->update(['au'=>$request->input('au')]); // tracking code
             Event::fire(new questionnairePurchased($payment));
+            $this->stream($payment);
             Flash::success('Questionnaire added successfully');
             return redirect(route('store.index'));
         }else{
@@ -165,9 +197,158 @@ class StoreController extends Controller
         }
     }
 
+    public function questionnairePriceCalculator(Request $request){
+        $count = $request->input('count');
+        $final_amount = $this->questionnairePrice($count);
+        $count = explode('::', $count);
+        $base_amount = Config::get('addonQuestionnaire.base_price') + Config::get('addonQuestionnaire.attributes')[$count[0]]['values'][$count[1]]['add_price'];
+        $discount_amount = Config::get('addonQuestionnaire.base_price')*Config::get('addonQuestionnaire.discount');
+        return compact('final_amount', 'base_amount', 'discount_amount');
+    }
+
     private function questionnairePrice($count){
         $count = explode('::', $count);
         return (Config::get('addonQuestionnaire.base_price')-Config::get('addonQuestionnaire.base_price')*Config::get('addonQuestionnaire.discount')) + Config::get('addonQuestionnaire.attributes')[$count[0]]['values'][$count[1]]['add_price'];
+    }
+
+    public function shop(){
+        $user = Auth::user();
+        $shop = Addon::shop()->first();
+        return view('store.shop', compact('user', 'shop'))->with(['title'=>'فروشگاه ساز']);
+    }
+
+    public function shopBuy(Request $request){
+        $user = Auth::user();
+        $this->validate($request, [
+            'payment_gate' => 'required | in:mellat,pasargad'
+        ]);
+        $callback = route('store.shop.buy.callback');
+        $description = 'افزونه فروشگاه ساز';
+        $price = $this->shopPrice();
+        $shop = $user->shop()->create(['status'=>0]);
+        $order = $shop->payment()->create([
+            'user_id'=>$user->id,
+            'amount'=>$price,
+            'gateway'=>$request->input('payment_gate'),
+            'description'=>$description,
+            'status'=> 0
+        ]);
+        $orderId = $order->id;
+        $this->pay($price, $callback,$orderId,$description,$request->input('payment_gate'));
+    }
+
+    public function shopCallback(Request $request){
+        $payment = Payment::findOrFail($request->input('order_id'));
+        $this->verify($request->input('au'), $payment->amount, $payment->gateway);
+        if(true){ //!empty($this->verify) and $this->verify == 1
+            $payment->update(['au'=>$request->input('au')]); // tracking code
+            Event::fire(new shopPurchased($payment));
+            $this->stream($payment);
+            Flash::success('shop added successfully');
+            return redirect(route('store.index'));
+        }else{
+            Flash::error($this->errorCode($this->verify));
+            return redirect(route('store.shop'));
+        }
+    }
+
+    private function shopPrice(){
+        return Config::get('addonShop.base_price');
+    }
+
+    public function advertise(){
+        $user = Auth::user();
+        $advertise = Addon::advertise()->first();
+        return view('store.advertise', compact('user', 'advertise'))->with(['title'=>'تبلیغات در صفحه اول']);
+    }
+
+    public function advertiseBuy(Request $request){
+        $user = Auth::user();
+        $this->validate($request, [
+            'type' => 'required',
+            'reserve' => 'required|integer',
+            'payment_gate' => 'required | in:mellat,pasargad'
+        ]);
+        $type = $request->input('type');
+        $reserve = $request->input('reserve');
+
+        $availables = $this->advertiseAvailability(explode('::', $type), $reserve);
+        $max = Config::get('addonAdvertise.attributes')[explode('::',$type)[0]]['values'][explode('::',$type)[1]]['max'];
+        foreach($availables as $key=>$available){
+            if($max <= $available->count){
+                Flash::error('Unavailable Addon');
+                return redirect()->back();
+            }
+        }
+
+        $price = ($this->AdvertisePrice($type))*$reserve;
+        $type_val = Config::get('addonAdvertise.attributes')[explode('::',$type)[0]]['values'][explode('::',$type)[1]]['type'];
+        $callback = route('store.advertise.buy.callback');
+        $description = 'تبلیغات در صفحه اول';
+        $advertise = $user->advertises()->create(['type'=>$type_val, 'status'=>0, 'expired_at'=>Carbon::now()->addDays($reserve)]);
+        $order = $advertise->payment()->create([
+            'user_id'=>$user->id,
+            'amount'=>$price,
+            'gateway'=>$request->input('payment_gate'),
+            'description'=>$description,
+            'status'=> 0
+        ]);
+        $orderId = $order->id;
+        $this->pay($price, $callback,$orderId,$description,$request->input('payment_gate'));
+    }
+
+    public function advertiseCallback(Request $request){
+        $payment = Payment::findOrFail($request->input('order_id'));
+        $this->verify($request->input('au'), $payment->amount, $payment->gateway);
+        if(true){ //!empty($this->verify) and $this->verify == 1
+            $payment->update(['au'=>$request->input('au')]); // tracking code
+            Event::fire(new advertisePurchased($payment));
+            $this->stream($payment);
+            Flash::success('advertise added successfully');
+            return redirect(route('store.index'));
+        }else{
+            Flash::error($this->errorCode($this->verify));
+            return redirect(route('store.storage'));
+        }
+    }
+
+    public function advertisePriceCalculator(Request $request){
+        $type = $request->input('type');
+        $reserve = $request->input('reserve');
+        $final_amount = ($this->AdvertisePrice($type))*$reserve;
+        $type = explode('::', $type);
+        $base_amount = (Config::get('addonAdvertise.base_price') + Config::get('addonAdvertise.attributes')[$type[0]]['values'][$type[1]]['add_price'])*$reserve;
+        $discount_amount = (Config::get('addonAdvertise.base_price')*Config::get('addonAdvertise.discount'))*$reserve;
+        $max = Config::get('addonAdvertise.attributes')[$type[0]]['values'][$type[1]]['max'];
+        $availability = 1;
+        $availables = $this->advertiseAvailability($type, $reserve);
+        foreach($availables as $key=>$available){
+            if($max <= $available->count){
+                $availability = 0;
+                break;
+            }
+        }
+        return compact('final_amount', 'base_amount', 'discount_amount', 'availability');
+    }
+
+    private function advertisePrice($type){
+        $type = explode('::', $type);
+        return (Config::get('addonAdvertise.base_price')-Config::get('addonAdvertise.base_price')*Config::get('addonAdvertise.discount')) + Config::get('addonAdvertise.attributes')[$type[0]]['values'][$type[1]]['add_price'];
+    }
+
+    private function advertiseAvailability($type, $reserve){
+        $advertises = Advertise::select([
+            DB::raw('DATE(expired_at) AS date'),
+            DB::raw('COUNT(id) AS count'),
+        ])
+            ->where('status',1)
+            ->where('type',$type[1])
+            ->whereBetween('expired_at', [Carbon::now(), Carbon::now()->addDays($reserve)])
+            ->groupBy('date')
+            ->orderBy('date', 'ASC')
+            ->get();
+        return $advertises;
+
     }
 
     public function pay($amount,$callback,$orderId,$description,$gate){
@@ -230,4 +411,31 @@ class StoreController extends Controller
         ];
         return $errorCode[$code];
     }
+
+    private function stream($payment){
+        $user = Auth::user();
+        $friendRepository = new FriendRepository();
+        $friends = $friendRepository->myFriends();
+        foreach($friends as $friend){
+            Stream::create([
+                'user_id'=>$friend->friend_info->id,
+                'edge_ranke'=> 0,
+                'contentable_id'=> $payment->id,
+                'contentable_type'=> 'App\Payment',
+                'parentable_id'=>$user->id,
+                'parentable_type'=>'App\User',
+                'is_see'=>0
+            ]);
+        }
+        Stream::create([
+            'user_id'=>$user->id,
+            'edge_ranke'=> 0,
+            'contentable_id'=> $payment->id,
+            'contentable_type'=> 'App\Payment',
+            'parentable_id'=>$user->id,
+            'parentable_type'=>'App\User',
+            'is_see'=>1
+        ]);
+    }
+
 }

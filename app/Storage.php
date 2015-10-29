@@ -10,6 +10,10 @@ class Storage extends Model
     protected $table = 'storages';
     protected $fillable = ['user_id', 'capacity', 'status'];
 
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
     public function payment()
     {
         return $this->morphOne('App\Payment', 'itemable');

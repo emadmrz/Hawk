@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Repositories\FriendRepository;
+use App\Stream;
 use App\User;
 use App\Visit;
 use Carbon\Carbon;
@@ -41,7 +43,16 @@ class ArticleController extends Controller
     }
 
     public function update(Article $article, Request $request){
-        $article->update($request->all());
+        $shouldPublish = 0;
+        $input = $request->all();
+        if($input['status']==1 and $article->is_published == 0){
+            $input['is_published'] = 1;
+            $shouldPublish = 1;
+        }
+        $article->update($input);
+        if($shouldPublish){
+            $this->stream($article);
+        }
         Flash::success( trans('profile.articleEdited') );
         return redirect(route('profile.articles'));
     }
@@ -157,6 +168,32 @@ class ArticleController extends Controller
 //        }
 
         return $chartDataByDay;
+    }
+
+    private function stream($article){
+        $user = Auth::user();
+        $friendRepository = new FriendRepository();
+        $friends = $friendRepository->myFriends();
+        foreach($friends as $friend){
+            Stream::create([
+                'user_id'=>$friend->friend_info->id,
+                'edge_ranke'=> 0,
+                'contentable_id'=> $article->id,
+                'contentable_type'=> 'App\Article',
+                'parentable_id'=>$user->id,
+                'parentable_type'=>'App\User',
+                'is_see'=>0
+            ]);
+        }
+        Stream::create([
+            'user_id'=>$user->id,
+            'edge_ranke'=> 0,
+            'contentable_id'=> $article->id,
+            'contentable_type'=> 'App\Article',
+            'parentable_id'=>$user->id,
+            'parentable_type'=>'App\User',
+            'is_see'=>1
+        ]);
     }
 
 

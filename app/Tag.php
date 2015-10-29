@@ -16,4 +16,8 @@ class Tag extends Model
     public function polls(){
         return $this->belongsToMany('App\Poll');
     }
+
+    public function products(){
+        return $this->belongsToMany('App\Product');
+    }
 }

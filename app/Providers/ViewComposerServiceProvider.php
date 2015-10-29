@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Advantage;
 use App\Repositories\EducationRepository;
 use App\Repositories\ProfileProgressRepository;
 use App\University;
@@ -34,6 +35,14 @@ class ViewComposerServiceProvider extends ServiceProvider
         $this->composeLatestPosts();
 
         $this->composeProfileProgress();
+
+        view()->composer('shop.partials.headerMenu', function($view) {
+            $shop = $view->getData()['shop'];
+            $advantages = $shop->advantages()->lists('advantage_id')->toArray();
+            $advantages_list = Advantage::get();
+            $categories = $shop->products()->with('category')->groupBy('category_id')->get()->pluck('category.name','category.id');
+            $view->with(['advantages_list'=>$advantages_list, 'advantages'=>$advantages, 'categories'=>$categories]);
+        });
     }
 
     /**

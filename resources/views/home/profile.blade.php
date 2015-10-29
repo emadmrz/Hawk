@@ -14,6 +14,7 @@
     @if($role == 'legal')
         @include('home.partials.map')
     @endif
+    @include('home.partials.shop')
     @include('home.partials.skill')
 @endsection
 
@@ -22,6 +23,10 @@
     @include('home.partials.latestArticles')
     @include('home.partials.latestPosts')
     @include('home.partials.friends')
+@endsection
+
+@section('full')
+    <div id="related_users_container" align="center"></div>
 @endsection
 
 @section('script')
@@ -58,4 +63,27 @@
         });
     </script>
     @endif
+
+    <script>
+        {{--$(document).ready(function(){--}}
+            {{--$.ajax({--}}
+                {{--url : '/home/profile/related',--}}
+                {{--type : 'post',--}}
+                {{--data : {id: '{{ $user->id }}', _token: $('input[name="_token"]').val()},--}}
+                {{--beforeSend: function(){--}}
+                    {{--$("#related_users_container").html('<i class="fa fa-spin fa-spinner fa-3x text-muted"></i>');--}}
+                {{--},--}}
+                {{--complete: function(){--}}
+
+                {{--},--}}
+                {{--success: function(data){--}}
+
+                {{--},--}}
+                {{--error: function(xhr){--}}
+                    {{--alert("An error occured: " + xhr.status + " " + xhr.statusText);--}}
+                {{--}--}}
+            {{--});--}}
+        {{--});--}}
+    </script>
+
 @endsection

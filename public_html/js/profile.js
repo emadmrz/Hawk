@@ -168,6 +168,26 @@ $(document).ready(function(){
         }
     });
 
+    $('.textarea_summernote').summernote({
+        height: 230,
+        direction: 'rtl',
+        lang: 'fa-IR',
+        toolbar: [
+            //[groupname, [button list]]
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['color', ['color']],
+            ['insert', ['link', 'picture', 'hr']],
+            ['view', ['fullscreen', 'codeview']],
+            ['help', ['help']]
+        ],
+        onImageUpload: function(files) {
+            sendTextareaFile(files[0]);
+        }
+    });
+
     $('input#article_banner').change(function(){
         var $this = $(this);
         var article_id = $('input#article_id').val();
@@ -751,7 +771,6 @@ $(document).ready(function(){
     })
 
     $('#questionnaire_questions_list a[data-editable]').editable({
-        url: '/profile/management/addon/poll/parameter/update',
         title: 'ویرایش',
         params: function(params) {
             //originally params contain pk, name and value
@@ -760,6 +779,260 @@ $(document).ready(function(){
         }
     })
 
+    $("#questionnaire_questions_list").on('click', 'a#delete_question', function(e){
+        e.preventDefault();
+        var $this=$(this);
+        var pk = $this.attr('data-value');
+        $.ajax({
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
+            url: '/profile/management/addon/questionnaire/question/delete',
+            beforeSend: function () {
+                $this.find('i').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                $this.find('i').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+            },
+            success: function (data) {
+                console.log(data)
+                $this.closest('li').slideUp(300, function(){
+                    $this.closest('li').remove();
+                })
+            },
+            error: function (xhr) {
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    });
+
+    $("select#attribute_group_id").change(function(){
+        var $this = $(this);
+        var type = $this.find(':selected').data('type');
+        $('input[name="value"]').attr('type', type);
+    });
+
+    $("#attribute_table_list").on('click', 'button#delete_attribute', function(e){
+        e.preventDefault();
+        var $this=$(this);
+        var pk = $this.attr('data-value');
+        $.ajax({
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
+            url: '/profile/management/addon/shop/product/attribute/delete',
+            beforeSend: function () {
+                $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                $this.find('p').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+            },
+            success: function (data) {
+                console.log(data)
+                $this.closest('tr').remove();
+            },
+            error: function (xhr) {
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    })
+
+    $("#product_image_table_list").on('click', 'button#delete_product_image', function(e){
+        e.preventDefault();
+        var $this=$(this);
+        var pk = $this.attr('data-value');
+        $.ajax({
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
+            url: '/profile/management/addon/shop/product/image/delete',
+            beforeSend: function () {
+                $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                $this.find('p').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+            },
+            success: function (data) {
+                console.log(data)
+                $this.closest('tr').remove();
+            },
+            error: function (xhr) {
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    })
+
+    $("#shop_banner_table_list").on('click', 'button#delete_shop_banner', function(e){
+        e.preventDefault();
+        var $this=$(this);
+        var pk = $this.attr('data-value');
+        $.ajax({
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
+            url: '/profile/management/addon/shop/images/delete',
+            beforeSend: function () {
+                $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                $this.find('p').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+            },
+            success: function (data) {
+                console.log(data)
+                $this.closest('tr').remove();
+            },
+            error: function (xhr) {
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    })
+
+    $("#commercial_table_list").on('click', 'button#delete_commercial', function(e){
+        e.preventDefault();
+        var $this=$(this);
+        var pk = $this.attr('data-value');
+        $.ajax({
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
+            url: '/profile/management/addon/shop/commercial/delete',
+            beforeSend: function () {
+                $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                $this.find('p').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+            },
+            success: function (data) {
+                console.log(data)
+                $this.closest('tr').remove();
+            },
+            error: function (xhr) {
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    })
+
+    $('form#store_poll_form').find('input').change(function(){
+        var form = $('form#store_poll_form');
+        $.ajax({
+            url : '/store/poll/price',
+            type : 'post',
+            data : form.serialize(),
+            dataType: 'json',
+            beforeSend: function(){},
+            complete: function(){},
+            success: function(data){
+                form.find('#final_amount').html(numberWithCommas(data.final_amount)+' تومان ');
+                form.find('#base_amount').html(numberWithCommas(data.base_amount)+' تومان ');
+                form.find('#discount_amount').html(numberWithCommas(data.discount_amount));
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $('form#store_storage_form').find('input').change(function(){
+        var form = $('form#store_storage_form');
+        $.ajax({
+            url : '/store/storage/price',
+            type : 'post',
+            data : form.serialize(),
+            dataType: 'json',
+            beforeSend: function(){},
+            complete: function(){},
+            success: function(data){
+                form.find('#final_amount').html(numberWithCommas(data.final_amount)+' تومان ');
+                form.find('#base_amount').html(numberWithCommas(data.base_amount)+' تومان ');
+                form.find('#discount_amount').html(numberWithCommas(data.discount_amount));
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $('form#store_questionnaire_form').find('input').change(function(){
+        var form = $('form#store_questionnaire_form');
+        $.ajax({
+            url : '/store/questionnaire/price',
+            type : 'post',
+            data : form.serialize(),
+            dataType: 'json',
+            beforeSend: function(){},
+            complete: function(){},
+            success: function(data){
+                form.find('#final_amount').html(numberWithCommas(data.final_amount)+' تومان ');
+                form.find('#base_amount').html(numberWithCommas(data.base_amount)+' تومان ');
+                form.find('#discount_amount').html(numberWithCommas(data.discount_amount));
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $('form#store_advertise_form').find('input').change(function(){
+        var form = $('form#store_advertise_form');
+        $.ajax({
+            url : '/store/advertise/price',
+            type : 'post',
+            data : form.serialize(),
+            dataType: 'json',
+            beforeSend: function(){},
+            complete: function(){},
+            success: function(data){
+                form.find('#final_amount').html(numberWithCommas(data.final_amount)+' تومان ');
+                form.find('#base_amount').html(numberWithCommas(data.base_amount)+' تومان ');
+                form.find('#discount_amount').html(numberWithCommas(data.discount_amount));
+                if(data.availability == 0){
+                    $("#advertise_availability").html('این افزونه برای این مدت توسط سایر کاربران رزرو شده است.').slideDown(300, function(){
+                        $("button#buy_advertise").attr('disabled','disabled')
+                    });
+                }else{
+                    $("#advertise_availability").slideUp(300, function(){
+                        $("#advertise_availability").html();
+                        $("button#buy_advertise").removeAttr('disabled')
+                    });
+                }
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $('.other-image').find('li').find('img').click(function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var src = $this.attr('src');
+        $this.closest('.other-image').siblings('.image').find('img').attr('src', src);
+    });
+
+});
+
+//--------------------------------------
+// Ajax Initial Setup
+//--------------------------------------
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
 });
 
 
@@ -1003,6 +1276,23 @@ function sendArticleFile(file, editor, welEditable) {
     });
 }
 
+function sendTextareaFile(file, editor, welEditable) {
+    data = new FormData();
+    data.append("file", file);//You can append as many data as you want. Check mozilla docs for this
+    data.append("_token", $('input[name="_token"]').val());
+    $.ajax({
+        data: data,
+        type: 'post',
+        url: '/profile/management/addon/shop/summernote/image',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(url) {
+            $('.textarea_summernote').summernote('editor.insertImage', url);
+        }
+    });
+}
+
 function uploadAttachment(data) {
     $.ajax({
         data: data,
@@ -1236,10 +1526,14 @@ function questionnaire_question_added(info){
     var ul = $('<ul />')
     $.each(info, function(key, value){
         var li = $('<li/>').appendTo(ul);
+        li.append('<div class="numbering">'+(key+1)+'</div>');
         var aaa = $('<a/>').text(value.title).attr('id','title').attr('href','#').attr('data-type','text').attr('data-editable','').attr('data-pk',value.id).appendTo(li);
-            sub_ul = $('<ul />');
+        var aaaa = li.append('<a id="delete_question" data-value="'+value.id+'" class="delete-question pull-left" href="#"><i class="fa fa-trash-o" ></i></a>');
+
+        sub_ul = $('<ul />');
             $.each(value.options, function(skey, svalue){
                 var sub_li = $('<li/>').appendTo(sub_ul);
+                sub_li.append('<i class="fa fa-circle-o" ></i>');
                 var sub_aaa = $('<a/>').text(svalue.name).attr('id','name').attr('href','#').attr('data-type','text').attr('data-editable','').attr('data-pk',svalue.id).appendTo(sub_li);
             });
             sub_ul.appendTo(li);
@@ -1247,7 +1541,6 @@ function questionnaire_question_added(info){
     $("#questionnaire_questions_list").html(ul);
 
     $('#questionnaire_questions_list a[data-editable]').editable({
-        url: '/profile/management/addon/poll/parameter/update',
         title: 'ویرایش',
         params: function(params) {
             //originally params contain pk, name and value
@@ -1257,3 +1550,33 @@ function questionnaire_question_added(info){
     })
 }
 
+function product_attribute_add(info){
+    $('#attribute_table_list').find('tbody').html('');
+    var tr;
+    for (var i = 0; i < info.length; i++) {
+        tr = $('<tr />');
+        tr.append('<td  width="15%" >'+info[i].attribute_group.name+'</td>');
+        if(info[i].attribute_group.type == 'color'){
+            tr.append('<td  width="15%" ><div style="background: '+ info[i].value +'; width: 40%">&emsp;</div></td>');
+        }else{
+            tr.append('<td  width="15%" >'+info[i].value+'</td>');
+        }
+        tr.append('<td  width="15%" >'+info[i].add_price+'</td>');
+        tr.append('<td width="5%" ><button id="delete_attribute" data-value="' + info[i].id + '" type="button" class="btn btn-danger btn-xs " ><p class="fa fa-trash-o fa-lg" ></p></button></td>');
+        $('#attribute_table_list').find('tbody').append(tr);
+    }
+    $('#attribute_table_list').siblings('form').find('input[name="name"]').val('');
+    $('#attribute_table_list').siblings('form').find('input[name="add_price"]').val('');
+    $('#attribute_table_list').siblings('form').find('input[name="value"]').val('');
+}
+function skill_endorsed(data, container){
+    var ul = $('<ul />')
+    $.each(data, function(key, value){
+        ul.append('<li><img data-toggle="tooltip" data-placement="bottom" title="'+value.user.username+'" src="/img/persons/'+value.user.avatar+'" class="img-circle"  ></li>')
+    });
+    container.closest('.timeline-block').find('#endorse_persons').html(ul);
+    $('[data-toggle="tooltip"]').tooltip()
+}
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

@@ -10,11 +10,13 @@
     @role('legal')
     @include('profile.partials.map')
     @endrole
+    @include('profile.partials.shop')
     @include('profile.partials.skill')
 @endsection
 
 @section('side')
     @include('partials.profileProgress')
+    @include('partials.addonShop')
     @include('profile.partials.latestArticles')
     @include('profile.partials.latestPosts')
 @endsection

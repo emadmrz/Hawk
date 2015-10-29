@@ -58,6 +58,8 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('comment' , 'App\Comment');
         $router->model('poll' , 'App\Poll');
         $router->model('questionnaire' , 'App\Questionnaire');
+        $router->model('shop' , 'App\Shop');
+        $router->model('product' , 'App\Product');
 
 
     }

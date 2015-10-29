@@ -8,7 +8,7 @@
     <div class="timeline-block">
         <div class="panel panel-default share clearfix-xs">
             <div class="panel-heading panel-heading-gray title">
-                ویرایش نظر سنجی
+                ویرایش پرسشنامه
             </div>
             <div class="panel-body">
                     <p>
@@ -74,7 +74,7 @@
     <div class="timeline-block">
         <div class="panel panel-default share clearfix-xs">
             <div class="panel-heading panel-heading-gray title">
-                پارامترهای نظرسنجی
+                افزودن پرسش و پاسخ
             </div>
             <div class="panel-body">
                 {!! Form::open(['route'=>['profile.management.addon.questionnaire.question.add',$questionnaire->id], 'method'=>'post', 'data-remote']) !!}
@@ -135,16 +135,19 @@
     <div class="timeline-block">
         <div class="panel panel-default share clearfix-xs">
             <div class="panel-heading panel-heading-gray title">
-                پارامترهای نظرسنجی
+                مدیریت پرسش ها و پاسخ ها
             </div>
             <div class="panel-body">
                 <div id="questionnaire_questions_list" class="questionnaire_questions">
                     <ul>
                         @foreach($questionnaire->questions()->get() as $key=>$question)
-                            <li><a data-editable id="title" data-type="text" data-pk="{{ $question->id }}" >{{$question->title}}</a>
+                            <li>
+                                <div class="numbering">{{ $key+1 }}</div>
+                                <a data-editable id="title" data-type="text" data-pk="{{ $question->id }}" data-url="/profile/management/addon/questionnaire/question/update">{{$question->title}}</a>
+                                <a id="delete_question" data-value="{{ $question->id }}" class="delete-question pull-left" href="#"><i class="fa fa-trash-o" ></i></a>
                                 <ul>
                                     @foreach($question->options()->get() as $option)
-                                        <li>{{ $option->name }}</li>
+                                        <li><i class="fa fa-circle-o" ></i><a data-editable id="name" data-type="text" data-pk="{{ $option->id }}" data-url="/profile/management/addon/questionnaire/question/update">{{ $option->name }}</a></li>
                                     @endforeach
                                 </ul>
                             </li>
@@ -159,7 +162,7 @@
     </div>
 
     <div class="form-group">
-        <a href="{{ route('profile.management.addon.questionnaire.publish',$questionnaire->id) }}" class="btn btn-success btn-block">انتشار پرسش نامه برای کاربران</a>
+        <a href="{{ route('profile.management.addon.questionnaire.publish',$questionnaire->id) }}" class="btn btn-success btn-block">انتشار پرسشنامه برای کاربران</a>
     </div>
 
     <p class="alert alert-warning">

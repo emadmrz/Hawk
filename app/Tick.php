@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Tick extends Model
 {
@@ -23,5 +24,15 @@ class Tick extends Model
 
     public function option(){
         return $this->belongsTo('App\Option');
+    }
+
+    public function getTickedAttribute(){
+        $user = Auth::user();
+        if($this->attributes['user_id'] == $user->id){
+            return 1;
+
+        }else{
+            return 0;
+        }
     }
 }

@@ -14,10 +14,11 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Morilog\Jalali\jDate;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract, AuthorizableContract
 {
-    use Authenticatable, CanResetPassword, Authorizable, HasRoleAndPermission;
+    use Authenticatable, CanResetPassword, Authorizable, HasRoleAndPermission, SearchableTrait;
 
     /**
      * The database table used by the model.
@@ -39,6 +40,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    protected $appends = ['username', 'avatar'];
+
+    protected $searchable = [
+        'columns' => [
+            'first_name' => 10,
+            'last_name' => 10,
+            'email' => 5,
+        ]
+    ];
 
     /**
      * Created by Emad Mirzaie on 01/09/2015.
@@ -196,6 +207,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function questionnaires(){
         return $this->hasMany('App\Questionnaire');
+    }
+
+    public function shop(){
+        return $this->hasOne('App\Shop');
+    }
+
+    public function products(){
+        return $this->hasMany('App\Product');
+    }
+
+    public function streams()
+    {
+        return $this->hasMany('App\Stream');
+    }
+
+    public function advertises(){
+        return $this->hasMany('App\Advertise');
     }
 
 

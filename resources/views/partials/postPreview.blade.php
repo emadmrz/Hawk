@@ -17,12 +17,18 @@
         </div>
         <div class="panel-body post-content">
             <div class="row">
-                <div class="col-sm-4 pull-right  image">
-                    <img src="{{ $post->image }}" class="img-rounded">
-                </div>
-                <div class="col-sm-8 pull-right">
-                    <p>{{ $post->content }}</p>
-                </div>
+                @if(!empty($post->image))
+                    <div class="col-sm-4 pull-right  image">
+                        <img src="{{ $post->image }}" class="img-rounded">
+                    </div>
+                    <div class="col-sm-8 pull-right">
+                        <p>{{ $post->content }}</p>
+                    </div>
+                @else
+                    <div class="col-sm-12 pull-right">
+                        <p>{{ $post->content }}</p>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="view-all-comments">

@@ -14,8 +14,24 @@
             <!--<li><a href="#"><i class="glyphicon glyphicon-info-sign"></i><span class="title">درباره ما بیشتر بدانید</span></a></li>-->
             <!--</ul>-->
             <ul class="nav navbar-nav navbar-right tools-nav">
-                <li class="avatar"><a href="#"><img src="{{ asset('img/persons/1.jpg') }}" class="img-circle" ></a></li>
-                <li><a href="#"><i class="fa fa-bell-o fa-2x"></i></a></li>
+                <li class="avatar">
+                    <a id="my_account_nav_dropdown" href="#" data-target="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('img/persons/'.Auth::user()->avatar) }}" class="img-circle" ></a>
+                    <ul class="dropdown-menu my-profile-account" aria-labelledby="my_account_nav_dropdown">
+                        <li><a href="{{ route('home.home') }}"><i class="fa fa-home fa-lg"></i> خانه </a></li>
+                        <li><a href="{{ route('profile.me') }}"><i class="fa fa-briefcase fa-lg"></i> پروفایل </a></li>
+                        <li><a href="#"><i class="fa fa-pie-chart fa-lg"></i> داشبود </a></li>
+                        <li><a href="#"><i class="fa fa-money fa-lg"></i>حساب مالی من</a></li>
+                        <li><a href="{{ url('auth/logout') }}" class="exit"><i class="fa fa-power-off fa-lg"></i>خروج از سایت</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" id="new_notifications_nav">
+                    <a  id="new_notifications_nav_dropdown" href="#" data-target="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell-o fa-2x"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="new_notifications_nav_dropdown">
+
+                    </ul>
+                    <span id="new_notifications_num"></span>
+
+                </li>
                 <li class="dropdown" id="friends_request_nav">
                     <a id="friend_request_nav_dropdown" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-user-plus fa-2x"></i>
@@ -23,9 +39,7 @@
                     <ul id="friendship_list" class="dropdown-menu" aria-labelledby="friend_request_nav_dropdown">
 
                     </ul>
-                    <span id="new_friend_request_num">
-
-                    </span>
+                    <span id="new_friend_request_num"></span>
                 </li>
                 <li><a href="#"><i class="fa fa-envelope-o fa-2x"></i></a></li>
                 <li><a href="#"><i class="fa fa-th fa-2x"></i></a></li>

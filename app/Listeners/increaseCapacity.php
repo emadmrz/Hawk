@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Addon;
 use App\Events\storagePurchased;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,5 +34,6 @@ class increaseCapacity
         $payment->update(['status'=>1]);
         $storage->update(['status'=>1]);
         $user->usage->freeup($storage['capacity']);
+        Addon::storage()->first()->buy();
     }
 }

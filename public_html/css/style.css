@@ -875,3 +875,32 @@ footer.footer .social-media li.whatsapp a{
 .find-friend-dropdown .fa{
     font-size: 6em;
 }
+
+.notification p.content{
+    font-size: 12px;
+    margin: 5px 0;
+}
+.my-profile-account{
+    padding: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.my-profile-account li{
+
+}
+.my-profile-account li a{
+    padding: 10px 15px !important;
+    border-bottom: 1px solid #EEEEEE;
+    font-size: 13px;
+    text-align: right;
+}
+.my-profile-account li:last-child a{
+    border-bottom: none;
+}
+.my-profile-account li:last-child a:hover{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.my-profile-account li a.exit{
+    color: #c33100;
+}
