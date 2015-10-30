@@ -15,6 +15,7 @@
         @include('home.partials.map')
     @endif
     @include('home.partials.shop')
+    @include('home.partials.offer')
     @include('home.partials.skill')
 @endsection
 

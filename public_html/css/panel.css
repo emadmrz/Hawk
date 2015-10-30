@@ -3056,3 +3056,139 @@ h3.storage-usage{
     top:0;
     z-index: 10;
 }
+
+
+
+/*-----------------OFFER AND Coupon CSS--------------------------*/
+.coupon {
+    margin-top: 40px;
+    border: 3px dashed #bcbcbc;
+    border-radius: 10px;
+    font-family: web-yekan , "YekanNumbers" , tahoma;
+}
+
+.coupon #head {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    min-height: 56px;
+}
+
+.coupon #footer {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#title .visible-xs {
+    font-size: 12px;
+}
+
+.coupon #title img {
+    font-size: 30px;
+    height: 30px;
+    margin-top: 5px;
+    float: left;
+}
+
+@media screen and (max-width: 500px) {
+    .coupon #title img {
+        height: 15px;
+    }
+}
+
+.coupon #title span {
+    float: right;
+    margin-top: 5px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.coupon-img {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 0;
+}
+
+.items {
+    margin: 15px 0;
+}
+
+.usd, .cents {
+    font-size: 20px;
+}
+
+.number {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+sup {
+    top: -15px;
+}
+
+#business-info ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+}
+
+#business-info ul li {
+    display: inline;
+    text-align: center;
+}
+
+#business-info ul li span {
+    text-decoration: none;
+    padding: .2em 1em;
+}
+
+#business-info ul li span i {
+    padding-right: 5px;
+}
+.coupon .items li{
+    padding: 5px 0;
+}
+.disclosure {
+    padding-top: 15px;
+    font-size: 11px;
+    color: #bcbcbc;
+    text-align: center;
+}
+
+.coupon-code {
+    color: #333333;
+    font-size: 12px;
+}
+
+.exp {
+    color: #f34235;
+}
+
+.print {
+    font-size: 14px;
+    float: right;
+}
+
+.shop-info.changeable .content{
+    display: none;
+}
+.shop-info.changeable .content:first-of-type{
+    display: inherit;
+}
+
+#carousel-special_offer .carousel-caption{
+    left: 10%;
+    right: 40%;
+    top: 10px;
+    text-shadow: none;
+    display: none;
+}
+#carousel-special_offer .carousel-caption .well{
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    padding: 10px;
+    margin: 0;
+}
+#carousel-special_offer .carousel-caption .well table{
+    color: #ffffff !important;
+}

@@ -1024,6 +1024,34 @@ $(document).ready(function(){
         $this.closest('.other-image').siblings('.image').find('img').attr('src', src);
     });
 
+    $('section.special-offer').hover(function(){
+        $('#carousel-special_offer').carousel('pause');
+    }, function(){
+        $('#carousel-special_offer').carousel('cycle');
+    })
+
+    $('#carousel-special_offer').on('slide.bs.carousel', function () {
+        var container = $('#carousel-special_offer');
+        var info_container = container.closest('.shop-banner').siblings('.shop-info-container');
+        info_container.find('.shop-info').find('.content.active').removeClass('active').fadeOut(300);
+    })
+
+    $('#carousel-special_offer').on('slid.bs.carousel', function () {
+        var container = $('#carousel-special_offer');
+        var key = container.find('.item.active').attr('data-key');
+        var info_container = container.closest('.shop-banner').siblings('.shop-info-container');
+        info_container.find('.shop-info').find('.content[data-related-slide='+key+']').addClass('active').fadeIn(200);
+    })
+
+    $('button#show_offer_coupons').click(function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var key = $this.closest('.content').attr('data-related-slide');
+        $('#carousel-special_offer').find('.item[data-key='+key+']').find('.carousel-caption').fadeToggle(300);
+    })
+
+
+
 });
 
 //--------------------------------------

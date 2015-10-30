@@ -16,7 +16,9 @@
 //    return view('welcome');
 //});
 Route::get('/','IndexController@index');
-
+Route::get('/coupon', function(){
+    return view('store.offer.coupon');
+});
 
 /**
  * Created by Emad Mirzaie on 02/09/2015.
