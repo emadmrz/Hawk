@@ -13,6 +13,7 @@
     @include('home.partials.biography')
     @if($role == 'legal')
         @include('home.partials.map')
+        {{--add offer view--}}
     @endif
     @include('home.partials.skill')
 @endsection

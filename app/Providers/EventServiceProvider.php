@@ -25,12 +25,18 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\questionnairePurchased' => [
             'App\Listeners\activeQuestionnaire',
         ],
+        'App\Events\offerPurchased' => [
+            'App\Listeners\updateOffer'
+        ],
+        'App\Events\couponPurchased' => [
+            'App\Listeners\updateCoupon'
+        ]
     ];
 
     /**
      * Register any other events for your application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @param  \Illuminate\Contracts\Events\Dispatcher $events
      * @return void
      */
     public function boot(DispatcherContract $events)

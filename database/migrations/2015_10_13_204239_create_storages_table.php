@@ -18,7 +18,6 @@ class CreateStoragesTable extends Migration
             $table->float('capacity');
             $table->integer('status')->unsigned();
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

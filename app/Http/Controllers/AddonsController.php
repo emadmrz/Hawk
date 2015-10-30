@@ -30,4 +30,14 @@ class AddonsController extends Controller
         return view('store.questionnaire.index', compact('user', 'questionnaires'))->with(['title'=>'مدیریت افزونه پرسشنامه']);
 
     }
+
+    /**
+     * Created By Dara on 20/10/2015
+     * offer management handling
+     */
+    public function offer(){
+        $user=Auth::user();
+        $offers=$user->offers()->latest()->get();
+        return view('store.offer.index',compact('offers','user'))->with(['title'=>'مدیریت افزونه پیشنهاد ویژه']);
+    }
 }
