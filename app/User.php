@@ -209,6 +209,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Questionnaire');
     }
 
+    /**
+     * Created by Ahmad Dara on 30/10/2015.
+     *
+     */
+    public function offers(){
+        return $this->hasMany('App\Offer');
+    }
+    public function coupon_gallery(){
+        return $this->hasMany('App\CouponGallery');
+    }
+    public function coupons(){
+        return $this->hasMany('App\Coupon');
+    }
+    public function coupon_user(){
+        return $this->hasMany('App\CouponUser');
+    }
+    
+    
+    /**
+     * Created by Emad Mirzaie on 30/10/2015.
+     *
+     */
     public function shop(){
         return $this->hasOne('App\Shop');
     }

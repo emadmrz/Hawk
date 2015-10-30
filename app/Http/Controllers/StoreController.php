@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Events\offerPurchased;
 use App\Addon;
 use App\Advertise;
 use App\Events\advertisePurchased;
@@ -350,6 +352,64 @@ class StoreController extends Controller
         return $advertises;
 
     }
+
+//    CONFLICTS SOLVE
+
+
+    /*
+     * Created By Dara on 19/10/2015
+     * special offers handling
+     */
+    public function offer()
+    {
+        $user = Auth::user();
+        return view('store.offer', compact('user'))->with(['title' => 'پیشنهاد ویژه']);
+    }
+
+    public function offerBuy(Request $request)
+    {
+        $user = Auth::user();
+        $this->validate($request, [
+            'payment_gate' => 'required|in:mellat,pasaragad'
+        ]);
+        $description = "پیشنهاد ویژه پروفایل";
+        $price = $this->offerPrice();
+        $callback = route('store.offer.buy.callback');
+        $offer = $user->offers()->create(['status'=>0]);
+        $order = $offer->payment()->create([
+            'user_id' => $user->id,
+            'amount' => $price,
+            'gateway' => $request->input('payment_gate'),
+            'description' => $description,
+            'status' => 0
+        ]);
+        $orderId = $order->id;
+        $this->pay($price, $callback, $orderId, $description, $request->input('payment_gate'));
+    }
+
+
+    public function offerCallback(Request $request)
+    {
+        $payment = Payment::findOrfail($request->input('order_id'));
+        $this->verify($request->input('au'), $payment->amount, $payment->gateway);
+        if(true){
+            $payment->update(['au' => $request->input('au')]); // tracking code
+            Event::fire(new offerPurchased($payment));
+            Flash::success('offer added successfully');
+            return redirect(route('store.index'));
+        }else{
+            Flash::error($this->errorCode($this->verify));
+            return redirect(route('store.offer'));
+        }
+    }
+
+    private function offerPrice()
+    {
+        return (Config::get('addonOffer.base_price') - config::get('addonOffer.base_price') * config::get('addonOffer.discount'));
+    }
+
+
+//    CONFLICTS SOLVE
 
     public function pay($amount,$callback,$orderId,$description,$gate){
         SoapWrapper::add(function ($service) {

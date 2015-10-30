@@ -777,7 +777,46 @@ $(document).ready(function(){
             params._token = $('input[name="_token"]').val();
             return params;
         }
-    })
+    });
+
+    $('#coupon_table_list a[data-editable]').editable({
+        url: '/profile/management/addon/offer/coupon/update',
+        title: 'ویرایش',
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    });
+
+    $("#coupon_table_list").on('click', 'button#delete_coupon', function(e){
+        e.preventDefault();
+        var $this=$(this);
+        var pk = $this.attr('data-value');
+        $.ajax({
+            data: {
+                id:pk,
+                _token:$('input[name="_token"]').val(),
+                _method: 'delete'
+            },
+            type: "post",
+            url: '/profile/management/offer/coupon',
+            beforeSend: function () {
+                $this.find('p').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                $this.find('p').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+            },
+            success: function (data) {
+                console.log(data)
+                $this.closest('tr').remove();
+            },
+            error: function (xhr) {
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    });
+
 
     $("#questionnaire_questions_list").on('click', 'a#delete_question', function(e){
         e.preventDefault();
@@ -1576,6 +1615,32 @@ function questionnaire_question_added(info){
             return params;
         }
     })
+}
+
+/*Created By Dara on 22/10/2015
+ add coupon callback function*/
+function service_coupon(info){
+    $('#coupon_table_list').find('tbody').html('');
+    var tr;
+
+    for(i=0;i<info.length;i++){
+        tr=$('<tr>');
+        tr.append('<td width="30%" ><a href="#" data-editable id="title" data-type="text" data-pk="'+info[i].id+'">' + info[i].title + '</a></td>');
+        tr.append('<td width="50%" ><a href="#" data-editable id="description" data-type="textarea" data-pk="'+info[i].id+'">' + info[i].description + '</a></td>');
+        tr.append('<td width="50%" ><a href="#" id="service" data-type="text" data-pk="'+info[i].id+'">'+info[i].coupon_gallery.title+'</a></td>');
+        tr.append('<td width="15%" ><a href="#" data-editable id="num" data-type="text" data-pk="'+info[i].id+'">'+info[i].num+'</a></td>');
+        tr.append('<td width="5%" ><button id="delete_coupon" data-value="'+info[i].id+'" type="button" class="btn btn-danger btn-xs " ><p class="fa fa-trash-o fa-lg" ></p></button></td>');
+        $('#coupon_table_list').find('tbody').append(tr);
+    }
+    $('#coupon_table_list a[data-editable]').editable({
+        url: '/profile/management/addon/offer/coupon/update',
+        title: 'ویرایش',
+        params: function(params) {
+            //originally params contain pk, name and value
+            params._token = $('input[name="_token"]').val();
+            return params;
+        }
+    });
 }
 
 function product_attribute_add(info){

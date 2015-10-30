@@ -25,6 +25,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\questionnairePurchased' => [
             'App\Listeners\activeQuestionnaire',
         ],
+        'App\Events\offerPurchased' => [
+            'App\Listeners\updateOffer'
+        ],
+        'App\Events\couponPurchased' => [
+            'App\Listeners\updateCoupon'
+        ],
         'App\Events\shopPurchased' => [
             'App\Listeners\activeShop',
         ],

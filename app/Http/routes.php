@@ -37,6 +37,14 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
 
     Route::get('/profile/{profile}/poll/{poll}/preview',['as'=>'poll.preview', 'uses'=>'PollController@preview']);
     Route::post('/poll/{poll}/preview',['as'=>'poll.vote', 'uses'=>'PollController@vote']);
+
+    /**
+     * Created By Dara on 27/10/2015
+     * offer handling
+     */
+    Route::get('/profile/{profile}/offer/{offer}/coupon/{coupon}/buy',['as'=>'profile.offer.coupon.buy','uses'=>'CouponController@buy']);
+    Route::any('/profile/offer/coupon/buy/callback',['as'=>'profile.offer.coupon.callback','uses'=>'CouponController@callback']);
+
     Route::get('/profile/{profile}/questionnaire/{questionnaire}/preview',['as'=>'questionnaire.preview', 'uses'=>'QuestionnaireController@preview']);
     Route::post('/questionnaire/{questionnaire}/tick',['as'=>'questionnaire.tick', 'uses'=>'questionnaireController@tick']);
     Route::get('/profile/{profile}/questionnaire/{questionnaire}/result',['as'=>'questionnaire.result', 'uses'=>'questionnaireController@result']);
@@ -82,6 +90,7 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::post('/article/{article}/comment',['as'=>'article.comment.add', 'uses'=>'CommentController@article']);
     Route::post('/article/{article}/like',['as'=>'article.like.add', 'uses'=>'ArticleController@like']);
 
+    Route::get('/coupon/{coupon_user}/preview',['as'=>'coupon.preview','uses'=>'CouponController@preview']);
 
 
     Route::post('/location',['as'=>'location.store', 'uses'=>'LocationController@store']);
@@ -184,6 +193,20 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::group(['prefix' => 'management', 'as'=>'management.'], function () {
         Route::get('/accountant',['as'=>'accountant', 'uses'=>'PaymentController@index']);
         Route::get('/addon/storage',['as'=>'addon.storage', 'uses'=>'AddonsController@storage']);
+
+        /**
+         * Created By Dara on 20/10/2015
+         * handling offer management routes
+         */
+        Route::get('/addon/offer',['as'=>'addon.offer','uses'=>'AddonsController@offer']);
+        Route::post('/addon/offer/create',['as'=>'addon.offer.create','uses'=>'OfferController@create']);
+        Route::get('/addon/offer/{offer}/edit',['as'=>'addon.offer.edit','uses'=>'OfferController@edit']);
+        Route::post('/addon/offer/{offer}/edit/service/create',['as'=>'addon.offer.service.create','uses'=>'OfferController@create']);
+        Route::post('/addon/offer/{offer}/coupon/create',['as'=>'addon.offer.service.coupon.create','uses'=>'CouponController@create']);
+        Route::post('/addon/offer/coupon/update',['as'=>'addon.offer.coupon.update','uses'=>'CouponController@update']);
+        Route::delete('/offer/coupon','CouponController@delete');
+        Route::get('/addon/offer/coupons/sold',['as'=>'addon.offer.coupons.list','uses'=>'CouponController@soldCoupons']);
+        Route::post('/addon/offer/coupon/sold','CouponController@sold');
 
         Route::get('/addon/poll',['as'=>'addon.poll', 'uses'=>'AddonsController@poll']);
         Route::post('/addon/poll/parameter/update',['as'=>'addon.poll.parameter.update', 'uses'=>'pollController@parameterUpdate']);
@@ -375,6 +398,14 @@ Route::group(['prefix' => 'store', 'as'=>'store.'], function () {
     Route::get('storage/buy',['as'=>'storage.buy', 'uses'=>'StoreController@storageBuy']);
     Route::any('storage/buy/callback',['as'=>'storage.buy.callback', 'uses'=>'StoreController@storageCallback']);
     Route::any('storage/comment',['as'=>'storage.comment', 'uses'=>'CommentController@storage']);
+
+    /**
+     * Created By Dara on 19/10/2015
+     * special offer handling routes
+     */
+    Route::get('offer',['as'=>'offer','uses'=>'StoreController@offer']);
+    Route::get('offer/buy',['as'=>'offer.buy','uses'=>'StoreController@offerBuy']);
+    Route::any('offer/buy/callback',['as'=>'offer.buy.callback','uses'=>'StoreController@offerCallback']);
 
     Route::get('poll',['as'=>'poll', 'uses'=>'StoreController@poll']);
     Route::post('poll/price','StoreController@pollPriceCalculator');

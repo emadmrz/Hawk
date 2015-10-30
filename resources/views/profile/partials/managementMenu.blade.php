@@ -7,7 +7,7 @@
                 <li class="{{ (strpos(URL::current(),route('profile.management.addon.storage')) !== false) ? 'active' : '' }}"><i class="fa fa-database" ></i><a href="{{ route('profile.management.addon.storage') }}" class="">مدیریت افزونه افزایش حجم</a></li>
                 <li class="{{ (strpos(URL::current(),route('profile.management.addon.poll')) !== false) ? 'active' : '' }}"><i class="fa fa-bar-chart-o" ></i><a href="{{ route('profile.management.addon.poll') }}" class="">مدیریت افزونه نظر سنجی</a></li>
                 <li class="{{ (strpos(URL::current(),route('profile.management.addon.shop')) !== false) ? 'active' : '' }}"><i class="fa fa-shopping-cart" ></i><a href="{{ route('profile.management.addon.shop') }}">مدیریت افزونه فروشگاه</a></li>
-                <li><i class="fa fa-diamond" ></i><a class="">مدیریت افزونه پیشنهاد ویژه</a></li>
+                <li class="{{ (strpos(URL::current(),route('profile.management.addon.offer')) !== false) ? 'active' : '' }}"><i class="fa fa-diamond" ></i><a href="{{ route('profile.management.addon.offer') }}" class="">مدیریت افزونه پیشنهاد ویژه</a></li>
                 <li><i class="fa fa-user-secret" ></i><a class="">مدیریت افزونه تبلیغ پروفایل ها</a></li>
                 <li class="{{ (strpos(URL::current(),route('profile.management.addon.advertise')) !== false) ? 'active' : '' }}"><i class="fa fa-flag-checkered" ></i><a href="{{ route('profile.management.addon.advertise') }}" class="">مدیریت افزونه تبلیغ در صفحه اول</a></li>
                 <li><i class="fa fa-rocket" ></i><a class="">مدیریت افزونه افزایش رتبه جستجو</a></li>

@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Coupon;
+use App\CouponGallery;
+use App\Offer;
 use App\User;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -58,6 +61,19 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('comment' , 'App\Comment');
         $router->model('poll' , 'App\Poll');
         $router->model('questionnaire' , 'App\Questionnaire');
+        $router->model('coupon_user' , 'App\CouponUser');
+        /**
+         * Created By Dara on 22/10/2015
+         */
+        $router->bind('offer',function($value){
+            return Offer::findOrFail($value);
+        });
+        $router->bind('service',function($value){
+           return CouponGallery::findOrFail($value);
+        });
+        $router->bind('coupon',function($value){
+           return Coupon::findOrFail($value);
+        });
         $router->model('shop' , 'App\Shop');
         $router->model('product' , 'App\Product');
 
