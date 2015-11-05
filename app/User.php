@@ -225,7 +225,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function coupon_user(){
         return $this->hasMany('App\CouponUser');
     }
-    
+
+    public function groups(){
+        return $this->belongsToMany('App\Group')->withTimestamps();
+    }
+    public function groupis(){
+        return $this->hasMany('App\Group');
+    }
     
     /**
      * Created by Emad Mirzaie on 30/10/2015.
@@ -246,6 +252,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function advertises(){
         return $this->hasMany('App\Advertise');
+    }
+
+    /*public function parents()
+    {
+        return $this->morphMany('App\Post', 'parentable');
+    }*/
+
+    public function problems(){
+        return $this->hasMany('App\Problem');
     }
 
 

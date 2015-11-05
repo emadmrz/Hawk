@@ -24,7 +24,7 @@ class Stream extends Model
         return $query->where('is_see', 0);
     }
     public function scopeNotifier($query){
-        $acceptable = ['App\Post', 'App\Article', 'App\Endorse','App\Recommendation', 'App\Comment'];
+        $acceptable = ['App\Post', 'App\Article', 'App\Endorse','App\Recommendation', 'App\Comment','App\Problem'];
         return $query->whereIn('contentable_type', $acceptable);
     }
 }

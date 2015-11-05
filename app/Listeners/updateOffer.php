@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Addon;
 use App\Events\offerPurchased;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,5 +33,6 @@ class updateOffer
         $offer=$payment->itemable;
         $payment->update(['status'=>1]);
         $offer->update(['status'=>1]);
+        Addon::offer()->first()->buy();
     }
 }

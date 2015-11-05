@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Laracasts\Flash\Flash;
+use Morilog\Jalali\jDate;
 
 class CouponController extends Controller
 {
@@ -32,15 +33,18 @@ class CouponController extends Controller
     {
         $user = Auth::user();
         $coupons = $user->coupons()->lists('id');
-        $coupon_user = CouponUser::whereIn('coupon_id', $coupons)->where('status', '=', 1)->get();
+        $coupon_user = CouponUser::whereIn('coupon_id', $coupons)->where('status', '!=', 0)->get();
         return view('store.offer.soldCouponsPreview',compact('user','coupon_user'))->with(['title'=>'مدیریت کوپن های خریداری شده']);
     }
 
     public function create(Request $request, Offer $offer)
     {
+        if ($request->user()->cannot('edit-offer', [$offer])) {
+            abort(403);
+        }
         $this->validate($request, [
             'offer' => 'required|integer',
-            'num' => 'required|integer',
+            'num' => 'required|integer|min:1',
             'title' => 'required|min:3',
             'description' => 'required|min:3',
             'real_amount' => 'required|integer',
@@ -48,6 +52,11 @@ class CouponController extends Controller
         ]);
         $user = Auth::user();
         $input = $request->all();
+        //check if the service is valid or not
+        $service=CouponGallery::where('id',$input['offer'])->firstOrFail();
+        if($service->expired_at<Carbon::now()){
+            abort(403);
+        }
         $coupon = $user->coupons()->create([
             'offer_id' => $offer->id,
             'coupon_gallery_id' => $input['offer'],
@@ -79,26 +88,30 @@ class CouponController extends Controller
 
     public function buy(User $profile, Offer $offer, Coupon $coupon, Request $request)
     {
-        //validate coupon
-        $user = Auth::user();
-        $price = $coupon->pay_amount;
-        $description = "خرید کوپن";
-        $gate = "mellat";
-        $callback = route('home.profile.offer.coupon.callback');
-        $couponUser = $user->coupon_user()->create([
-            'coupon_id' => $coupon->id,
-            'status' => 0
-        ]);
-        $order = $couponUser->payment()->create([
-            'user_id' => $user->id,
-            'amount' => $price,
-            'gateway' => $gate,
-            'description' => $description,
-            'status' => 0
-        ]);
-        $orderId = $order->id;
-        $this->storeController->pay($price, $callback, $orderId, $description, $gate);
-
+        if($coupon->valid && $coupon->valid_num){
+            //the coupon is valid and ready to be bought
+            $user = Auth::user();
+            $price = $coupon->pay_amount;
+            $description = "خرید کوپن";
+            $gate = "mellat";
+            $callback = route('home.profile.offer.coupon.callback');
+            $couponUser = $user->coupon_user()->create([
+                'coupon_id' => $coupon->id,
+                'status' => 0
+            ]);
+            $order = $couponUser->payment()->create([
+                'user_id' => $user->id,
+                'amount' => $price,
+                'gateway' => $gate,
+                'description' => $description,
+                'status' => 0
+            ]);
+            $orderId = $order->id;
+            $this->storeController->pay($price, $callback, $orderId, $description, $gate);
+        }else{
+            Flash::error(trans('messages.couponExpired'));
+            return redirect()->back();
+        }
     }
 
     public function callback(Request $request)
@@ -118,50 +131,45 @@ class CouponController extends Controller
 
     public function preview(CouponUser $couponUser)
     {
-        return view('store.offer.couponPreview', compact('couponUser'));
+        return view('store.offer.coupon', compact('couponUser'));
     }
 
-    public function sold(Request $request)
+    public function sold(CouponUser $couponUser,Request $request)
     {
         $user = Auth::user();
         $input = $request->all();
-        $id = $input['coupon_user_id'];
         $trackingCode = $input['tracking_code'];
         $legalCode = $input['legal_code'];
-        $couponUser = CouponUser::where('id', $id)
-            ->where('legal_code', $legalCode)
-            ->where('tracking_code', $trackingCode)
-            ->where('status', 1)->firstOrFail();
-        $coupon = $couponUser->coupon()->firstOrFail();
-        //check if the user is the owner of the coupon
-        if ($coupon->user_id == $user->id) {
-            $stat = true;
-        } else {
-            $stat = false;
-        }
-        if ($coupon && $stat) {
-            //the coupon is found
-            $service = $coupon->coupon_gallery()->firstOrFail();
-            if ($service->expired_at >= Carbon::now()) {
-                //the coupon is valid and ready to use
-                $couponUser->update(['status', 2]);
+        //check the information of the coupon
+        if($couponUser->tracking_code==$trackingCode && $couponUser->legal_code==$legalCode){
+            //the coupon info is correct
+            //check if him/her is the owner of the coupon(offer)
+            $coupon=$couponUser->coupon;
+            if($coupon->user_id==$user->id){
+                //the owner is correct and can continue
+                $couponUser->update(['status'=>2]);
                 return [
-                    'status' => 'done',
-                    'msg' => 'کوپن موردنظر با موفقیت استفاده گردید'
+                    'hasCallback'=>1,
+                    'callback'=>'coupon_sold',
+                    'hasMsg'=>0,
+                    'msg'=>'',
+                    'msgType'=>'',
+                    'returns'=> [
+                        'status'=>'done',
+                        'date'=>jDate::forge(Carbon::now())->format('Y/m/d')
+                    ]
                 ];
-            } else {
-                //the coupon is expired and cant be used
-                return [
-                    'status' => 'error',
-                    'msg' => 'مهلت استفاده از کوپن پایان یافته است'
-                ];
+            }else{
+                //the owner is wrong
             }
-        } else {
-            return [
-                'status' => 'error',
-                'msg' => 'اطلاعات کوپن صحیح نمی باشد .'
-            ];
+        }else{
+            //the coupon info is wrong
         }
+    }
 
+    public function boughtList(){
+        $user=Auth::user();
+        $coupons=$user->coupon_user()->get();
+        return view('profile.boughtCoupons',compact('coupons','user'))->with(['title'=>'کوپن های خریداری شده']);
     }
 }

@@ -6,6 +6,7 @@ use App\Addon;
 use App\Article;
 use App\Comment;
 use App\Post;
+use App\Problem;
 use App\Product;
 use App\Shop;
 use App\Storage;
@@ -142,6 +143,137 @@ class CommentController extends Controller
         $advertise->update(['num_comment'=>$advertise->comments()->count()]);
         Flash::success('comment sent');
         return redirect()->back();
+    }
+
+    /**
+     * Created By Dara on 5/11/2015
+     * manage the offer addon comment
+     */
+    public function offer(Request $request){
+        $user=Auth::user();
+        $offer=Addon::offer()->first();
+        $offer->comments()->create([
+           'user_id'=>$user->id,
+            'body'=>$request->input('body')
+        ]);
+        $offer->update(['num_comment'=>$offer->comments()->count()]);
+        Flash::success('comment sent');
+        return redirect()->back();
+    }
+
+    /**
+     * Created By Dara on 2/11/2015
+     * problem comment handling
+     */
+    public function problemDelete(Request $request,Problem $problem, Comment $comment){
+        if ($request->user()->cannot('delete-problem-comment', [$problem, $comment])) {
+            abort(403);
+        }
+        $comment->delete();
+        $num_comments = $problem->comments()->count();
+        $problem->update(['num_comment'=>$num_comments]);
+        return [
+            'hasCallback'=>1,
+            'callback'=>'post_comment_delete',
+            'hasMsg'=>0,
+            'msg'=>'',
+            'msgType'=>'',
+            'returns'=> [
+                'num_comments'=>$num_comments
+            ]
+        ];
+    }
+
+    public function problemUpdate(Request $request,Problem $problem, Comment $comment){
+        $comment->update(['body'=>$request->input('value')]);
+    }
+
+    public function problem(Request $request,Problem $problem){
+        $group=$problem->parentable;
+        if ($request->user()->cannot('is-member', [$group])) {
+            abort(403);
+        }
+        $user = Auth::user();
+        $comment = $problem->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $num_comments = $problem->comments()->count();
+        $problem->update(['num_comment'=>$num_comments]);
+        $this->groupStream($comment);
+        return [
+            'hasCallback'=>1,
+            'callback'=>'post_comment',
+            'hasMsg'=>0,
+            'msg'=>'',
+            'msgType'=>'',
+            'returns'=> [
+                'new_comment'=> view('partials.problemComment', compact('user','comment','problem'))->render(),
+                'num_comments'=>$num_comments
+            ]
+        ];
+    }
+
+    public function postGroup(Request $request,Post $post){
+        $group=$post->parentable;
+        if ($request->user()->cannot('is-member', [$group])) {
+            abort(403);
+        }
+        $user = Auth::user();
+        $comment = $post->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $num_comments = $post->comments()->count();
+        $post->update(['num_comment'=>$num_comments]);
+        $this->groupStream($comment);
+        return [
+            'hasCallback'=>1,
+            'callback'=>'post_comment',
+            'hasMsg'=>0,
+            'msg'=>'',
+            'msgType'=>'',
+            'returns'=> [
+                'new_comment'=> view('partials.postComment', compact('user','comment','problem'))->render(),
+                'num_comments'=>$num_comments
+            ]
+        ];
+    }
+
+    public function postGroupDelete(Request $request,Post $post, Comment $comment){
+        if ($request->user()->cannot('delete-problem-comment', [$post, $comment])) {
+            abort(403);
+        }
+        $comment->delete();
+        $num_comments = $post->comments()->count();
+        $post->update(['num_comment'=>$num_comments]);
+        return [
+            'hasCallback'=>1,
+            'callback'=>'post_comment_delete',
+            'hasMsg'=>0,
+            'msg'=>'',
+            'msgType'=>'',
+            'returns'=> [
+                'num_comments'=>$num_comments
+            ]
+        ];
+    }
+
+    public function postGroupUpdate(Request $request,Problem $problem, Comment $comment){
+        if ($request->user()->cannot('update-post-comment', $comment)) {
+            abort(403);
+        }
+        $comment->update(['body'=>$request->input('value')]);
+    }
+
+    private function groupStream(Comment $comment){
+        $user = Auth::user();
+        $owner = $comment->commentable->user;
+        if($user->id != $owner->id){
+            Stream::create([
+                'user_id'=> $owner->id,
+                'edge_ranke'=> 0,
+                'contentable_id'=> $comment->id,
+                'contentable_type'=> 'App\Comment',
+                'parentable_id'=>$user->id,
+                'parentable_type'=>'App\Group',
+                'is_see'=>0
+            ]);
+        }
     }
 
 }

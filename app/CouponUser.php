@@ -28,4 +28,6 @@ class CouponUser extends Model
         $expired_at=$service->expired_at;
         return jDate::forge($expired_at)->format('Y/m/d');
     }
+
+
 }

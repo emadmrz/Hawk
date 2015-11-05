@@ -3192,3 +3192,8 @@ sup {
 #carousel-special_offer .carousel-caption .well table{
     color: #ffffff !important;
 }
+
+/*added by Dara*/
+.hide-me{
+    display: none;
+}

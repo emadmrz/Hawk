@@ -2,6 +2,7 @@
 
 @section('side')
     @include('profile.partials.managementMenu')
+    @include('store.offer.partials.offerManagementMenu')
 @endsection
 
 @section('content')
@@ -37,7 +38,7 @@
                             <td>{{$coupon->tracking_code}}</td>
                             <td>{{$coupon->shamsi_updated_at}}</td>
                             <td>{{$coupon->expired_at}}</td>
-                            <td>
+                            <td class="status">
                                 @if($coupon->status==2)
                                     <span class="label label-success">تسویه شده</span>
                                 @elseif($coupon->status==1)
@@ -45,8 +46,15 @@
                                 @endif
                             </td>
                             <td>
-                                <input type="text" class="form-control">
-                                <button type="submit" class="btn btn-success btn-sm">تایید</button>
+                                @if($coupon->status==1)
+                                {!! Form::open(['action'=>['CouponController@sold',$coupon->id],'data-remote-multiple']) !!}
+                                <input type="text" name="legal_code" class="form-control">
+                                <input type="hidden" value="{{$coupon->tracking_code}}" name="tracking_code" class="form-control">
+                                <button type="submit" class="btn btn-success btn-xs"><i class="fa fa-money fa-lg"></i></button>
+                                {!! Form::close() !!}
+                                @else
+                                    {{$coupon->shamsi_updated_at}}
+                                @endif
                             </td>
                         </tr>
                     @endforeach

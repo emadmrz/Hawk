@@ -1,7 +1,7 @@
 @extends('profile.layout')
 
 @section('content')
-    @include('profile.partials.post')
+    @include('profile.partials.post',['route'=>'user']);
     @include('profile.partials.info')
     @role('user')
         @include('profile.partials.education')

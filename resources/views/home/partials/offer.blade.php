@@ -1,4 +1,4 @@
-    <section class="shop special-offer">
+<section class="shop special-offer">
 
         <div class="">
             <div class="row">
@@ -8,32 +8,18 @@
                     <div class="shop-info-container">
 
                         <div class="shop-info changeable " >
-
-                            <div class="content active" data-related-slide="0">
-                                <h3 class="text-center">کوپن فلان</h3>
-                                <!--<div class="description">-->
-                                <!--با توجه به توسعه روز افزون اینترنت، روشهای خرید به کلی دگرگون شده است و جامعه به سمت خریداینترنتی محصول سوق پیدا کرده که این موضوع دارای مزیتهایی بسیاری می باشد.-->
-                                <!--</div>-->
+                            @foreach($user->coupon_gallery()->valid()->get() as $key=>$coupon)
+                            <div class="content @if($key==0) active @endif" data-related-slide="{{$key}}">
+                                <h3 class="text-center">{{$coupon->title}}</h3>
                                 <ul class="info-box">
-                                    <li><i class="fa icon-shopping-basket fa-lg"></i>  صنایع دستی ، سوغاتی ، کالاهای فرهنگی</li>
+                                    <li><i class="fa icon-shopping-basket fa-lg"></i>{{$coupon->title}}</li>
+                                    <li>{{$coupon->description}}</li>
                                 </ul>
                                 <div class="text-center enter-shop">
                                     <button id="show_offer_coupons" class="btn btn-default">مشاهده کوپن ها</button>
                                 </div>
                             </div>
-
-                            <div class="content" data-related-slide="1">
-                                <h3 class="text-center">کوپن فلان</h3>
-                                <!--<div class="description">-->
-                                <!--با توجه به توسعه روز افزون اینترنت، روشهای خرید به کلی دگرگون شده است و جامعه به سمت خریداینترنتی محصول سوق پیدا کرده که این موضوع دارای مزیتهایی بسیاری می باشد.-->
-                                <!--</div>-->
-                                <ul class="info-box">
-                                    <li><i class="fa icon-shopping-basket fa-lg"></i>گردشگران علمی و فرهنگی</li>
-                                </ul>
-                                <div class="text-center enter-shop">
-                                    <button id="show_offer_coupons" class="btn btn-default">مشاهده کوپن ها</button>
-                                </div>
-                            </div>
+                                @endforeach
 
                         </div>
 
@@ -44,34 +30,39 @@
                         <div id="carousel-special_offer" class="carousel slide" data-ride="carousel">
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
+                                    @foreach($user->coupon_gallery()->valid()->get() as $key=>$coupon)
+                                    <li data-target="#carousel-special_offer" data-slide-to="{{$key}}" class="@if($key==0) active @endif" ></li>
 
-                                    <li data-target="#carousel-special_offer" data-slide-to="0" class="active" ></li>
-                                    <li data-target="#carousel-special_offer" data-slide-to="1" ></li>
+                                        @endforeach
 
                             </ol>
 
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner" role="listbox">
-
-                                <div class="item active " data-key="0" >
-                                    <img src="http://i.imgur.com/e07tg8R.png" alt="...">
+                                @foreach($user->coupon_gallery()->valid()->get() as $key=>$coupon)
+                                <div class="item @if($key==0) active @endif " data-key="{{$key}}" >
+                                    <img class="img-responsive" src="{{asset('img/files/')}}/{{$coupon->image}}" alt="...">
                                     <div class="carousel-caption">
                                         <div class="well">
                                             <table class="table" style="color: #333">
                                                 <thead>
+
                                                     <tr>
                                                         <th>ارزش کوپن</th>
                                                         <th>قیمت برای شما</th>
                                                         <th>تاریخ انقضاء</th>
-                                                        <th></th>
+                                                        <th>عملیات</th>
                                                     </tr>
+
                                                 </thead>
+                                                @foreach($coupon->coupons()->validnum()->get() as $msc)
                                                     <tr>
-                                                        <td>25,000 تومان</td>
-                                                        <td>20,000 تومان</td>
-                                                        <td>5 روز دیگر</td>
-                                                        <td><a href="#" class="btn btn-xs btn-success" >خرید کوپن</a></td>
+                                                        <td> {{$msc->real_amount}} <span>تومان</span></td>
+                                                        <td> {{$msc->pay_amount}} <span>تومان</span></td>
+                                                        <td> {{$msc->diff_expired_at}}<span>دیگر</span></td>
+                                                        <td><a href="{{route('home.profile.offer.coupon.buy',[$user->id,$coupon->offer->id,$msc->id])}}" class="btn btn-xs btn-success" >خرید کوپن</a></td>
                                                     </tr>
+                                                @endforeach
                                                 <tbody>
 
                                                 </tbody>
@@ -80,32 +71,8 @@
                                     </div>
                                 </div>
 
-                                <div class="item" data-key="1">
-                                    <img src="http://i.imgur.com/e07tg8R.png" alt="...">
-                                    <div class="carousel-caption">
-                                        <div class="well">
-                                            <table class="table" style="color: #333">
-                                                <thead>
-                                                <tr>
-                                                    <th>ارزش کوپن</th>
-                                                    <th>قیمت برای شما</th>
-                                                    <th>تاریخ انقضاء</th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tr>
-                                                    <td>25,000 تومان</td>
-                                                    <td>20,000 تومان</td>
-                                                    <td>5 روز دیگر</td>
-                                                    <td><a href="#" class="btn btn-xs btn-success" >خرید کوپن</a></td>
-                                                </tr>
-                                                <tbody>
 
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                                    @endforeach
 
                             </div>
 

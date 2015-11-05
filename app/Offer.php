@@ -33,8 +33,9 @@ class Offer extends Model
 
     }
     public function scopeValid($query){
-        $created_at=$this->attributes['created_at'];
-        $expired_at=Carbon::parse($created_at)->addMonth(1);
-        $query->where($expired_at,'>=',Carbon::now());
+        $created_at=$this->created_at;
+        $expired_at=Carbon::parse($created_at)->subMonth(1);
+        $query->where('created_at','>=',$expired_at);
     }
+
 }
