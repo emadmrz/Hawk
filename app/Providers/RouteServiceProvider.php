@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Coupon;
 use App\CouponGallery;
+use App\Group;
 use App\Offer;
+use App\Problem;
 use App\User;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -73,6 +75,12 @@ class RouteServiceProvider extends ServiceProvider
         });
         $router->bind('coupon',function($value){
            return Coupon::findOrFail($value);
+        });
+        $router->bind('group',function($value){
+            return Group::findOrFail($value);
+        });
+        $router->bind('problem',function($value){
+            return Problem::findOrFail($value);
         });
         $router->model('shop' , 'App\Shop');
         $router->model('product' , 'App\Product');

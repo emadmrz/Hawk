@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\Facades\jDate;
 
 class Coupon extends Model
 {
@@ -28,5 +30,41 @@ class Coupon extends Model
 
     public function sold(){
         $this->decrement('num');
+    }
+
+    /**
+     * Created By Dara on 30/10/2015
+     * get the expired_at diff for humans & shamsi
+     */
+    public function getDiffExpiredAtAttribute(){
+        $coupon=CouponGallery::where('id',$this->attributes['coupon_gallery_id'])->firstOrFail();
+        $expired_at=$coupon->expired_at;
+        return jDate::forge($expired_at)->ago();
+    }
+
+    /**
+     * Created By Dara on 30/10/2015
+     * check if the coupon is valid or not by expired_at
+     */
+    public function  getValidAttribute(){
+        $coupon=CouponGallery::where('id',$this->attributes['coupon_gallery_id'])->firstOrFail();
+        $expired_at=$coupon->expired_at;
+        if($expired_at>=Carbon::now()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getValidNumAttribute(){
+        if($this->num>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function scopeValidnum($query){
+        return $query->where('num','>',0);
     }
 }

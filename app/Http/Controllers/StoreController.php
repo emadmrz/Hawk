@@ -363,7 +363,8 @@ class StoreController extends Controller
     public function offer()
     {
         $user = Auth::user();
-        return view('store.offer', compact('user'))->with(['title' => 'پیشنهاد ویژه']);
+        $offer = Addon::offer()->first();
+        return view('store.offer', compact('user','offer'))->with(['title' => 'پیشنهاد ویژه']);
     }
 
     public function offerBuy(Request $request)
@@ -395,6 +396,7 @@ class StoreController extends Controller
         if(true){
             $payment->update(['au' => $request->input('au')]); // tracking code
             Event::fire(new offerPurchased($payment));
+            $this->stream($payment);
             Flash::success('offer added successfully');
             return redirect(route('store.index'));
         }else{

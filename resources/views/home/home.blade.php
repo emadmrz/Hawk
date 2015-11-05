@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-    @include('profile.partials.post')
+    @include('profile.partials.post',['route'=>'user'])
     @foreach($feeds as $feed)
         {!! $feed !!}
     @endforeach

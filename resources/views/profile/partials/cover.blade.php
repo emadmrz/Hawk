@@ -79,6 +79,9 @@
                         @if($user->advertises)
                             <li><a href="{{ route('profile.management.addon.advertise') }}" ><i class="fa fa-flag-checkered fa-1x"></i>افزونه تبلیغات در صفحه اول</a></li>
                         @endif
+                        @if($user->offers)
+                            <li><a href="{{ route('profile.management.addon.offer') }}" ><i class="fa fa-flag-checkered fa-1x"></i>افزونه پیشنهاد ویژه</a></li>
+                        @endif
                     </ul>
                 </li>
             </ul>

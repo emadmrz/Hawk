@@ -109,16 +109,17 @@
             <div class="col-sm-3">
                 <div class="col-item">
                     <div class="photo">
-                        <img src="{{ asset('img/icons/store/special-offer-tag_23-2147500541.jpg') }}" class="img-responsive" alt="a" />
+                        <img src="{{ asset('img/icons/store/'.Config::get('addonOffer.banner')) }}" class="img-responsive" alt="a" />
                         <div class="name">افزونه پیشنهاد ویژه برای فروش</div>
                         <!--<div class="discount">50% تخفیف  <br><del>40,000 تومان</del></div>-->
                     </div>
                     <div class="info">
                         <div class="row">
                             <div class="price col-md-6">
-                                <h5>پیشنهاد ویژه</h5>
+                                <h5>{{Config::get('addonOffer.title')}}</h5>
                                 <h5 class="price-text-color">
-                                    30,000 تومان</h5>
+                                    {{number_format(Config::get('addonOffer.base_price'))}} تومان
+                                </h5>
                             </div>
                             <div class="rating hidden-sm col-md-6">
                                 <div class="service-rate ltr" data-id="1" data-rating="2.2"></div>
@@ -126,9 +127,9 @@
                         </div>
                         <div class="separator clear-left">
                             <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">خرید افزونه</a></p>
+                                <i class="fa fa-shopping-cart"></i><a href="{{route('store.offer')}}" class="hidden-sm">خرید افزونه</a></p>
                             <p class="btn-details">
-                                <i class="fa fa-list"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm"> جزئیات بیشتر </a></p>
+                                <i class="fa fa-list"></i><a href="{{route('store.offer')}}" class="hidden-sm"> جزئیات بیشتر </a></p>
                         </div>
                         <div class="clearfix">
                         </div>

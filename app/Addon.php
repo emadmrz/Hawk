@@ -42,4 +42,8 @@ class Addon extends Model
         $query->where('name', 'advertise');
     }
 
+    public function scopeOffer($query){
+        $query->where('name','offer');
+    }
+
 }

@@ -19,7 +19,7 @@
             <div class="show-item">
                 <div class="col-sm-4 pull-right">
                     <div class="image">
-                        <img src="{{ asset('img/icons/store/'.Config::get('addonOffer.images')[0]) }}">
+                        <img src="{{ asset('img/icons/store/'.Config::get('addonOffer.banner')) }}">
                     </div>
                     <div class="other-image">
                         <ul class="row">
@@ -34,8 +34,8 @@
                     <div class="title">
                         <h3>افزونه پیشنهاد ویژه</h3>
                         <ul class="info">
-                            <li><i class="fa fa-shopping-cart fa-lg" ></i><span> 5 خرید از افزونه </span> </li>
-                            <li><i class="fa fa-comments-o fa-lg" ></i><span> 32 دیدگاه </span> </li>
+                            <li><i class="fa fa-shopping-cart fa-lg" ></i><span>{{$offer->num_buy}} <span>خرید از افزونه</span></span> </li>
+                            <li><i class="fa fa-comments-o fa-lg" ></i><span>{{$offer->num_comment}} <span>دیدگاه</span></span> </li>
                             <li class="rate" ><div class="item-rate ltr" data-id="1" data-rating="3.5" ></div></li>
                         </ul>
                     </div>
@@ -73,6 +73,49 @@
                     </div>
                     {!! Form::close() !!}
                 </div>
+                <div class="col-sm-8">
+                    <div class="comment-list">
+                        @if(Auth::check())
+                            <div class="new-comment">
+
+                                {!! Form::open(['route'=>['store.offer.comment'], 'method'=>'post']) !!}
+                                <div class="media">
+                                    <div class="media-right">
+                                        <a href="#">
+                                            <img class="media-object" src="{{asset('img/persons/'.$user->avatar)}}" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <textarea name="body" placeholder="شما هم میتوانید نظر خود را درباره این افزونه بیان نمایید ."></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-violet btn-sm"><i class="fa fa-paper-plane-o"></i> ثبت دیدگاه </button>
+                                {!! Form::close() !!}<hr>
+
+                            </div>
+                        @endif
+                        <div class="comments">
+
+                            @foreach($offer->comments()->latest()->get() as $comment)
+                                <div class="media">
+                                    <div class="media-right">
+                                        <a href="{{ route('home.profile', $comment->user_id) }}">
+                                            <img class="media-object" src="{{asset('img/persons/'.$comment->user->avatar)}}" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><a href="{{ route('home.profile', $comment->user_id) }}">{{ $comment->user->username }}</a><span class="info">{{ $comment->shamsi_human_created_at }}</span></h5>
+                                        <p>{{ $comment->body }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
 
         </div>

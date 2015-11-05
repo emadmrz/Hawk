@@ -12,12 +12,15 @@ namespace App\Repositories;
 use App\Article;
 use App\Endorse;
 use App\Friend;
+use App\Group;
 use App\Poll;
 use App\Post;
+use App\Problem;
 use App\Questionnaire;
 use App\Recommendation;
 use App\Shop;
 use App\Storage;
+use App\Stream;
 use Illuminate\Support\Facades\Auth;
 
 class StreamRepository {
@@ -25,7 +28,7 @@ class StreamRepository {
 
     public function feed(){
         $user = Auth::user();
-        foreach($user->streams()->latest()->get() as $stream){
+        foreach($user->streams()->latest()->where('parentable_type','App\User')->get() as $stream){
             if($stream->contentable_type == 'App\Post'){
                 $this->feed[] = $this->post($stream->contentable);
             }elseif($stream->contentable_type == 'App\Friend'){
@@ -46,7 +49,26 @@ class StreamRepository {
                     $this->feed[] = $this->questionnaire($payment->itemable);
                 }elseif($payment->itemable_type == 'App\Shop'){
                     $this->feed[] = $this->shop($payment->itemable);
+                }elseif($payment->itemable_tyoe=='App\Offer'){
+                    $this->feed[]=$this->offer($payment->itemable);
                 }
+            }
+        }
+        return $this->feed;
+    }
+
+    public function group($group){
+        $user=Auth::user();
+        $streams = Stream::where('parentable_type','App\Group')
+            ->where('parentable_id', $group->id)
+            ->where('user_id',$user->id)
+            ->latest()
+            ->get();
+        foreach($streams as $stream){
+            if($stream->contentable_type == 'App\Post'){
+                $this->feed[] = $this->postGroup($stream->contentable);
+            }elseif($stream->contentable_type == 'App\Problem'){
+                $this->feed[] = $this->problem($stream->contentable);
             }
         }
         return $this->feed;
@@ -86,6 +108,26 @@ class StreamRepository {
 
     private function questionnaire(Questionnaire $questionnaire){
         return view('streams.questionnaire', compact('questionnaire'))->render();
+    }
+
+    /**
+     * Created By Dara on 2/11/2015
+     * handling the stream view related to the group
+     */
+    private function problem(Problem $problem){
+        return view('partials.problemPreview', compact('problem'))->render();
+    }
+
+    private function postGroup(Post $post){
+        return view('partials.postGroupPreview',compact('post'))->render();
+    }
+
+    /**
+     * Created By Dara on 5/11/2015
+     * handling the stream view related to special offer
+     */
+    private function offer(Offer $offer){
+        return view('streams.offer', compact('offer'))->render();
     }
 
 }

@@ -13,6 +13,7 @@ use App\Article;
 use App\Comment;
 use App\Endorse;
 use App\Post;
+use App\Problem;
 use App\Recommendation;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -39,21 +40,36 @@ class NotificationRepository {
         $user = Auth::user();
         $streams = $this->newList();
         foreach($streams as $stream){
-            if($stream->contentable_type == 'App\Post'){
-                $this->notification[] = $this->post($stream->contentable);
-            }elseif($stream->contentable_type == 'App\Article'){
-                $this->notification[] = $this->article($stream->contentable);
-            }elseif($stream->contentable_type == 'App\Endorse'){
-                $this->notification[] = $this->endorse($stream->contentable, $user);
-            }elseif($stream->contentable_type == 'App\Recommendation'){
-                $this->notification[] = $this->recommendation($stream->contentable, $user);
-            }
-            elseif($stream->contentable_type == 'App\Comment'){
-                $comment = $stream->contentable;
-                if($comment->commentable_type == 'App\Post'){
-                    $this->notification[] = $this->postComment($comment->commentable, $comment);
-                }elseif($comment->commentable_type == 'App\Article'){
-                $this->notification[] = $this->articleComment($comment->commentable, $comment);
+            if($stream->parentable_type=='App\User'){
+                if($stream->contentable_type == 'App\Post'){
+                    $this->notification[] = $this->post($stream->contentable);
+                }elseif($stream->contentable_type == 'App\Article'){
+                    $this->notification[] = $this->article($stream->contentable);
+                }elseif($stream->contentable_type == 'App\Endorse'){
+                    $this->notification[] = $this->endorse($stream->contentable, $user);
+                }elseif($stream->contentable_type == 'App\Recommendation'){
+                    $this->notification[] = $this->recommendation($stream->contentable, $user);
+                }
+                elseif($stream->contentable_type == 'App\Comment'){
+                    $comment = $stream->contentable;
+                    if($comment->commentable_type == 'App\Post'){
+                        $this->notification[] = $this->postComment($comment->commentable, $comment);
+                    }elseif($comment->commentable_type == 'App\Article'){
+                        $this->notification[] = $this->articleComment($comment->commentable, $comment);
+                    }
+                }
+            }elseif($stream->parentable_type=='App\Group'){
+                if($stream->contentable_type=='App\Problem'){
+                    $this->notification[]=$this->problem($stream->contentable);
+                }elseif($stream->contentable_type=='App\Comment'){
+                    $comment=$stream->contentable;
+                    if($comment->commentable_type=='App\Problem'){
+                        $this->notification[]=$this->problemComment($comment->commentable,$comment);
+                    }elseif($comment->commentable_type=='App\Post'){
+                        $this->notification[]=$this->postGroupComment($comment->commentable,$comment);
+                    }
+                }elseif($stream->contentable_type=="App\Post"){
+                    $this->notification[]=$this->postGroup($stream->contentable);
                 }
             }
 
@@ -83,6 +99,26 @@ class NotificationRepository {
 
     private function recommendation(Recommendation $recommendation, User $user){
         return view('notifications.recommendation', compact('recommendation', 'user'))->render();
+    }
+
+    /**
+     * Created By Dara on 4/11/2015
+     * handling the group notifications
+     */
+    private function problem(Problem $problem){
+        return view('notifications.problem', compact('problem'))->render();
+    }
+
+    private function problemComment(Problem $problem,Comment $comment){
+        return view('notifications.problemComment',compact('problem','comment'))->render();
+    }
+
+    private function postGroup(Post $post){
+        return view('notifications.postGroup',compact('post'))->render();
+    }
+
+    private function postGroupComment(Post $post, Comment $comment){
+        return view('notifications.postGroupComment', compact('post','comment'))->render();
     }
 
 }

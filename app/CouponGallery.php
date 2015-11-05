@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\Facades\jDate;
 
 class CouponGallery extends Model
 {
@@ -23,5 +24,19 @@ class CouponGallery extends Model
     }
     public function coupons(){
         return $this->hasMany('App\Coupon');
+    }
+
+    /**
+     * Created By Dara on 30/10/2015
+     * return shamsi expired_at
+     */
+    public function getShamsiExpiredAtAttribute(){
+        return jDate::forge($this->attributes['expired_at'])->format('Y/m/d');
+    }
+
+    public function getExpiredAtAttribute(){
+
+        $time=Carbon::parse($this->attributes['expired_at'])->format('Y-m-d');
+        return $time;
     }
 }

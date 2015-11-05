@@ -14,7 +14,10 @@ use Laracasts\Flash\Flash;
 
 class OfferController extends Controller
 {
-    public function create(Request $request){
+    public function create(Offer $offer,Request $request){
+        if ($request->user()->cannot('edit-offer', [$offer])) {
+            abort(403);
+        }
         $this->validate($request,[
             'title'=>'required',
             'image'=>'required|image',
@@ -22,12 +25,12 @@ class OfferController extends Controller
         ]);
         $user=Auth::user();
         // wildcard is needed
-        $offer=$user->offers()->where('status','=',1)->firstOrFail();
+        $offer=$user->offers()->where('id',$offer->id)->where('status',1)->valid()->firstOrFail();
         $input=$request->all();
         $image=$input['image'];
         $imageName=$user->id.str_random(20).".".$image->getClientOriginalExtension();
         $image->move(public_path().'/img/files/'.$user->id,$imageName);
-        $user->coupon_gallery()->create([
+        $service=$user->coupon_gallery()->create([
             'offer_id'=>$offer->id,
             'title'=>$input['title'],
             'description'=>$input['description'],
@@ -49,5 +52,24 @@ class OfferController extends Controller
         $specialOffers=$offer->coupon_gallery()->valid()->lists('title','id');
         $coupons=$offer->coupons()->get();
         return view('store.offer.edit',compact('user','offer','specialOffers','coupons'))->with(['title'=>'ویرایش پینهاد ویژه']);
+    }
+
+    /**
+     * Created By Dara on 30/10/2015
+     * show all the services for the user
+     */
+    public function showServices(){
+        $user=Auth::user();
+        $services=$user->coupon_gallery()->get();
+        return view('store.offer.showServices',compact('user','services'))->with(['title'=>'مدیریت خدمت']);
+    }
+
+    /**
+     * Created By Dara on 30/10/2015
+     * edit the service
+     */
+    public function editService(CouponGallery $service){
+        $user=Auth::user();
+        return view('store.offer.editService',compact('user','service'))->with(['title'=>'ویرایش خدمت']);
     }
 }

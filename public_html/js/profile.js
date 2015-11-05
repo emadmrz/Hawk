@@ -1673,3 +1673,48 @@ function skill_endorsed(data, container){
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+/**
+ *Created By Dara on 3/11/2015
+ *confirm problem answer callback
+ **/
+function problem_confirm_answer(data,form){
+    if(data.status=='done'){
+        form.closest('ul.comments').find('button.confirm-answer').removeClass('btn-success');
+        form.find('button').addClass('btn-success');
+    }
+    if(data.status=='undo'){
+        form.find('button').removeClass('btn-success');
+    }
+
+}
+
+
+/**
+ * Created By Dara on 4/11/2015
+ * handling the join an leave in the group
+ */
+function group_join(data){
+    if(data.status=='done'){ //the user successfully joined the group
+        $("span.join-group").hide();
+        $("span.leave-group").show();
+    }
+    if(data.status=='undo'){ //the user successfully left the group
+        $("span.leave-group").hide();
+        $("span.join-group").show();
+    }
+}
+
+/**
+ * Created By Dara on 5/11/2015
+ * handling action after the coupon sold
+ */
+function coupon_sold(data,form){
+    if(data.status=='done'){ //the coupon has been successfully paid
+        var stat=form.closest('tr').children('td.status').find('span');
+        stat.removeClass('label-danger').addClass('label-success');
+        stat.html('تسویه شده');
+        form.closest('td').html(data.date);
+
+    }
+}

@@ -22,12 +22,12 @@
                 <div class="panel-heading" id="head">
                     <div class="panel-title" id="title">
                         <img src="{{ asset('/img/logo/skillema_dark.png') }}">
-                        <span class="hidden-xs">تعویض روغن ماشین شما</span>
-                        <span class="visible-xs">تعویض روغن ماشین شما</span>
+                        <span class="hidden-xs">{{$couponUser->coupon->title}}</span>
+                        <span class="visible-xs">{{$couponUser->coupon->title}}</span>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <img src="http://i.imgur.com/e07tg8R.png" class="coupon-img img-rounded">
+                    <img src="{{ asset('img/files/') }}/{{$couponUser->coupon->coupon_gallery->image}}">
                     <div class="col-md-12 well well-sm">
                         <div id="business-info">
                             <ul>
@@ -38,36 +38,32 @@
                     </div>
                     <div class="col-md-8">
                         <ul class="items">
-                            <li>خریدار : عماد میرزایی</li>
-                            <li>ارائه دهنده : احمد دارا</li>
-                            <li>تاریخ دریافت کوپن : 24/03/1394</li>
-                            <li>کد پیگیری : <span class="en-number">48dfds98dsf</span> </li>
+                            <li><span>خریدار :</span> {{$couponUser->user->first_name}} {{$couponUser->user->last_name}}</li>
+                            <li><span>ارائه دهنده :</span> {{$couponUser->coupon->user->first_name}} {{$couponUser->coupon->user->last_name}}</li>
+                            <li><span>تاریخ خرید کوپن :</span> {{$couponUser->shamsi_updated_at}}</li>
+                            <li> <span>کد پیگیری :</span> <span class="en-number">{{$couponUser->tracking_code}}</span> </li>
                         </ul>
                     </div>
                     <div class="col-md-4">
                         <div class="offer en-number">
-                            <h4 class="text-muted"><del>25,000 تومان</del></h4>
-                            <h3>25,000 تومان</h3>
+                            <h4 class="text-muted"><del>{{$couponUser->real_amount}} <span>تومان</span></del></h4>
+                            <h3>{{$couponUser->pay_amount}} <span>تومان</span></h3>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <p class="disclosure">Using Genuine Oil Filter and
-                            multigrade oil up to vehicle specification. Lube as
-                            necessary. Ester Oil or Synthetic available at additional
-                            cost. Excludes hazardous waste fee, tax and shop supplies,
-                            where applicable. Offer not valid with previous charges or
-                            with any other offers or specials. Customer must offer at
-                            time of write-up. No cash value.</p>
+                        <p class="disclosure">
+                            {{$couponUser->coupon->description}}
+                        </p>
                     </div>
                 </div>
                 <div class="panel-footer">
                     <div class="coupon-code">
-                        کد فروشنده : 9745
+                        <span>کد فروشنده :</span> <span>{{$couponUser->legal_code}}</span>
                     <span class="print pull-left">
                         <a href="#" class="btn btn-link"><i class="fa fa-lg fa-print"></i> Print Coupon</a>
                     </span>
                     </div>
-                    <div class="exp">تاریخ انتقضاء : 28/03/1394</div>
+                    <div class="exp"><span>تاریخ انقضاء :</span> {{$couponUser->expired_at}}</div>
                 </div>
             </div>
         </div>
