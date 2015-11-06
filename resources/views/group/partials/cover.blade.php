@@ -8,16 +8,11 @@
 
                 <div class="curve">
                     <span class="join-group @can('is-member',$group) hide-me @endcan">
-                    {!! Form::open(['route'=>['group.join',$group->id],'data-remote','id'=>'join-group']) !!}
-                    <button type="submit" class="btn btn-primary pull-left"><i class="fa fa-user-plus"></i></button>
-                    {!! Form::close() !!}
+
                         </span>
                     <span class="leave-group  @cannot('is-member',$group) hide-me @endcan">
-                    {!! Form::open(['route'=>['group.leave',$group->id],'data-remote','id'=>'leave-group']) !!}
-                    <button type="submit" class="btn btn-danger pull-left"><i class="fa fa-user-times"></i></button>
-                    {!! Form::close() !!}
-                    </span>
 
+                    </span>
                 </div>
             </div>
             @include('profile.partials.cropper', ['type'=>'cover'])

@@ -26,15 +26,14 @@ class ProblemController extends Controller
         ]);
         $user = Auth::user();
         //check if thr user is member of the group
-        if ($request->user()->cannot('is-member', [$group])) {
-            abort(403);
+        if ($request->user()->cannot('join-group', [$group])) {
+            $problem = $user->problems()->create([
+                'content' => $request->input('content'),
+                'parentable_id' => $group->id,
+                'parentable_type' => 'App\Group',
+            ]);
+            $this->groupStream($problem,$group);
         }
-        $problem = $user->problems()->create([
-            'content' => $request->input('content'),
-            'parentable_id' => $group->id,
-            'parentable_type' => 'App\Group',
-        ]);
-        $this->groupStream($problem,$group);
         return redirect(route('group.index',[$group->id]));
     }
 

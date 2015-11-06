@@ -1,3 +1,4 @@
+@if(Auth::check())
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
@@ -58,3 +59,57 @@
         </div>
     </div>
 </nav>
+
+@else
+
+    <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="loginmodal-container">
+                <div class="logo" ><img src="{{ asset('img/logo/skillema_dark.png') }}"></div>
+                <!--<h1>ورود به حساب کاربری</h1>-->
+                <br>
+                {!! Form::open(['url'=>'auth/login', 'method'=>'post', 'id'=>'login-form', 'class'=>'form-horizontal', 'data-toggle'=>'validator', 'data-disable'=>'false', 'role'=>'form', 'data-delay'=>'5000' ]) !!}
+                <input type="text" name="email" placeholder="آدرس ایمیل">
+                <input type="password" name="password" class="last" placeholder="کلمه عبور">
+                <div class="checkbox checkbox-success">
+                    <br>
+                    <input id="checkbox2" type="checkbox" name="remember">
+                    <label for="checkbox2">
+                        من را به خاطر بسپار
+                    </label>
+
+                </div>
+                <br>
+                <input type="submit" name="login" class="login btn btn-violet btn-block" value="ورود به سایت">
+                {!! Form::close() !!}
+                <div class="login-help">
+                    <a href="{{ url('auth/register') }}" class="pull-left " >پیوستن به ما</a>  <a href="{{ url('password/email') }}">فراموشی کلمه عبور</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img src="{{ asset('img/logo/skillema.png') }}"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav  top-menu">
+                <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i><span class="title">درباره ما بیشتر بدانید</span></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right top-menu">
+                <li><a href="#"  data-toggle="modal" data-target="#LoginModal" ><i class="fa fa-lock fa-lg"></i><span class="title">ورود به سایت</span></a></li>
+                <li><a href="{{ url('auth/register') }}"><i class="glyphicon glyphicon-user"></i><span class="title">عضویت</span></a></li>
+                <li><a href="#"><i class="glyphicon glyphicon-th"></i><span class="title">برترین ها</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+@endif

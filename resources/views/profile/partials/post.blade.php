@@ -2,11 +2,9 @@
     <div class="panel panel-default share clearfix-xs">
         {{--check if the post related to group or user--}}
         @if($route=='user')
-            {!! Form::open(['route'=>'profile.post.add', 'method'=>'post']) !!}
+        {!! Form::open(['route'=>'profile.post.add', 'method'=>'post']) !!}
         @elseif($route=='group')
-            @can('is-member',$group)
             {!! Form::open(['route'=>['group.post.add',$group->id], 'method'=>'post']) !!}
-            @endcan
         @endif
         <div class="panel-heading panel-heading-gray title">
             پست جدید

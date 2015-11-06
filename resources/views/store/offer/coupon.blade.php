@@ -27,12 +27,12 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <img src="{{ asset('img/files/') }}/{{$couponUser->coupon->coupon_gallery->image}}">
+                    <img class="coupon-img img-rounded" src="{{ asset('img/files/') }}/{{$couponUser->coupon->coupon_gallery->image}}">
                     <div class="col-md-12 well well-sm">
                         <div id="business-info">
                             <ul>
                                 <li><span><i class="fa fa-phone"></i>09367458211</span></li>
-                                <li><span><i class="fa fa-map-marker"></i> تهران نارمک میدان 46 </span></li>
+                                <li><span><i class="fa fa-map-marker"></i> آدرس فروشنده</span></li>
                             </ul>
                         </div>
                     </div>

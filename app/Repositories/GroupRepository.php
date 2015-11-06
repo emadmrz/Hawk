@@ -27,12 +27,12 @@ class GroupRepository extends Controller
      */
     public function isMember(Group $group){
         $user=Auth::user();
-        $count=$group->users()->where('user_id',$user->id)->count();
-        if($count==1){
-            return true;
-        }else{
-            return false;
-        }
+        return $group->users()->where('user_id',$user->id)->exists();
+//        if($count){
+//            return true;
+//        }else{
+//            return false;
+//        }
     }
 
     /**

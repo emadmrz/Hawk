@@ -11,31 +11,45 @@
             </div>
             <div class="panel-body">
                 {!! Form::open(['route'=>['profile.management.addon.offer.service.create',$offer->id],'files'=>true]) !!}
+                <input type="hidden" name="cropper_json" id="cropper_json" value="">
                 <div class="clearfix form-horizontal">
                 <div class="form-group panel-form">
-                    {!! Form::label('title','عنوان :',['class'=>'control-label pull-right col-sm-2']) !!}
+                    {!! Form::label('title','عنوان :',['class'=>'control-label pull-right col-sm-1']) !!}
                     <div class="col-sm-5">
                         {!! Form::text('title',null,['class'=>'form-control']) !!}
+                        <i class="input-icon fa fa-edit"></i>
                     </div>
 
                 </div>
+
                 <div class="form-group panel-form">
-                    {!! Form::label('image','تصویر :',['class'=>'control-label pull-right col-sm-2']) !!}
+                    {!! Form::label('image','تصویر :',['class'=>'control-label pull-right col-sm-1']) !!}
                     <div class="col-sm-5">
-                        {!! Form::file('image') !!}
+                        {!! Form::file('image', ['id'=>'inputImage']) !!}
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <div id="crop_image_preview"><img src="{{ asset('img/cover/offer_preview.jpg') }}"></div>
+                        </div>
                     </div>
 
-                </div>
                 <div class="form-group panel-form">
-                    {!! Form::label('description','توضیحات :',['class'=>'control-label pull-right col-sm-2']) !!}
-                    <div class="col-sm-10">
-                        {!! Form::textarea('description',null,['class'=>'form-control']) !!}
+                    <div class="col-sm-8">
+                        {!! Form::textarea('description',null,['class'=>'form-control', 'rows'=>3, 'placeholder'=>'توضیحات مرتبط با این مجموعه پیشنهاد ویژه']) !!}
                     </div>
                 </div>
-                <div class="form-group panel-form">
-                    {!! Form::label('expired_at','تاریخ انقضا',['class'=>'control-label pull-right col-sm-2']) !!}
-                    <div class="col-sm-10">
-                        {!! Form::input('date','expired_at',Carbon\Carbon::now()->format('Y-m-d'),['class'=>'form-control']) !!}
+                <div class="form-group">
+                    {!! Form::label('expired_at','تاریخ انقضاء :',['class'=>'control-label pull-right col-sm-2']) !!}
+                    <div class="col-sm-4 pull-right">
+                        {{--{!! Form::input('date','expired_at',Carbon\Carbon::now()->format('Y-m-d'),['class'=>'form-control']) !!}--}}
+                        <div class="input-group ltr">
+                            <input name="expired_at" id="jalaliDatePicker" class="input-small form-control rtl" type="text">
+                            <span class="input-group-btn">
+                                <button id="jalaliDatePickerBtn" class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+                            </span>
+                        </div><!-- /input-group -->
                     </div>
 
                 </div>
@@ -59,38 +73,38 @@
                 {!! Form::open(['route'=>['profile.management.addon.offer.service.coupon.create','offer'=>$offer->id],'data-remote'=>'add_coupon']) !!}
                 <div class="clearfix form-horizontal">
                 <div class="form-group panel-form">
-                    {!! Form::label('offer','انتخاب خدمت :',['class'=>'control-label pull-right col-sm-3']) !!}
+                    {!! Form::label('offer','انتخاب خدمت :',['class'=>'control-label pull-right col-sm-2']) !!}
                     <div class="col-sm-5">
                         {!! Form::select('offer',$specialOffers,null,['class'=>'form-control']) !!}
                     </div>
 
                 </div>
                 <div class="form-group panel-form">
-                    {!! Form::label('title','عنوان :',['class'=>'control-label pull-right col-sm-3']) !!}
+                    {!! Form::label('title','عنوان :',['class'=>'control-label pull-right col-sm-2']) !!}
                     <div class="col-sm-5">
                         {!! Form::text('title',null,['class'=>'form-control']) !!}
                     </div>
                 </div>
                 <div class="form-group panel-form">
-                    {!! Form::label('real_amount','ارزش واقعی :',['class'=>'control-label pull-right col-sm-3']) !!}
-                    <div class="col-sm-5">
+                    {!! Form::label('real_amount','ارزش واقعی :',['class'=>'control-label pull-right col-sm-2']) !!}
+                    <div class="col-sm-3">
                         {!! Form::input('number','real_amount',null,['class'=>'form-control']) !!}
                     </div>
                 </div>
                 <div class="form-group panel-form">
-                    {!! Form::label('pay_amount','مبلغ قابل پرداخت :',['class'=>'control-label pull-right col-sm-3']) !!}
-                    <div class="col-sm-5">
+                    {!! Form::label('pay_amount','مبلغ قابل پرداخت :',['class'=>'control-label pull-right col-sm-2']) !!}
+                    <div class="col-sm-3">
                         {!! Form::input('number','pay_amount',null,['class'=>'form-control']) !!}
                     </div>
                 </div>
                 <div class="form-group panel-form">
-                    {!! Form::label('description','توضیحات :',['class'=>'control-label pull-right col-sm-3']) !!}
+                    {!! Form::label('description','توضیحات :',['class'=>'control-label pull-right col-sm-2']) !!}
                     <div class="col-sm-9">
                         {!! Form::text('description',null,['class'=>'form-control']) !!}
                     </div>
                 </div>
                 <div class="form-group panel-form">
-                    {!! Form::label('num','تعداد :',['class'=>'control-label pull-right col-sm-3']) !!}
+                    {!! Form::label('num','تعداد :',['class'=>'control-label pull-right col-sm-2']) !!}
                     <div class="col-sm-2">
                         {!! Form::input('number','num',0,['class'=>'form-control']) !!}
                     </div>
@@ -130,3 +144,72 @@
     </div>
 
     @endsection
+
+@section('script')
+
+    <script>
+        $(document).ready(function() {
+
+            $("#jalaliDatePicker").datepicker({
+                dateFormat: "yy/mm/dd"
+            });
+            $("#jalaliDatePickerBtn").click(function (event) {
+                event.preventDefault();
+                $("#jalaliDatePicker").focus();
+            })
+
+
+            // Import image
+            var $image = $('#crop_image_preview > img');
+            $image.cropper({
+                aspectRatio: 851 / 360,
+                autoCropArea: 0.8,
+                guides: false,
+                dragCrop: false,
+                crop: function (e) {
+                    var json = [
+                        '{"x":' + e.x,
+                        '"y":' + e.y,
+                        '"height":' + e.height,
+                        '"width":' + e.width,
+                        '"rotate":' + e.rotate + '}'
+                    ].join();
+
+                    $("#cropper_json").val(json);
+                }
+            });
+            var $inputImage = $('#inputImage');
+            var URL = window.URL || window.webkitURL;
+            var blobURL;
+
+            if (URL) {
+                $inputImage.change(function () {
+                    var files = this.files;
+                    var file;
+
+                    if (!$image.data('cropper')) {
+                        return;
+                    }
+
+                    if (files && files.length) {
+                        file = files[0];
+
+                        if (/^image\/\w+$/.test(file.type)) {
+                            blobURL = URL.createObjectURL(file);
+                            $image.one('built.cropper', function () {
+                                URL.revokeObjectURL(blobURL); // Revoke when load complete
+                            }).cropper('reset').cropper('replace', blobURL);
+                        } else {
+//                        $body.tooltip('Please choose an image file.', 'warning');
+                        }
+                    }
+                });
+            } else {
+                $inputImage.prop('disabled', true).parent().addClass('disabled');
+            }
+
+        });
+
+    </script>
+
+@endsection

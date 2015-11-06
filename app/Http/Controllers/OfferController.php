@@ -21,15 +21,25 @@ class OfferController extends Controller
         $this->validate($request,[
             'title'=>'required',
             'image'=>'required|image',
-            'expired_at'=>'required|date'
+            'expired_at'=>'required'
         ]);
         $user=Auth::user();
         // wildcard is needed
         $offer=$user->offers()->where('id',$offer->id)->where('status',1)->valid()->firstOrFail();
         $input=$request->all();
+        $data = $request->input('cropper_json');
+        $data = json_decode(stripslashes($data));
         $image=$input['image'];
         $imageName=$user->id.str_random(20).".".$image->getClientOriginalExtension();
         $image->move(public_path().'/img/files/'.$user->id,$imageName);
+        $src = public_path() . '/img/files/'.$user->id.'/'.$imageName;
+
+        $img = Image::make($src);
+        $img->rotate($data->rotate);
+        $img->crop(intval($data->width), intval($data->height), intval($data->x), intval($data->y) );
+        $img->resize(851, 360);
+        $img->save($src, 90);
+
         $service=$user->coupon_gallery()->create([
             'offer_id'=>$offer->id,
             'title'=>$input['title'],

@@ -18,9 +18,8 @@ use Laracasts\Flash\Flash;
 
 class PostController extends Controller
 {
-    public function image(Request $request)
-    {
-        $imageName = str_random(20) . '.' . $request->file('image')->getClientOriginalExtension();
+    public function image(Request $request){
+        $imageName = str_random(20) . '.' .$request->file('image')->getClientOriginalExtension();
         $request->file('image')->move(public_path() . '/img/files/', $imageName);
         $img_address = public_path() . '/img/files/' . $imageName;
         $img = Image::make($img_address);
@@ -29,11 +28,10 @@ class PostController extends Controller
             $constraint->aspectRatio();
         });
         $img->save($img_address, 90);
-        return asset('img/files/' . $imageName);
+        return asset('img/files/'.$imageName);
     }
 
-    public function add(Request $request)
-    {
+    public function add(Request $request){
         $user = Auth::user();
         $post = $user->posts()->create([
             'content' => $request->input('content'),
@@ -48,53 +46,48 @@ class PostController extends Controller
         return redirect()->back();
     }
 
-    public function index()
-    {
+    public function index(){
         $user = Auth::user();
         $posts = $user->posts()->paginate(10);
-        return view('profile.postsList', compact('posts'))->with(['title' => 'لیست پست های من']);
+        return view('profile.postsList',compact('posts'))->with(['title'=>'لیست پست های من']);
     }
 
-    public function delete(Post $post)
-    {
+    public function delete(Post $post){
         $post->delete();
         Flash::success(trans('profile.postDelete'));
         return redirect()->back();
     }
 
-    public function preview(Post $post)
-    {
-        return view('profile.postPreview', compact('post'))->with(['title' => 'پست من']);
+    public function preview(Post $post){
+        return view('profile.postPreview', compact('post'))->with(['title'=>'پست من']);
     }
 
-    public function otherPreview(User $user, Post $post)
-    {
-        return view('home.postPreview', compact('post', 'user'))->with(['title' => 'پست من']);
+    public function otherPreview(User $user, Post $post){
+        return view('home.postPreview', compact('post', 'user'))->with(['title'=>'پست من']);
     }
 
-    private function stream($post)
-    {
+    private function stream($post){
         $friendRepository = new FriendRepository();
         $friends = $friendRepository->myFriends();
         $user = Auth::user();
-        foreach ($friends as $friend) {
+        foreach($friends as $friend){
             Stream::create([
-                'user_id' => $friend->friend_info->id,
-                'edge_ranke' => 0,
-                'contentable_id' => $post->id,
-                'contentable_type' => 'App\Post',
-                'parentable_id' => $user->id,
-                'parentable_type' => 'App\User',
-                'is_see' => 0
+                'user_id'=>$friend->friend_info->id,
+                'edge_ranke'=> 0,
+                'contentable_id'=> $post->id,
+                'contentable_type'=> 'App\Post',
+                'parentable_id'=>$user->id,
+                'parentable_type'=>'App\User',
+                'is_see'=>0
             ]);
         }
         Stream::create([
-            'user_id' => $user->id,
-            'edge_ranke' => 0,
-            'contentable_id' => $post->id,
-            'contentable_type' => 'App\Post',
-            'parentable_id' => $user->id,
-            'parentable_type' => 'App\User',
+            'user_id'=>$user->id,
+            'edge_ranke'=> 0,
+            'contentable_id'=> $post->id,
+            'contentable_type'=> 'App\Post',
+            'parentable_id'=>$user->id,
+            'parentable_type'=>'App\User',
             'is_see' => 1
         ]);
     }
@@ -110,21 +103,20 @@ class PostController extends Controller
 
     public function addGroupPost(Group $group, Request $request)
     {
-        if($request->user()->cannot('is-member',[$group])){
-            abort(403);
+        if($request->user()->cannot('join-group',[$group])){
+            $this->validate($request, [
+                'content' => 'required|min:3'
+            ]);
+            $user = Auth::user();
+            $post = $user->posts()->create([
+                'content' => $request->input('content'),
+                'image' => $request->input('image'),
+                'location' => $request->input('location'),
+                'parentable_id' => $group->id,
+                'parentable_type' => 'App\Group',
+            ]);
+            $this->groupStream($post,$group);
         }
-        $this->validate($request, [
-            'content' => 'required|min:3'
-        ]);
-        $user = Auth::user();
-        $post = $user->posts()->create([
-            'content' => $request->input('content'),
-            'image' => $request->input('image'),
-            'location' => $request->input('location'),
-            'parentable_id' => $group->id,
-            'parentable_type' => 'App\Group',
-        ]);
-        $this->groupStream($post,$group);
         return redirect()->back();
     }
 

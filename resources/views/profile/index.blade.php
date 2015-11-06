@@ -11,7 +11,7 @@
     @include('profile.partials.map')
     @endrole
     @include('profile.partials.shop')
-    @include('profile.partials.offer')
+    @include('home.partials.offer') {{-- Why? --}}
     @include('profile.partials.skill')
 @endsection
 
@@ -21,6 +21,7 @@
     @include('partials.addSkill')
     @include('profile.partials.latestArticles')
     @include('profile.partials.latestPosts')
+    @include('profile.partials.groupAdd')
 @endsection
 
 @section('script')
@@ -96,11 +97,11 @@
                     animation: google.maps.Animation.DROP
                 });
                 gmarkers.push(marker);
-                console.log(event.latLng.H)
-                console.log(event.latLng.L)
+                console.log(event.latLng.lat())
+                console.log(event.latLng.lng())
                 var form = $("#my_location_form");
-                form.find("#lat").val(event.latLng.H);
-                form.find("#lng").val(event.latLng.L);
+                form.find("#lat").val(event.latLng.lat());
+                form.find("#lng").val(event.latLng.lng());
                 $("#MapReport").html('موقعیت انتخابی جدید بر روی نقشه ثبت شد.')
             });
 

@@ -60,7 +60,6 @@ return array(
     'CreateStreamsTable' => $baseDir . '/database/migrations/2015_10_25_052142_create_streams_table.php',
     'CreateTagsTable' => $baseDir . '/database/migrations/2015_09_16_161420_create_tags_table.php',
     'CreateUniversitiesTable' => $baseDir . '/database/migrations/2015_09_09_140404_create_universities_table.php',
-    'CreateUniversitysTable' => $baseDir . '/database/migrations/2015_09_09_140021_create_universitys_table.php',
     'CreateUsagesTable' => $baseDir . '/database/migrations/2015_10_12_160038_create_usages_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CreateVisitorsTable' => $baseDir . '/database/migrations/2015_09_11_163613_create_visitors_table.php',

@@ -1,8 +1,8 @@
 @extends('profile.layout')
 
 @section('side')
-    @include('profile.partials.managementMenu')
     @include('store.offer.partials.offerManagementMenu')
+    @include('profile.partials.managementMenu')
 @endsection
 
 @section('content')

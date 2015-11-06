@@ -4,12 +4,23 @@
             اعضای گروه
         </div>
         <div class="panel-body">
-            <div class="list-item">
+            <div class="list-item-image">
                 <ul class="">
                     @foreach($group->users as $user)
                         <li>
-                            <a class="title" href="{{route('home.profile',[$user->id])}}">{{$user->username}}</a>
-                            <div class="date"></div>
+                            <div class="media">
+                                <div class="media-right">
+                                    <a href="{{route('home.profile',[$user->id])}}"><img class="media-object img-circle" src="{{ asset('img/persons/'.$user->avatar ) }}" alt="{{ $user->username }}"></a>
+                                </div>
+                                <div class="media-body">
+                                    <div class="media-heading"><a href="{{ route('home.profile', [$user->id]) }}"> {{ $user->username }} </a></div>
+                                    @if($group->user_id == $user->id)
+                                        <div class="date">مدیر گروه</div>
+                                    @else
+                                        <div class="date">عضو گروه</div>
+                                    @endif
+                                </div>
+                            </div>
                         </li>
                     @endforeach
                 </ul>

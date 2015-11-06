@@ -28,7 +28,9 @@ class StreamRepository {
 
     public function feed(){
         $user = Auth::user();
-        foreach($user->streams()->latest()->where('parentable_type','App\User')->get() as $stream){
+//        Ahmad Dara Suggestion
+//        foreach($user->streams()->latest()->where('parentable_type','App\User')->get() as $stream){
+        foreach($user->streams()->latest()->get() as $stream){
             if($stream->contentable_type == 'App\Post'){
                 $this->feed[] = $this->post($stream->contentable);
             }elseif($stream->contentable_type == 'App\Friend'){

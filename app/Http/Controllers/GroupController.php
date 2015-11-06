@@ -141,42 +141,43 @@ class GroupController extends Controller
 
     public function join(Group $group,Request $request){
         $user=Auth::user();
-        if ($request->user()->can('is-member', [$group])) {
-            abort(403);
+        if ($request->user()->can('join-group', $group)) {
+            //the user is not a member so we add him/her to the group
+            $group->users()->attach([$user->id]);
         }
-        //the user is not a member so we add him/her to the group
-        $group->users()->attach([$user->id]);
-        return[
-            'hasCallback'=>1,
-            'callback'=>'group_join',
-            'hasMsg'=>0,
-            'msg'=>'',
-            'msgType'=>'',
-            'returns'=> [
-                'status'=>'done'
-            ]
+        return redirect()->back();
 
-        ];
+//        return[
+//            'hasCallback'=>1,
+//            'callback'=>'group_join',
+//            'hasMsg'=>0,
+//            'msg'=>'',
+//            'msgType'=>'',
+//            'returns'=> [
+//                'status'=>'done'
+//            ]
+//
+//        ];
     }
 
     public function leave(Group $group,Request $request){
         $user=Auth::user();
-        if ($request->user()->cannot('is-member', [$group])) {
-            abort(403);
+        if ($request->user()->cannot('join-group', [$group])) {
+            //the user is not a member so we add him/her to the group
+            $group->users()->detach([$user->id]);
         }
-        //the user is not a member so we add him/her to the group
-        $group->users()->detach([$user->id]);
-        return[
-            'hasCallback'=>1,
-            'callback'=>'group_join',
-            'hasMsg'=>0,
-            'msg'=>'',
-            'msgType'=>'',
-            'returns'=> [
-                'status'=>'undo'
-            ]
-
-        ];
+        return redirect()->back();
+//        return[
+//            'hasCallback'=>1,
+//            'callback'=>'group_join',
+//            'hasMsg'=>0,
+//            'msg'=>'',
+//            'msgType'=>'',
+//            'returns'=> [
+//                'status'=>'undo'
+//            ]
+//
+//        ];
     }
 
 

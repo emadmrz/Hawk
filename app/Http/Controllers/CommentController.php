@@ -167,7 +167,16 @@ class CommentController extends Controller
      */
     public function problemDelete(Request $request,Problem $problem, Comment $comment){
         if ($request->user()->cannot('delete-problem-comment', [$problem, $comment])) {
-            abort(403);
+            return [
+                'hasCallback'=>0,
+                'callback'=>'',
+                'hasMsg'=>1,
+                'msg'=>'شما مجاز به حذف این پاسخ نمی باشید.',
+                'msgType'=>'danger',
+                'returns'=> [
+                    'num_comments'=>'',
+                ]
+            ];
         }
         $comment->delete();
         $num_comments = $problem->comments()->count();
@@ -190,8 +199,17 @@ class CommentController extends Controller
 
     public function problem(Request $request,Problem $problem){
         $group=$problem->parentable;
-        if ($request->user()->cannot('is-member', [$group])) {
-            abort(403);
+        if ($request->user()->can('join-group', [$group])) {
+            return [
+                'hasCallback'=>0,
+                'callback'=>'',
+                'hasMsg'=>1,
+                'msg'=>'تنها اعضای گروه می توانند پاسخ خود را برای این پرسش بیان نمایند.',
+                'msgType'=>'danger',
+                'returns'=> [
+                    'num_comments'=>'',
+                ]
+            ];
         }
         $user = Auth::user();
         $comment = $problem->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
@@ -213,8 +231,17 @@ class CommentController extends Controller
 
     public function postGroup(Request $request,Post $post){
         $group=$post->parentable;
-        if ($request->user()->cannot('is-member', [$group])) {
-            abort(403);
+        if ($request->user()->can('join-group', [$group])) {
+            return [
+                'hasCallback'=>0,
+                'callback'=>'',
+                'hasMsg'=>1,
+                'msg'=>'تنها اعضای گروه می توانند دیدگاه خود را برای این پست بیان نمایند.',
+                'msgType'=>'danger',
+                'returns'=> [
+                    'num_comments'=>'',
+                ]
+            ];
         }
         $user = Auth::user();
         $comment = $post->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
@@ -236,7 +263,16 @@ class CommentController extends Controller
 
     public function postGroupDelete(Request $request,Post $post, Comment $comment){
         if ($request->user()->cannot('delete-problem-comment', [$post, $comment])) {
-            abort(403);
+            return [
+                'hasCallback'=>0,
+                'callback'=>'',
+                'hasMsg'=>1,
+                'msg'=>'شما مجوز حذف این پست را ندارید.',
+                'msgType'=>'danger',
+                'returns'=> [
+                    'num_comments'=>'',
+                ]
+            ];
         }
         $comment->delete();
         $num_comments = $post->comments()->count();

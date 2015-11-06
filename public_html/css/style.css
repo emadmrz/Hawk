@@ -43,7 +43,7 @@ input:focus ,  a:focus , button:focus{
 }
 /*------------------------ 2 - Header -------------------------*/
 .site-header{
-    background: url(../img/2DX85MH.jpg) no-repeat 81% center;
+    background: url(../img/cover/2DX85MH.jpg) no-repeat 81% center;
     position: relative;
 
     height: 550px;
@@ -68,7 +68,7 @@ input:focus ,  a:focus , button:focus{
 /*}*/
 .site-header:before {
     content: '';
-    background: url(../img/diamond-pattern.png) repeat;
+    background: url(../img/cover/diamond-pattern.png) repeat;
     position: absolute;
     top: 0;
     right: 0;
@@ -153,6 +153,9 @@ input:focus ,  a:focus , button:focus{
 .site-header .main-search-form .search-filter.active{
     opacity: 1;
 }
+.adv-carousel{
+    z-index: 1000 !important;
+}
 .adv-carousel .carousel-control{
     background-image: none !important;
     text-shadow: none;
@@ -220,7 +223,7 @@ input:focus ,  a:focus , button:focus{
 }
 .site-main  .info-circles:before {
     content: '';
-    background: url(../img/diamond-pattern2.png) repeat;
+    background: url(../img/cover/diamond-pattern2.png) repeat;
     background-position: 0px 17px;
     position: absolute;
     top: 0;
@@ -428,7 +431,7 @@ input:focus ,  a:focus , button:focus{
 }
 
 #promotion-stats {
-    background: url('../img/unnamed.png');
+    background: url('../img/cover/unnamed.png');
     background-size: cover;
     padding: 7em 0;
     color: #fff;

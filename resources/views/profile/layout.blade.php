@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{{ asset('css/select2/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-editable.css') }}">
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+
 
 </head>
 <body>
@@ -74,6 +76,8 @@
 <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('js/circle-progress.js') }}"></script>
 <script src="{{ asset('js/magnifying.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.fa.min.js') }}"></script>
 
 <script>
     $(document).ready(function(){

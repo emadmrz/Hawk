@@ -1536,6 +1536,7 @@ section.shop .shop-properties .property-item.disable i{
     box-shadow: 0 0 0 2px #8456A7;
     display: inline-block;
     margin-right: 10px;
+    margin-top: 0 !important;
 }
 
 
@@ -3193,7 +3194,32 @@ sup {
     color: #ffffff !important;
 }
 
-/*added by Dara*/
-.hide-me{
-    display: none;
+.confirm-answer{
+    background: none;
+    outline: 3px;
+    border: 3px solid #EEE;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    color: #EEE;
+    font-size: 1.4em;
+    text-align: center;
+    padding: 4px 7px;
+    margin-top: 7px;
+}
+.confirm-answer.btn-success{
+    color: green;
+    border-color: green;
+}
+.confirm-answer:hover{
+    color: #DDD;
+    border-color: #DDD;
+}
+.confirm-answer.btn-success:hover{
+    color: green;
+    border-color: green;
+}
+.confirm-answer:focus, .confirm-answer.btn-success:focus, .confirm-answer:active, .confirm-answer.btn-success:active{
+    background: none;
+    outline: none;
 }

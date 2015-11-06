@@ -49,9 +49,9 @@ class AuthServiceProvider extends ServiceProvider
          * Created By Dara on 4/11/2015
          * authorize for adding problem to the group
          */
-        $gate->define('is-member',function($user,$group){
+        $gate->define('join-group',function($user,$group){
             $groupRepository=new GroupRepository();
-            return $groupRepository->isMember($group);
+            return !$groupRepository->isMember($group);
 
         });
 

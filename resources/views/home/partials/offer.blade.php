@@ -1,3 +1,4 @@
+@if(count($user->offers))
 <section class="shop special-offer">
 
         <div class="">
@@ -97,3 +98,5 @@
 
 
     </section>
+
+@endif

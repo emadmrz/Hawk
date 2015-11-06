@@ -33,4 +33,9 @@ class Problem extends Model
         return jDate::forge($this->attributes['created_at'])->ago();
     }
 
+    public function files()
+    {
+        return $this->morphMany('App\File', 'imageable');
+    }
+
 }

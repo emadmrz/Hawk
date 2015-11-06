@@ -41,21 +41,21 @@ class NotificationRepository {
         $streams = $this->newList();
         foreach($streams as $stream){
             if($stream->parentable_type=='App\User'){
-                if($stream->contentable_type == 'App\Post'){
-                    $this->notification[] = $this->post($stream->contentable);
-                }elseif($stream->contentable_type == 'App\Article'){
-                    $this->notification[] = $this->article($stream->contentable);
-                }elseif($stream->contentable_type == 'App\Endorse'){
-                    $this->notification[] = $this->endorse($stream->contentable, $user);
-                }elseif($stream->contentable_type == 'App\Recommendation'){
-                    $this->notification[] = $this->recommendation($stream->contentable, $user);
-                }
-                elseif($stream->contentable_type == 'App\Comment'){
-                    $comment = $stream->contentable;
-                    if($comment->commentable_type == 'App\Post'){
-                        $this->notification[] = $this->postComment($comment->commentable, $comment);
-                    }elseif($comment->commentable_type == 'App\Article'){
-                        $this->notification[] = $this->articleComment($comment->commentable, $comment);
+            if($stream->contentable_type == 'App\Post'){
+                $this->notification[] = $this->post($stream->contentable);
+            }elseif($stream->contentable_type == 'App\Article'){
+                $this->notification[] = $this->article($stream->contentable);
+            }elseif($stream->contentable_type == 'App\Endorse'){
+                $this->notification[] = $this->endorse($stream->contentable, $user);
+            }elseif($stream->contentable_type == 'App\Recommendation'){
+                $this->notification[] = $this->recommendation($stream->contentable, $user);
+            }
+            elseif($stream->contentable_type == 'App\Comment'){
+                $comment = $stream->contentable;
+                if($comment->commentable_type == 'App\Post'){
+                    $this->notification[] = $this->postComment($comment->commentable, $comment);
+                }elseif($comment->commentable_type == 'App\Article'){
+                $this->notification[] = $this->articleComment($comment->commentable, $comment);
                     }
                 }
             }elseif($stream->parentable_type=='App\Group'){

@@ -5,13 +5,16 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Morilog\Jalali\Facades\jDate;
+use Morilog\Jalali\jDateTime;
 
 class CouponGallery extends Model
 {
     protected $table='coupon_gallery';
     protected $fillable=['image','title','description','user_id','offer_id','expired_at'];
+
     public function setExpiredAtAttribute($date){
-        $this->attributes['expired_at']=Carbon::parse($date);
+        $jalali = explode('/', $date);
+        $this->attributes['expired_at'] = implode('-', jDateTime::toGregorian($jalali[0], $jalali[1], $jalali[2]));
     }
     public function scopeValid($query){
         $query->where('expired_at','>=',Carbon::now());
@@ -39,4 +42,5 @@ class CouponGallery extends Model
         $time=Carbon::parse($this->attributes['expired_at'])->format('Y-m-d');
         return $time;
     }
+
 }
