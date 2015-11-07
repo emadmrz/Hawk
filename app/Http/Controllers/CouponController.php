@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Laracasts\Flash\Flash;
 use Morilog\Jalali\jDate;
@@ -148,6 +149,12 @@ class CouponController extends Controller
             if($coupon->user_id==$user->id){
                 //the owner is correct and can continue
                 $couponUser->update(['status'=>2]);
+                //add to the credits table
+                $description="خرید کوپن";
+                $user->credits()->create([
+                    'amount'=>$couponUser->pay_amount,
+                    'description'=>$description
+                ]);
                 return [
                     'hasCallback'=>1,
                     'callback'=>'coupon_sold',

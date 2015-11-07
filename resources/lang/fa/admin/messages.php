@@ -29,6 +29,11 @@ return [
     'sub_categoryAdded' => 'Sub_category was created successfully',
     'sub_categoryUpdated' => 'Sub_category was updated successfully',
     'sub_categoryDeleted' => 'Sub_category was deleted successfully',
+    'balanceUpdated'=>'the user balance has been applied successfully',
+    'settleCreated'=>'settlement period has been successfully created',
+    'settleDeleted'=>'settlement has been deleted successfully',
+    'settleApproved'=>'settlement has been paid successfully',
+    'settleDenied'=>'settlement has been canceled'
 
 
 ];

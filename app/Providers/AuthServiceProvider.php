@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\SettleController;
 use App\Repositories\GroupRepository;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -73,6 +75,16 @@ class AuthServiceProvider extends ServiceProvider
          */
         $gate->define('edit-offer',function($user,$offer){
             return $user->id===$offer->user_id;
+        });
+
+        /**
+         * Created By Dara on 7/11/2015
+         * check if the user can settle or not
+         */
+        $gate->define('can-settle',function(){
+            $settle=new EventController();
+            $set=$settle->settleTime();
+            return $set['canSettle'];
         });
     }
 }

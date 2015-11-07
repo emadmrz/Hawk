@@ -62,7 +62,7 @@
                 <li class="dropdown">
                     <a href="#" id="management_accountant_menu" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i> مدیریت مالی و افزونه ها </a>
                     <ul class="dropdown-menu" aria-labelledby="management_accountant_menu">
-                        <li><a href="#" ><i class="fa fa-money fa-1x"></i> حساب مالی من </a></li>
+                        <li><a href="{{route('profile.management.credit')}}" ><i class="fa fa-money fa-1x"></i> حساب مالی من </a></li>
                         <li><a href="{{ route('profile.management.accountant') }}" ><i class="fa fa-bank fa-1x"></i> مدیریت پرداخت ها </a></li>
                         @if(count($user->storages()))
                             <li><a href="{{ route('profile.management.addon.storage') }}" ><i class="fa fa-database fa-1x"></i> افزونه افزایش حجم </a></li>
