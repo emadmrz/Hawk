@@ -9,6 +9,7 @@
     <link href="{{ asset('css/admin/sb-admin-2.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin/morris.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
 </head>
 <body>
 
@@ -52,6 +53,8 @@
 {{--added by Dara morris dependencies--}}
 <script src="{{ asset('js/admin/raphael-min.js') }}"></script>
 <script src="{{ asset('js/admin/morris.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.fa.min.js') }}"></script>
 <script>
     $(document).ready(function () {
         $('a[data-delete-confirm]').click(function () {

@@ -138,6 +138,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    /**
+     * Created By Dara on 6/11/2015
+     * return the user balance
+     */
+    public function getBalanceAttribute(){
+        return $this->credits()->sum('amount');
+    }
+
     public function info(){
         return $this->hasOne('App\Info');
     }
@@ -263,6 +271,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Problem');
     }
 
+    /**
+     * Created By Dara on 9/11/2015
+     * credits and settles relations
+     */
+    public function credits(){
+        return $this->hasMany('App\Credit');
+    }
+
+    public function settles(){
+        return $this->hasMany('App\Settle');
+    }
 
     /**
      * Created by Emad Mirzaie on 06/10/2015.

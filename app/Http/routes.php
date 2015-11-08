@@ -306,6 +306,14 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('/addon/advertise/{advertise}/edit',['as'=>'addon.advertise.edit', 'uses'=>'advertiseController@edit']);
         Route::post('/addon/advertise/{advertise}/update',['as'=>'addon.advertise.update', 'uses'=>'advertiseController@update']);
 
+        /**
+         * Created By Dara on 6/11/2015
+         * managing the credit routes
+         */
+        Route::get('credit',['as'=>'credit','uses'=>'CreditController@index']);
+        Route::get('settles',['as'=>'settle.index','uses'=>'SettleController@index']);
+        Route::get('settle/create',['as'=>'settle.create','uses'=>'SettleController@create']);
+        Route::post('settle/create',['as'=>'settle.store','uses'=>'SettleController@store']);
 
     });
 
@@ -359,6 +367,22 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::get('/{method?}',['as'=>'list','uses'=>'Admin\VisitorController@index']);
 
     });
+
+    /**
+     * Created By Dara on 6/11/2015
+     * credit management routes
+     */
+    Route::get('credit',['as'=>'credit.index','uses'=>'CreditController@adminIndex']);
+    Route::get('credit/settle',['as'=>'settle.index','uses'=>'EventController@index']);
+    Route::get('credit/settle/requests',['as'=>'settle.requests','uses'=>'SettleController@seeAllRequests']);
+    Route::get('credit/settle/requests/{settle}/edit',['as'=>'settle.edit','uses'=>'SettleController@edit']);
+    Route::post('credit/settle/requests/{settle}/edit',['as'=>'settle.update','uses'=>'SettleController@update']);
+    Route::get('credit/settle/create',['as'=>'settle.create','uses'=>'EventController@create']);
+    Route::post('credit/settle/create',['as'=>'settle.store','uses'=>'EventController@store']);
+    Route::get('credit/settle/{event}/delete',['as'=>'settle.delete','uses'=>'EventController@delete']);
+    Route::get('credit/{user}/edit',['as'=>'credit.edit','uses'=>'CreditController@edit']);
+    Route::post('credit/{user}',['as'=>'credit.update','uses'=>'creditController@update']);
+
 
 
     /**
