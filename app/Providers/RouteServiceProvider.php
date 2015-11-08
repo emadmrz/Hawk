@@ -69,9 +69,9 @@ class RouteServiceProvider extends ServiceProvider
         /**
          * Created By Dara on 22/10/2015
          */
-        $router->bind('offer',function($value){
-            return Offer::findOrFail($value);
-        });
+//        $router->bind('offer',function($value){
+//            return Offer::findOrFail($value);
+//        });
         $router->bind('service',function($value){
            return CouponGallery::findOrFail($value);
         });
@@ -84,6 +84,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->bind('problem',function($value){
             return Problem::findOrFail($value);
         });
+        $router->model('offer' , 'App\Offer');
         $router->model('shop' , 'App\Shop');
         $router->model('product' , 'App\Product');
         $router->bind('event',function($value){

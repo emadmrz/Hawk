@@ -534,4 +534,6 @@ Route::group(['prefix' => 'files', 'as'=>'files.'], function () {
     Route::post('article',['middleware' => 'storage', 'as'=>'article.attachment', 'uses'=>'FilesController@articleAttachment']);
     Route::post('article/uploader',['as'=>'article.uploader', 'uses'=>'FilesController@articleUpload']);
     Route::delete('article',['as'=>'article.attachment.delete', 'uses'=>'FilesController@deleteArticleAttachment']);
+
+    Route::post('problem/attachment',['as'=>'problem.attachment', 'uses'=>'problemController@attachment']);
 });

@@ -148,6 +148,10 @@ $(document).ready(function(){
         deleteArticleAttachment($(this))
     });
 
+    $('#problem_text_container').on('click', 'b#delete_problem_attachment', function(){
+        deleteProblemAttachment($(this))
+    });
+
     $('.article_summernote').summernote({
         height: 230,
         direction: 'rtl',
@@ -1717,4 +1721,16 @@ function coupon_sold(data,form){
         form.closest('td').html(data.date);
 
     }
+}
+
+function problem_attachment(data){
+        li = $('<li><b id="delete_problem_attachment" data-name="'+data.name+'::'+data.real_name+'::'+data.size+'" data-value="'+data.id+'" class="fa fa-times-circle" ></b><a target="_blank" href="/img/files/'+data.name+'" >'+data.real_name+'</a><i class="fa fa-paperclip" ></i></li>');
+        $("#problem_text_container").find('.attachments-list').find('ul').append(li);
+        $("#images_list").append('<input type="hidden" name="attachment[]" value="'+data.name+'::'+data.real_name+'::'+data.size+'">')
+}
+
+function deleteProblemAttachment($this){
+    var name = $this.attr('data-name');
+    $("#images_list").find('input[value="'+name+'"]').remove();
+    $this.closest('li').remove();
 }

@@ -10,4 +10,13 @@
     @include('group.partials.problem')
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function(){
+
+            $("#problem_submit_btn").click(function(){
+                $("#problem_form").submit();
+            })
+
+        });
+    </script>
 @endsection

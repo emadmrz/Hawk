@@ -32,6 +32,11 @@ class ProblemController extends Controller
                 'parentable_id' => $group->id,
                 'parentable_type' => 'App\Group',
             ]);
+            $attachments = $request->input('attachment');
+            foreach($attachments as $attachment){
+                $file=explode('::',$attachment);
+                $problem->files()->create(['user_id'=>$user->id, 'name'=>$file[0], 'real_name'=>$file[1], 'size'=>$file[2] ]);
+            }
             $this->groupStream($problem,$group);
         }
         return redirect(route('group.index',[$group->id]));
@@ -64,6 +69,31 @@ class ProblemController extends Controller
     public function problemPreview(Group $group,Problem $problem){
         $user=Auth::user();
         return view('group.problemPreview',compact('user','group','problem'))->with(['title'=>str_limit($problem->content,20)]);
+    }
+
+    /**
+     * Created by Emad Mirzaie on 06/11/2015.
+     * attachment handle
+     */
+    public function attachment(Request $request){
+        $user = Auth::user();
+        $real_name = $request->file('attachment')->getClientOriginalName();
+        $size = $request->file('attachment')->getClientSize()/(1024*1024); //calculate the file size in MB
+        $imageName = str_random(20) . '.' .$request->file('attachment')->getClientOriginalExtension();
+        $request->file('attachment')->move(public_path() . '/img/files/'.$user->id.'/', $imageName);
+        $user->usage->add(filesize(public_path() . '/img/files/'.$user->id.'/'.$imageName)/(1024*1024));// storage add
+        return [
+            'hasCallback'=>1,
+            'callback'=>'problem_attachment',
+            'hasMsg'=>0,
+            'msg'=>'',
+            'msgType'=>'',
+            'returns'=> [
+                'name'=>$user->id.'/'.$imageName,
+                'real_name'=>$real_name,
+                'size'=>$size
+            ]
+        ];
     }
 
     /**

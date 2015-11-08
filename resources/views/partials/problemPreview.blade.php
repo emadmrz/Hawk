@@ -19,6 +19,17 @@
             <div class="row">
                     <div class="col-sm-12 pull-right">
                         <p>{{ $problem->content }}</p>
+                        @if(count($problem->files))
+                            <div class="attachment" >
+                                <div class="attachments-list">
+                                    <ul>
+                                        @foreach($problem->files as $attachment)
+                                            <li><a target="_blank" href="{{ asset('img/files/'.$attachment->name) }}" >{{ $attachment->real_name }}</a><i class="fa fa-paperclip" ></i></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        @endif
                     </div>
             </div>
         </div>

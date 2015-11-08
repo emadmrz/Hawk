@@ -31,8 +31,8 @@
                     <div class="col-md-12 well well-sm">
                         <div id="business-info">
                             <ul>
-                                <li><span><i class="fa fa-phone"></i>09367458211</span></li>
-                                <li><span><i class="fa fa-map-marker"></i> آدرس فروشنده</span></li>
+                                <li><span><i class="fa fa-phone"></i>&ensp;{{ $couponUser->coupon->user->info->phone1 }}</span></li>
+                                <li><span><i class="fa fa-map-marker"></i>&ensp;{{ $couponUser->coupon->user->info->address }}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -66,9 +66,15 @@
                     <div class="exp"><span>تاریخ انقضاء :</span> {{$couponUser->expired_at}}</div>
                 </div>
             </div>
+            <p>
+                لطفاً پس از خرید کوپن، آن را پرینت کرده و برای استفاده در اختیار فروشنده قرار دهید.
+            </p>
+            <a href="{{ route('home.profile', $couponUser->coupon->user_id) }}">بازگشت به پروفایل فروشنده</a>&emsp;&emsp;
+            <a href="{{ route('profile.coupons.bought') }}">مشاهده لیست کوپن های من</a>
         </div>
     </div>
 
 </div>
-
+<br>
+<br>
 </body>

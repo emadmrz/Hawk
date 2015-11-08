@@ -43,6 +43,16 @@ class ViewComposerServiceProvider extends ServiceProvider
             $categories = $shop->products()->with('category')->groupBy('category_id')->get()->pluck('category.name','category.id');
             $view->with(['advantages_list'=>$advantages_list, 'advantages'=>$advantages, 'categories'=>$categories]);
         });
+
+        /**
+         * Created By Dara on 7/11/2015
+         * settlement side view compose
+         */
+        view()->composer('partials.settleManagement',function($view){
+            $view->with('amount',Auth::user()->credits()->sum('amount'));
+        });
+        view()->composer('partials.settleManagement','App\Http\Controllers\EventController');
+
     }
 
     /**

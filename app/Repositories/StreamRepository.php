@@ -13,6 +13,7 @@ use App\Article;
 use App\Endorse;
 use App\Friend;
 use App\Group;
+use App\Offer;
 use App\Poll;
 use App\Post;
 use App\Problem;
@@ -41,6 +42,8 @@ class StreamRepository {
                 $this->feed[] = $this->article($stream->contentable);
             }elseif($stream->contentable_type == 'App\Recommendation'){
                 $this->feed[] = $this->recommendation($stream->contentable);
+            }elseif($stream->contentable_type == 'App\Problem'){
+                $this->feed[] = $this->problem($stream->contentable);
             }elseif($stream->contentable_type == 'App\Payment') {
                 $payment = $stream->contentable;
                 if($payment->itemable_type == 'App\Storage'){
@@ -51,8 +54,8 @@ class StreamRepository {
                     $this->feed[] = $this->questionnaire($payment->itemable);
                 }elseif($payment->itemable_type == 'App\Shop'){
                     $this->feed[] = $this->shop($payment->itemable);
-                }elseif($payment->itemable_tyoe=='App\Offer'){
-                    $this->feed[]=$this->offer($payment->itemable);
+                }elseif($payment->itemable_type == 'App\Offer'){
+                    $this->feed[]= $this->offer($payment->itemable);
                 }
             }
         }

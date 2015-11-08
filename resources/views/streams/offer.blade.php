@@ -7,6 +7,6 @@
         ،
         <a href="{{ route('store.offer') }}">افزونه پیشنهاد ویژه را </a>
         خریداری کرد.
-        <div class="pull-left stream-icon"><i class="fa fa-bar-chart-o fa-2x"></i></div>
+        <div class="pull-left stream-icon"><i class="fa fa-diamond fa-2x"></i></div>
     </div>
 </div>

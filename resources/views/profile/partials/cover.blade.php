@@ -62,24 +62,27 @@
                 <li class="dropdown">
                     <a href="#" id="management_accountant_menu" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i> مدیریت مالی و افزونه ها </a>
                     <ul class="dropdown-menu" aria-labelledby="management_accountant_menu">
-                        <li><a href="{{route('profile.management.credit')}}" ><i class="fa fa-money fa-1x"></i> حساب مالی من </a></li>
+                        <li><a href="#" ><i class="fa fa-credit-card fa-1x"></i> حساب مالی من </a></li>
                         <li><a href="{{ route('profile.management.accountant') }}" ><i class="fa fa-bank fa-1x"></i> مدیریت پرداخت ها </a></li>
-                        @if(count($user->storages()))
+                        @if(count($user->coupons))
+                            <li><a href="{{ route('profile.coupons.bought') }}" ><i class="fa fa-money fa-1x"></i> کوپن های من </a></li>
+                        @endif
+                        @if(count($user->storages))
                             <li><a href="{{ route('profile.management.addon.storage') }}" ><i class="fa fa-database fa-1x"></i> افزونه افزایش حجم </a></li>
                         @endif
-                        @if(count($user->polls()))
+                        @if(count($user->polls))
                             <li><a href="{{ route('profile.management.addon.poll') }}" ><i class="fa fa-bar-chart-o fa-1x"></i> افزونه نظرسنجی </a></li>
                         @endif
-                        @if(count($user->questionnaires()))
+                        @if(count($user->questionnaires))
                             <li><a href="{{ route('profile.management.addon.questionnaire') }}" ><i class="fa fa-hand-pointer-o fa-1x"></i> افزونه پرسشنامه </a></li>
                         @endif
-                        @if($user->shop)
+                        @if(count($user->shop))
                             <li><a href="{{ route('profile.management.addon.shop') }}" ><i class="fa fa-shopping-cart fa-1x"></i> افزونه فروشگاه ساز </a></li>
                         @endif
-                        @if($user->advertises)
+                        @if(count($user->advertises))
                             <li><a href="{{ route('profile.management.addon.advertise') }}" ><i class="fa fa-flag-checkered fa-1x"></i>افزونه تبلیغات در صفحه اول</a></li>
                         @endif
-                        @if($user->offers)
+                        @if(count($user->offers))
                             <li><a href="{{ route('profile.management.addon.offer') }}" ><i class="fa fa-diamond fa-1x"></i>افزونه پیشنهاد ویژه</a></li>
                         @endif
                     </ul>

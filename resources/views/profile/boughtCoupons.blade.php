@@ -37,7 +37,7 @@
                                     <span class="label label-danger">تسویه نشده</span>
                                 @endif
                             </td>
-                            <td><a href="{{route('profile.coupon.preview',[$coupon->id])}}">نمایش</a></td>
+                            <td><a target="_blank" href="{{route('profile.coupon.preview',[$coupon->id])}}">نمایش</a></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -50,7 +50,6 @@
     </div>
 @endsection
 @section('side')
-    @include('partials.profileProgress')
     @include('partials.addonShop')
     @include('partials.addSkill')
     @include('profile.partials.latestArticles')

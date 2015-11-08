@@ -59,24 +59,32 @@ class EventController extends Controller
             ->where('name','settle')
             ->orderBy('from_time','Asc')
             ->first();
-        if($event->from_time<date('Y-m-d h-i-s')){ //the current time is between the from and to
-            if($count>0){
+        if(count($event)){
+            if($event->from_time<date('Y-m-d h-i-s')){ //the current time is between the from and to
+                if($count>0){
+                    return [
+                        'time'=>jDate::forge(date('Y-m-d'))->format('Y/m/d'),
+                        'canSettle'=>false,
+                        'message'=>'شما درخواست تسویه در حال بررسی دارید!'
+                    ];
+                }
                 return [
                     'time'=>jDate::forge(date('Y-m-d'))->format('Y/m/d'),
+                    'canSettle'=>true,
+                    'message'=>'هم اکنون می توانید تسویه کنید .'
+                ];
+            }else{
+                return [
+                    'time'=>jDate::forge($event->from_time)->format('Y/m/d'),
                     'canSettle'=>false,
-                    'message'=>'شما درخواست تسویه در حال بررسی دارید!'
+                    'message'=>'زمان تسویه فرانرسیده است'
                 ];
             }
-            return [
-                'time'=>jDate::forge(date('Y-m-d'))->format('Y/m/d'),
-                'canSettle'=>true,
-                'message'=>'هم اکنون می توانید تسویه کنید .'
-            ];
         }else{
             return [
-                'time'=>jDate::forge($event->from_time)->format('Y/m/d'),
+                'time'=>'نا مشخص',
                 'canSettle'=>false,
-                'message'=>'زمان تسویه فرانرسیده است'
+                'message'=>'رویدادی برای تسویه حساب وجود ندارد.'
             ];
         }
     }

@@ -21,7 +21,7 @@
     @include('partials.addSkill')
     @include('profile.partials.latestArticles')
     @include('profile.partials.latestPosts')
-    @include('profile.partials.groupAdd')
+    @include('partials.groupAdd')
 @endsection
 
 @section('script')
