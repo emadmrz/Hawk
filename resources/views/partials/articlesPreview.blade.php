@@ -24,6 +24,7 @@
         </div>
         <div class="panel-footer">
             <div class="pull-left last-edit"> آخرین ویرایش  {{ $article->shamsi_updated_at }} </div>
+            <a class="btn btn-warning" href="{{route('profile.report.create',['type'=>'article','id'=>$article->id])}}">گزارش</a>
             @if($canEdit)
             <a class="btn btn-info btn-sm" href="{{ route('profile.article.edit', $article->id ) }}"><i class="fa fa-pencil" ></i> ویرایش مقاله </a>
             <a class="btn btn-default btn-sm" href="{{ route('profile.article.create' ) }}"><i class="fa fa-plus" ></i> افزودن مقاله جدید </a>

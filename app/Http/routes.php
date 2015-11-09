@@ -199,6 +199,8 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('/{group}/edit', ['as' => 'edit', 'uses' => 'GroupController@edit']);
         Route::post('/{group}/edit', ['as' => 'update', 'uses' => 'GroupController@update']);
         Route::get('/{group}/delete', ['as' => 'delete', 'uses' => 'GroupController@delete']);
+        Route::get('/{group}/image/create',['as'=>'image.create','uses'=>'GroupController@createImage']);
+        Route::post('/{group}/image/create',['as'=>'image.store','uses'=>'GroupController@storeImage']);
 
     });
 
@@ -317,6 +319,27 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
 
     });
 
+    /**
+     * Created By Dara on 11/9/2015
+     * handling report routes
+     */
+    Route::group(['prefix'=>'report','as'=>'report.'],function(){
+        Route::get('/',['as'=>'index','uses'=>'ReportController@index']);
+        Route::get('create',['as'=>'create','uses'=>'ReportController@create']);
+        Route::post('create',['as'=>'store','uses'=>'ReportController@store']);
+    });
+
+    /**
+     * Created By Dara on 11/9/2015
+     * handling feedback
+     */
+    Route::group(['prefix'=>'feedback','as'=>'feedback.'],function(){
+        Route::get('/',['as'=>'index','uses'=>'FeedbackController@index']);
+        Route::get('create',['as'=>'create','uses'=>'FeedbackController@create']);
+        Route::post('create',['as'=>'store','uses'=>'FeedbackController@store']);
+
+    });
+
 });
 
 
@@ -382,6 +405,26 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
     Route::get('credit/settle/{event}/delete',['as'=>'settle.delete','uses'=>'EventController@delete']);
     Route::get('credit/{user}/edit',['as'=>'credit.edit','uses'=>'CreditController@edit']);
     Route::post('credit/{user}',['as'=>'credit.update','uses'=>'creditController@update']);
+
+    /**
+     * Created Bt Dara on 11/9/2015
+     * reports handling
+     */
+    Route::group(['prefix'=>'report','as'=>'report.'],function(){
+        Route::get('/',['as'=>'show','uses'=>'ReportController@adminShow']);
+        Route::post('/{report}/seen',['as'=>'seen','uses'=>'ReportController@adminSeen']);
+        Route::post('/{report}/unseen',['as'=>'unseen','uses'=>'ReportController@adminUnseen']);
+    });
+
+    /**
+     * Created By Dara on 11/9/2015
+     * feedback handling
+     */
+    Route::group(['prefix'=>'feedback','as'=>'feedback.'],function(){
+        Route::get('/',['as'=>'show','uses'=>'FeedbackController@adminShow']);
+        Route::post('/{feedback}/seen',['as'=>'seen','uses'=>'FeedbackController@adminSeen']);
+        Route::post('/{feedback}/unseen',['as'=>'unseen','uses'=>'FeedbackController@adminUnseen']);
+    });
 
 
 

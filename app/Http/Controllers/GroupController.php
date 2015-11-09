@@ -180,5 +180,46 @@ class GroupController extends Controller
 //        ];
     }
 
+    /**
+     * Created By Dara on 8/11/2015
+     * add image to the group
+     */
+    public function createImage(Group $group){
+        return view('profile.group.createImage',compact('group'))->with(['title'=>'انتخاب تصویر برای گروه']);
+    }
+
+    public function storeImage(Group $group,Request $request)
+    {
+        $this->validate($request, [
+            'cropper_json' => 'required',
+            'inputBanner' => 'required|image'
+        ]);
+        $user = Auth::user();
+        $file = $request->file('inputBanner');
+        $data = $request->input('cropper_json');
+        $data = json_decode(stripslashes($data));
+
+        $imageName = $user->id . str_random(20) . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path() . '/img/files/' . $user->id . '/', $imageName);
+        $src = public_path() . '/img/files/' . $user->id . '/' . $imageName;
+        $real_name = $file->getClientOriginalName();
+        $size = $file->getClientSize() / (1024 * 1024); //calculate the file size in MB
+
+        $img = Image::make($src);
+        $img->rotate($data->rotate);
+        $img->crop(intval($data->width), intval($data->height), intval($data->x), intval($data->y));
+        $img->resize(200, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->save($src, 90);
+
+        $user->usage->add(filesize(public_path() . '/img/files/' . $user->id . '/' . $imageName) / (1024 * 1024));// storage add
+        $group->update([
+           'image'=>$user->id . "/" . $imageName
+        ]);
+        return redirect()->back();
+
+    }
+
 
 }

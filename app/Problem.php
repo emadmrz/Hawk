@@ -25,6 +25,14 @@ class Problem extends Model
         return $this->morphMany('App\Comment', 'commentable');
     }
 
+    /**
+     * Created By Dara on 11/9/2015
+     * report morph relation
+     */
+    public function reports(){
+        return $this->morphMany('App\Report','itemable');
+    }
+
     public function getShamsiCreatedAtAttribute(){
         return jDate::forge($this->attributes['create_at'])->format('Y/m/d');
     }

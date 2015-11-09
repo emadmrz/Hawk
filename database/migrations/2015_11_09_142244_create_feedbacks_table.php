@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCreditsTable extends Migration
+class CreateFeedbacksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,14 @@ class CreateCreditsTable extends Migration
      */
     public function up()
     {
-        Schema::create('credits', function (Blueprint $table) {
+        Schema::create('feedbacks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->bigInteger('amount');
-            $table->text('description');
+            $table->string('title');
+            $table->string('link');
+            $table->text('body');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateCreditsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('credits');
+        Schema::drop('feedbacks');
     }
 }

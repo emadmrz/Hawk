@@ -34,4 +34,12 @@ class Post extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * Created By Dara on 11/9/2015
+     * report morph relation
+     */
+    public function reports(){
+        return $this->morphMany('App\Report','itemable');
+    }
 }

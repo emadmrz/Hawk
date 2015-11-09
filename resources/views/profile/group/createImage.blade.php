@@ -6,19 +6,13 @@
 @section('content')
     <div class="timeline-block">
         <div class="panel panel-default share clearfix-xs">
-            <div class="panel-heading panel-heading-gray title">ایجاد گروه</div>
+            <div class="panel-heading panel-heading-gray title">انتخاب تصویر برای گروه</div>
             <div class="panel-body">
-                {!! Form::open(['route'=>['profile.group.store'], 'method'=>'post', 'enctype'=>"multipart/form-data"]) !!}
+                {!! Form::open(['route'=>['profile.group.image.store',$group->id], 'method'=>'post', 'enctype'=>"multipart/form-data"]) !!}
                 <div class="clearfix form-horizontal">
+
                     <div class="form-group panel-form">
-                        {!! Form::label('name','نام گروه :',['class'=>'control-label pull-right col-sm-2']) !!}
-                        <div class="col-sm-3">
-                            {!! Form::text('name',null,['class'=>'form-control']) !!}
-                            <i class="input-icon fa fa-edit"></i>
-                        </div>
-                    </div>
-                    <div class="form-group panel-form">
-                        {!! Form::label('inputBanner','تصویر بنر گروه :', ['class'=>'control-label pull-right col-sm-2']) !!}
+                        {!! Form::label('inputBanner','تصویر گروه :', ['class'=>'control-label pull-right col-sm-2']) !!}
                         <input type="hidden" name="cropper_json" id="cropper_json" value="">
                         <div class="col-sm-4">
                             {!! Form::file('inputBanner', null, ['class'=>'form-control', 'placeholder'=>'']) !!}
@@ -32,7 +26,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-save"></i>ایجاد گروه </button>
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-save"></i>ثبت</button>
 
 
                 </div>
@@ -53,7 +47,7 @@
             // Import image
             var $image = $('#crop_image_preview > img');
             $image.cropper({
-                aspectRatio: 1280 / 290,
+                aspectRatio: 9 / 9,
                 autoCropArea: 0.65,
                 guides: false,
                 dragCrop: false,

@@ -32,6 +32,7 @@
                         @endif
                     </div>
             </div>
+            <a class="btn btn-warning" href="{{route('profile.report.create',['type'=>'problem','id'=>$problem->id])}}">گزارش</a>
         </div>
         <div class="view-all-comments">
             <a href="#" class="pull-right">
