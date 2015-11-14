@@ -17,19 +17,19 @@
                     <tr>
                         <th class="text-right">#</th>
                         <th class="text-right">مبلغ (تومان)</th>
-                        <th class="text-right">بابت</th>
                         <th class="text-right">نوع</th>
                         <th class="text-right">تاریخ</th>
+                        <th class="text-right">توضیحات</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($credits as $key=>$credit)
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td>{{ abs($credit->amount) }}</td>
-                            <td>{{$credit->description}}</td>
+                            <td class="ltr text-right">{{ number_format($credit->amount) }}</td>
                             <td>{{ $credit->operation }}</td>
                             <td>{{ $credit->shamsi_created_at }}</td>
+                            <td>{{$credit->description}}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -38,7 +38,7 @@
             </div>
             <div class="panel-footer text-footer">
                 <i class="fa fa-clock-o fa-lg" ></i>
-                <span class="pull-left">تومان</span><span class="pull-left">{{$cash}}</span><span class="pull-left">موجودی :</span>
+                موجودی کیف پول شما : {{ number_format($cash) }} تومان
             </div>
         </div>
     </div>

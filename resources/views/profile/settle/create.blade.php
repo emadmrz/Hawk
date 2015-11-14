@@ -29,19 +29,21 @@
                     <div class="form-group panel-form">
                         {!! Form::label('account_number','شماره کارت :',['class'=>'control-label pull-right col-sm-2']) !!}
                         <div class="col-sm-5">
-                            {!! Form::text('account_number',null,['class'=>'form-control']) !!}
+                            {!! Form::text('account_number',null,['class'=>'form-control', 'placeholder'=>'شماره کارت یا شماره حساب ']) !!}
+                            <i class="input-icon fa fa-edit"></i>
                         </div>
                     </div>
                     <div style="display: none;" id="sheba" class="form-group panel-form">
                         {!! Form::label('account_sheba','شماره شبا :',['class'=>'control-label pull-right col-sm-2']) !!}
                         <div class="col-sm-5">
-                            {!! Form::text('account_sheba',null,['class'=>'form-control']) !!}
+                            {!! Form::text('account_sheba',null,['class'=>'form-control', 'placeholder'=>'کد 25 رقمی شبا که با IR آغاز می شود.']) !!}
+                            <i class="input-icon fa fa-edit"></i>
                         </div>
                     </div>
                     <div class="form-group panel-form">
                         {!! Form::label('amount','مقدار قابل تسویه :',['class'=>'control-label pull-right col-sm-2']) !!}
                         <div class="col-sm-3">
-                            {!! Form::input('number','amount',$cash,['class'=>'form-control','disabled']) !!}
+                            <div class="form-control-static">{{ number_format($cash) }} تومان</div>
                         </div>
                     </div>
                 </div>

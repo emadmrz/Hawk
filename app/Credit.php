@@ -24,7 +24,7 @@ class Credit extends Model
     }
 
     public function getShamsiCreatedAtAttribute(){
-        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d H:i:s');
     }
 
 }

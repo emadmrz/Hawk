@@ -20,6 +20,15 @@ Route::get('/coupon', function(){
     return view('store.offer.coupon');
 });
 
+Route::get('/sock', function(){
+    Event::fire(new \App\Events\sendMessage());
+    return 'Event Fired';
+});
+
+Route::get('/socket', function(){
+    return view('socket');
+});
+
 /**
  * Created by Emad Mirzaie on 02/09/2015.
  * Home Routes in this page user receive new feeds
@@ -327,7 +336,7 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('/',['as'=>'index','uses'=>'ReportController@index']);
         Route::get('create',['as'=>'create','uses'=>'ReportController@create']);
         Route::post('create',['as'=>'store','uses'=>'ReportController@store']);
-    });
+});
 
     /**
      * Created By Dara on 11/9/2015
@@ -579,4 +588,12 @@ Route::group(['prefix' => 'files', 'as'=>'files.'], function () {
     Route::delete('article',['as'=>'article.attachment.delete', 'uses'=>'FilesController@deleteArticleAttachment']);
 
     Route::post('problem/attachment',['as'=>'problem.attachment', 'uses'=>'problemController@attachment']);
+});
+
+/**
+ * Created by Emad Mirzaie on 11/11/2015.
+ * Search
+ */
+Route::group(['prefix' => 'search', 'as'=>'search.'], function () {
+    Route::get('/',['as'=>'index', 'uses'=>'SearchController@index']);
 });

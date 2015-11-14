@@ -3,7 +3,7 @@
         <div class="panel-heading panel-heading-gray title">مدیریت پروفایل</div>
         <div class="panel-body side-nav-menu">
             <ul class="">
-                <li class="{{ (strpos(URL::current(),route('profile.management.credit')) !== false) ? 'active' : '' }}"><i class="fa fa-money" ></i><a href="{{ route('profile.management.credit') }}" class="">حساب مالی من</a></li>
+                <li class="{{ (strpos(URL::current(),route('profile.management.credit')) !== false) ? 'active' : '' }}"><i class="fa fa-credit-card" ></i><a href="{{ route('profile.management.credit') }}" class="">حساب مالی من</a></li>
                 <li class="{{ (strpos(URL::current(),route('profile.management.accountant')) !== false) ? 'active' : '' }}"><i class="fa fa-bank" ></i><a href="{{ route('profile.management.accountant') }}" class="">مدیریت تراکنش های مالی</a></li>
                 <li class="{{ (strpos(URL::current(),route('profile.management.addon.storage')) !== false) ? 'active' : '' }}"><i class="fa fa-database" ></i><a href="{{ route('profile.management.addon.storage') }}" class="">مدیریت افزونه افزایش حجم</a></li>
                 <li class="{{ (strpos(URL::current(),route('profile.management.addon.poll')) !== false) ? 'active' : '' }}"><i class="fa fa-bar-chart-o" ></i><a href="{{ route('profile.management.addon.poll') }}" class="">مدیریت افزونه نظر سنجی</a></li>

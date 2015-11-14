@@ -21,7 +21,7 @@
                         <li><a href="{{ route('home.home') }}"><i class="fa fa-home fa-lg"></i> خانه </a></li>
                         <li><a href="{{ route('profile.me') }}"><i class="fa fa-briefcase fa-lg"></i> پروفایل </a></li>
                         <li><a href="#"><i class="fa fa-pie-chart fa-lg"></i> داشبود </a></li>
-                        <li><a href="#"><i class="fa fa-money fa-lg"></i>حساب مالی من</a></li>
+                        <li><a href="{{ route('profile.management.credit') }}"><i class="fa fa-credit-card fa-lg"></i>حساب مالی من</a></li>
                         <li><a href="{{ url('auth/logout') }}" class="exit"><i class="fa fa-power-off fa-lg"></i>خروج از سایت</a></li>
                     </ul>
                 </li>
@@ -53,8 +53,18 @@
                     <input type="text" class="form-control glass-input" style="background: #EEE ; color:#666" size="40" placeholder=" جستجوی سریع در سایت ">
                 </div>
                 <button type="submit" class="btn btn-default search-now"><i class="fa fa-search fa-lg" ></i></button>
-                <span class="advance-search" ><i class="fa fa-caret-down" ></i><a href="#" >جستجوی پیشرفته</a></span>
+                <span class="advance-search" ><i class="fa fa-caret-down" ></i><a href="{{ route('search.index') }}" >جستجوی پیشرفته</a></span>
+
+                {{--Search Result Navbar--}}
+                <div class="search-result-navbar" id="search-result-navbar">
+                    <ul class="dropdown-menu">
+                        @include('search.partials.fastResult')
+                    </ul>
+                </div>
+                {{--Search Result Navbar End--}}
+
             </form>
+
 
         </div>
     </div>

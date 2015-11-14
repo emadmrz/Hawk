@@ -47,6 +47,7 @@
                 <li class="dropdown">
                     <a id="post_article" href="#" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa  fa-pencil-square-o"></i> نگاره ها </a>
                     <ul class="dropdown-menu" aria-labelledby="post_article">
+                        <li><a href="{{ route('profile.article.create') }}" ><i class="fa fa-newspaper-o fa-1x"></i> ارسال مقاله </a></li>
                         <li><a href="{{ route('profile.articles') }}" ><i class="fa fa-newspaper-o fa-1x"></i> مقاله ها </a></li>
                         <li><a href="{{ route('profile.post.list') }}" ><i class="fa fa-pencil-square-o fa-1x"></i> پست ها </a></li>
                     </ul>
@@ -62,7 +63,7 @@
                 <li class="dropdown">
                     <a href="#" id="management_accountant_menu" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i> مدیریت مالی و افزونه ها </a>
                     <ul class="dropdown-menu" aria-labelledby="management_accountant_menu">
-                        <li><a href="#" ><i class="fa fa-credit-card fa-1x"></i> حساب مالی من </a></li>
+                        <li><a href="{{ route('profile.management.credit') }}" ><i class="fa fa-credit-card fa-1x"></i> حساب مالی من </a></li>
                         <li><a href="{{ route('profile.management.accountant') }}" ><i class="fa fa-bank fa-1x"></i> مدیریت پرداخت ها </a></li>
                         @if(count($user->coupons))
                             <li><a href="{{ route('profile.coupons.bought') }}" ><i class="fa fa-money fa-1x"></i> کوپن های من </a></li>

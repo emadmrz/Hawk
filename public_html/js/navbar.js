@@ -44,7 +44,7 @@ $('#new_notifications_nav').on('show.bs.dropdown', function () {
 
 });
 
-setInterval( notifications_refresh , 3000);
+setTimeout( notifications_refresh , 3000);
 
 function notifications_refresh(){
     $.ajax({

@@ -908,6 +908,35 @@ footer.footer .social-media li.whatsapp a{
     color: #c33100;
 }
 
+.search-result-navbar{
+
+}
+
+.search-result-navbar .dropdown-menu{
+    display: inherit;
+    left: inherit;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin: 0 95px 0 0;
+    text-align: right;
+    /*padding: 8px 15px;*/
+    width: 335px;
+    padding: 0;
+}
+.search-result-navbar .dropdown-menu li .media-object{
+    width: 50px;
+    height: 50px;
+}
+.search-result-navbar .dropdown-menu li .media-body .info{
+    font-size: 13px;
+}
+.search-result-navbar .dropdown-menu li{
+    border-bottom: 1px solid #EEE;
+    padding: 5px 10px;
+}
+.search-result-navbar .dropdown-menu li:last-child{
+    border-bottom: none;
+}
 /*-------------------Btns New Style------------------*/
 /*.btn.btn-success{*/
     /*border-bottom: 5px solid #3c763d;*/

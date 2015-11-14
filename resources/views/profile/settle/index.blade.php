@@ -17,6 +17,7 @@
                     <tr>
                         <th class="text-right">#</th>
                         <th class="text-right">مبلغ (تومان)</th>
+                        <th class="text-right">تاریخ درخواست</th>
                         <th class="text-right">توضیحات</th>
                         <th class="text-right">وضعیت</th>
 
@@ -26,16 +27,18 @@
                     @foreach($settles as $key=>$settle)
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td>{{ abs($settle->amount) }}</td>
+                            <td>{{ number_format($settle->amount) }}</td>
+                            <td>{{ $settle->shamsi_created_at }}</td>
                             <td>{{$settle->description}}</td>
-                            @if($settle->status==0)
-                                <td>در حال بررسی</td>
-                            @elseif($settle->status==1)
-                                <td>پرداخت شده</td>
-                            @elseif($settle->status==2)
-                                <td>غیر قابل قبول</td>
-                            @endif
-
+                            <td>
+                                @if($settle->status==0)
+                                    <span class="label label-warning">در حال بررسی</span>
+                                @elseif($settle->status==1)
+                                    <span class="label label-success">تسویه شده</span>
+                                @elseif($settle->status==2)
+                                    <span class="label label-danger">عدم تایید</span>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

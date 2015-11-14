@@ -37,6 +37,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\advertisePurchased' => [
             'App\Listeners\activeAdvertise',
         ],
+        'App\Events\sendMessage'=>[],
     ];
 
     /**

@@ -3223,3 +3223,8 @@ sup {
     background: none;
     outline: none;
 }
+.settlement-panel .alert{
+    font-size: 12px;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+}
