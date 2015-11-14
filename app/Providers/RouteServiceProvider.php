@@ -8,6 +8,7 @@ use App\Event;
 use App\Group;
 use App\Offer;
 use App\Problem;
+use App\Report;
 use App\Settle;
 use App\User;
 use Illuminate\Routing\Router;
@@ -92,6 +93,10 @@ class RouteServiceProvider extends ServiceProvider
         });
         $router->bind('settle',function($value){
             return Settle::findOrFail($value);
+        });
+
+        $router->bind('report',function($value){
+            return Report::findOrFail($value);
         });
 
     }

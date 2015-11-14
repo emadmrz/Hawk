@@ -15,13 +15,13 @@
                     </span>
                 </div>
             </div>
-            @include('profile.partials.cropper', ['type'=>'cover'])
+
         </div>
         <div class="cover-info" id="avatarContainer">
-
+            <div class="avatar">
+                <img id="avatar-image" src="{{ asset('img/files/'.$group->image) }}" alt="people">
+            </div>
             <div class="name">
-
-                <br>
                 <a href="{{route('group.index',[$group->id])}}">{{ $group->name }}</a>
             </div>
             <ul class="cover-nav">

@@ -50,6 +50,14 @@ class Article extends Model
         return $this->morphMany('App\Visit', 'visitable');
     }
 
+    /**
+     * Created By Dara on 11/9/2015
+     * report morph relation
+     */
+    public function reports(){
+        return $this->morphMany('App\Report','itemable');
+    }
+
     public function like($user_id){
         $this->likes()->create(['user_id'=>$user_id, 'value'=>1]);
         $this->increment('num_like');

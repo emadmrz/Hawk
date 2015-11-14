@@ -284,6 +284,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * Created By Dara on 9/11/2015
+     * report-relation
+     */
+    public function reports(){
+        return $this->hasMany('App\Report');
+    }
+
+    /**
+     * Created By Dara on 9/11/2015
+     * feedback-relation
+     */
+    public function feedbacks(){
+        return $this->hasMany('App\Feedback');
+    }
+
+    /**
      * Created by Emad Mirzaie on 06/10/2015.
      * Check if auth user is friend with user
      */

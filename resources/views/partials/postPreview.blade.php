@@ -29,6 +29,7 @@
                         <p>{{ $post->content }}</p>
                     </div>
                 @endif
+                    <a href="{{route('profile.report.create',['type'=>'post','id'=>$post->id])}}" class="btn btn-warning">گزارش</a>
             </div>
         </div>
         <div class="view-all-comments">
