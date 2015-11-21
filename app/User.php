@@ -48,6 +48,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'first_name' => 10,
             'last_name' => 10,
             'email' => 5,
+            'company'=>5,
+            'users.description'=>3,
+            'problems.content'=>5,
+            'articles.title'=>5,
+            'articles.content'=>3,
+            'biographies.text'=>2,
+            'infos.address'=>1,
+            'posts.content'=>5,
+            'skills.title'=>5,
+            'skills.description'=>3
+        ],
+        'joins'=>[
+            'posts'=>['users.id','posts.user_id'],
+            'problems'=>['users.id','problems.user_id'],
+            'articles'=>['users.id','articles.user_id'],
+            'biographies'=>['users.id','biographies.user_id'],
+            'infos'=>['users.id','infos.user_id'],
+            'skills'=>['users.id','skills.user_id']
         ]
     ];
 

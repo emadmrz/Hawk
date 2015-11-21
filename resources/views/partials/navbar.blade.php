@@ -46,24 +46,25 @@
                 <li><a href="#"><i class="fa fa-th fa-2x"></i></a></li>
             </ul>
 
-            <form class="navbar-form navbar-left search-navbar hidden-sm" role="search">
-                <span id="users" class="img-circle search-filter active"><i class="fa fa-shopping-cart fa-2x"></i></span>
-                <span id="products" class="img-circle search-filter"><i class="fa fa-user fa-2x"></i></span>
+            {!! Form::open(['method'=>'get','route'=>'search.index','class'=>'navbar-form navbar-left search-navbar hidden-sm','role'=>'search']) !!}
+                <span id="users" class="img-circle search-filter active"><i class="fa fa-user fa-2x"></i></span>
+                <span id="products" class="img-circle search-filter"><i class="fa fa-shopping-cart fa-2x"></i></span>
                 <div class="form-group">
-                    <input type="text" class="form-control glass-input" style="background: #EEE ; color:#666" size="40" placeholder=" جستجوی سریع در سایت ">
+                    <input autocomplete="off" id="fast-search" name="query" type="text" class="form-control glass-input" style="background: #EEE ; color:#666" size="40" placeholder=" جستجوی سریع در سایت ">
                 </div>
+                <input name="cat" type="hidden" value="users">
                 <button type="submit" class="btn btn-default search-now"><i class="fa fa-search fa-lg" ></i></button>
                 <span class="advance-search" ><i class="fa fa-caret-down" ></i><a href="{{ route('search.index') }}" >جستجوی پیشرفته</a></span>
 
                 {{--Search Result Navbar--}}
                 <div class="search-result-navbar" id="search-result-navbar">
                     <ul class="dropdown-menu">
-                        @include('search.partials.fastResult')
+
                     </ul>
                 </div>
                 {{--Search Result Navbar End--}}
 
-            </form>
+            {!! Form::close() !!}
 
 
         </div>

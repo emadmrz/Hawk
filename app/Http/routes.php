@@ -596,4 +596,6 @@ Route::group(['prefix' => 'files', 'as'=>'files.'], function () {
  */
 Route::group(['prefix' => 'search', 'as'=>'search.'], function () {
     Route::get('/',['as'=>'index', 'uses'=>'SearchController@index']);
+    Route::post('fastSearch',['as'=>'fastSearch','uses'=>'SearchController@fastSearch']);
+    Route::post('fullSearch',['as'=>'fullSearch','uses'=>'SearchController@search']);
 });
