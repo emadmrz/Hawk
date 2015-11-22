@@ -101,23 +101,101 @@ $(document).ready(function(){
     })
 
     $('select#province_id').change(function(){
-        $.ajax({
-            type: 'get',
-            url: "/api/location/cities/",
-            data: {province_id: $(this).val()},
-            dataType: 'json',
-            success: function(data){
-                var $select = $("select#city_id");
-                $select.html('');
-                $(data).each(function (key, value) {
-                    var $option = $("<option/>").attr("value", value.id).text(value.name);
-                    $select.append($option);
-                });
-            },
-            error: function(xhr){
-                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+        if($(this).val()!=0){
+            $.ajax({
+                type: 'get',
+                url: "/api/location/cities/",
+                data: {province_id: $(this).val()},
+                dataType: 'json',
+                success: function(data){
+                    var $select = $("select#city_id");
+                    var $default=$("<option/>").attr('value',0).text('اهمیتی ندارد');
+                    $select.html('');
+                    $(data).each(function (key, value) {
+                        var $option = $("<option/>").attr("value", value.id).text(value.name);
+                        $select.append($option);
+                    });
+                    $select.append($default);
+                },
+                error: function(xhr){
+                    alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        }else{
+            var $default=$("<option/>").attr('value',0).text('اهمیتی ندارد');
+            var $select = $("select#city_id");
+            $select.html('');
+            $select.append($default);
+        }
+
+    });
+
+    /**
+     * Created By Dara on 18/11/15
+     * skill_province select box
+     */
+    $('select#skill_province_id').change(function(){
+        if($(this).val()!=0){
+            $.ajax({
+                type: 'get',
+                url: "/api/location/cities/",
+                data: {province_id: $(this).val()},
+                dataType: 'json',
+                success: function(data){
+                    var $select = $("select#skill_city_id");
+                    var $default=$("<option/>").attr('value',0).text('اهمیتی ندارد');
+                    $select.html('');
+                    $(data).each(function (key, value) {
+                        var $option = $("<option/>").attr("value", value.id).text(value.name);
+                        $select.append($option);
+                    });
+                    $select.append($default);
+                },
+                error: function(xhr){
+                    alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        }else{
+            var $default=$("<option/>").attr('value',0).text('اهمیتی ندارد');
+            var $select = $("select#skill_city_id");
+            $select.html('');
+            $select.append($default);
+        }
+
+    });
+
+    /**
+     * Created By Dara on 19/11/2015
+     * handling the skill week day select-box in search
+     */
+    $("select#skill_first_week").change(function(){
+        var selected=$(this).val();
+        var data={
+            0:'اهمیتی ندارد',
+            1:'شنبه'  ,
+            2:'یکشنبه',
+            3:'دوشنبه',
+            4:'سه شنبه',
+            5:'چهارشنبه',
+            6:'پنجشنبه',
+            7:'جمعه'
+        };
+        if(selected==0){
+            var $select=$("select#skill_second_week");
+            $select.html('');
+            var $option = $("<option/>").attr("value", 0).text('اهمیتی ندارد');
+            $select.append($option);
+            return;
+        }
+        var $select=$("select#skill_second_week");
+        $select.html('');
+        $.each(data,function (key, value) {
+            if(key>=selected){
+                var $option = $("<option/>").attr("value", key).text(value);
+                $select.append($option);
             }
         });
+
     });
 
     $("#user_info_form").inlineEditor();
@@ -1093,6 +1171,39 @@ $(document).ready(function(){
         $('#carousel-special_offer').find('.item[data-key='+key+']').find('.carousel-caption').fadeToggle(300);
     })
 
+    /**
+     * Created By Dara on 17/11/2015
+     * filling the sub category for skill select box
+     */
+    $('select#main_category_id').change(function(){
+        if($(this).val()!=0){
+            $.ajax({
+                type: 'get',
+                url: "/api/category/sub/",
+                data: {category_id: $(this).val()},
+                dataType: 'json',
+                success: function(data){
+                    var $select = $("select#sub_category_id");
+                    $select.html('');
+                    var $default=$("<option/>").attr('value',0).text('اهمیتی ندارد');
+                    $(data).each(function (key, value) {
+                        var $option = $("<option/>").attr("value", value.id).text(value.name);
+                        $select.append($option);
+                    });
+                    $select.append($default);
+                },
+                error: function(xhr){
+                    alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        }else{
+            var $select = $("select#sub_category_id");
+            $select.html('');
+            var $default=$("<option/>").attr('value',0).text('اهمیتی ندارد');
+            $select.append($default);
+        }
+
+    });
 
 
 });
@@ -1734,3 +1845,6 @@ function deleteProblemAttachment($this){
     $("#images_list").find('input[value="'+name+'"]').remove();
     $this.closest('li').remove();
 }
+
+
+

@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class LocationController extends Controller
 {
     public function cities(Request $request){
-        $cities = Province::findOrFail($request->input('province_id'))->getDescendants();
-        return $cities;
+            $cities = Province::findOrFail($request->input('province_id'))->getDescendants();
+            return $cities;
     }
 }

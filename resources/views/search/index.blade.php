@@ -13,17 +13,17 @@
                 <h3 class="panel-title">جستجوی در بین کاربران ، مهارت ها و کالاها</h3>
             </div>
             <div class="panel-body search-box">
-                <form class="form-horizontal">
+                {!! Form::model($user,['route'=>'search.fullSearch','class'=>'form-horizontal']) !!}
 
                     <h5>
                         <div class="row toggle-demo ltr">
 
                             <div class="switch-toggle switch-2 well col-lg-3">
                                 <i class="fa icon-shopping-basket fa-3x left-icon iconi"></i>
-                                <input id="week-d1" name="view-d" type="radio" value="product" checked>
+                                <input id="week-d1" name="view_d" type="radio" value="products" @if($catSelected=='products') checked @endif>
                                 <label for="week-d1" onclick="">جستجو در بین کالا</label>
 
-                                <input id="month-d2" name="view-d" value="person" type="radio">
+                                <input id="month-d2" name="view_d" value="users" type="radio" @if($catSelected=='users') checked @endif>
                                 <label for="month-d2" onclick="">جستجو در بین کاربران</label>
                                 <i class="fa icon-user-2 fa-3x right-icon iconi"></i>
                                 <a class="btn btn-success"></a>
@@ -31,7 +31,7 @@
                         </div>
                     </h5>
 
-                    <div id="product_search">
+                    <div class="@if($catSelected=='users') em-hide @endif" id="product_search">
 
                         <h3><a class="collapse-title collapsed" aria-expanded="true" data-toggle="collapse" href="#collapseListGroup4" aria-expanded="true" aria-controls="collapseListGroup4">مشخصات فروشگاه</a></h3>
 
@@ -44,7 +44,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >نام فروشگاه</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control">
+                                                {!! Form::text('shopTitle',null,['class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -53,12 +53,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >استان</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">تهران</option>
-                                                    <option value="3">شیراز</option>
-                                                    <option value="3">اصفهان</option>
-                                                </select>
+                                                {!! Form::select('productProvince',$provinces,null,['id'=>'province_id','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -67,12 +62,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >شهر</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">تهران</option>
-                                                    <option value="3">شیراز</option>
-                                                    <option value="3">اصفهان</option>
-                                                </select>
+                                                {!! Form::select('productCity',$cities,null,['id'=>'city_id','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -81,8 +71,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox6" value="option1">
-                                                <label for="inlineCheckbox6">تحویل سراسر کشور</label>
+                                                {!! Form::checkbox('productReturn',4,null,['class'=>'form-control']) !!}
+                                                <label for="productReturn">ضمانت بازگشت</label>
                                             </div>
                                         </div>
                                     </div>
@@ -90,8 +80,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox7" value="option1">
-                                                <label for="inlineCheckbox7">ضمانت تعویض</label>
+                                                {!! Form::checkbox('payInHome',6,null,['class'=>'form-control']) !!}
+                                                <label for="payInHome">پرداخت در محل</label>
                                             </div>
                                         </div>
                                     </div>
@@ -99,8 +89,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox8" value="option1">
-                                                <label for="inlineCheckbox8">ضمانت تعمیر</label>
+                                                {!! Form::checkbox('productGuarantee',3,null,['class'=>'form-control']) !!}
+                                                <label for="productGuarantee">گارانتی سلامت کالا</label>
                                             </div>
                                         </div>
                                     </div>
@@ -108,8 +98,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox10" value="option1">
-                                                <label for="inlineCheckbox10">پرداخت آنلاین</label>
+                                                {!! Form::checkbox('productOriginal',2,null,['class'=>'form-control']) !!}
+                                                <label for="productOriginal">تضمین اصالت</label>
                                             </div>
                                         </div>
                                     </div>
@@ -117,8 +107,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" value="option1">
-                                                <label for="inlineCheckbox3">پرداخت در محل</label>
+                                                {!! Form::checkbox('fastDeliver',1,null,['class'=>'form-control']) !!}
+                                                <label for="fastDeliver">ارسال سریع کالا</label>
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +130,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >عنوان کالا</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control">
+                                                {!! Form::text('productTitle',null,['class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -149,12 +139,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >طبقه بندی کالا</label>
                                             <div class="col-sm-8">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">تهران</option>
-                                                    <option value="3">شیراز</option>
-                                                    <option value="3">اصفهان</option>
-                                                </select>
+                                                {!! Form::select('productCat',$productCat,null,['class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -163,11 +148,11 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >قیمت از</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control">
+                                                {!! Form::text('firstPrice',null,['class'=>'form-control']) !!}
                                             </div>
                                             <label class="col- control-label" >تا</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control">
+                                                {!! Form::text('secondPrice',null,['class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -175,8 +160,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" value="option1">
-                                                <label for="inlineCheckbox3">فقط کالاهای موجود</label>
+                                                {!! Form::checkbox('available',1,null,['class'=>'form-control']) !!}
+                                                <label for="available">فقط کالاهای موجود</label>
                                             </div>
                                         </div>
                                     </div>
@@ -184,8 +169,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" value="option1">
-                                                <label for="inlineCheckbox3"> دارای عکس</label>
+                                                {!! Form::checkbox('image',1,null,['class'=>'form-control']) !!}
+                                                <label for="image"> دارای عکس</label>
                                             </div>
                                         </div>
                                     </div>
@@ -193,8 +178,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" value="option1">
-                                                <label for="inlineCheckbox3">دارای تخفیف</label>
+                                                {!! Form::checkbox('discount',1,null,['class'=>'form-control']) !!}
+                                                <label for="discount">دارای تخفیف</label>
                                             </div>
                                         </div>
                                     </div>
@@ -223,14 +208,8 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >مرتب سازی بر اساس</label>
                                             <div class="col-sm-8">
-                                                <select class="form-control">
-                                                    <option value="1">پر بازدیدترین ها</option>
-                                                    <option value="2">محبوب ترین ها</option>
-                                                    <option value="3">پر فروش ترین</option>
-                                                    <option value="3">قیمت</option>
-                                                    <option value="3">نزدیک ترین به من</option>
-                                                    <option value="3">جدیدترین ها</option>
-                                                </select>
+                                                {!! Form::select('productSort',[1=>'پربازدیدترین ها',2=>'محبوب ترین ها',3=>'پرفروش ترین ها',4=>'قیمت',5=>'جدید ترین ها'],null,['class'=>'form-control']) !!}
+
                                             </div>
                                         </div>
                                     </div>
@@ -246,7 +225,7 @@
                     </div>
 
 
-                    <div class="em-hide" id="person_search">
+                    <div class="@if($catSelected=='products') em-hide @endif" id="person_search">
 
                         <h3><a class="collapse-title collapsed" aria-expanded="true" data-toggle="collapse" href="#collapseListGroup6" aria-expanded="true" aria-controls="collapseListGroup6">مشخصات کاربر</a></h3>
                         <div class="collapse in collapse-content" id="collapseListGroup6"  aria-expanded="true">
@@ -258,7 +237,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >نام کاربر</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control">
+                                                {!! Form::text('username',null,['class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -267,11 +246,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >نوع کاربر</label>
                                             <div class="col-sm-8">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">حقیقی </option>
-                                                    <option value="3">حقوقی</option>
-                                                </select>
+                                                {!! Form::select('role',[0=>'اهمیتی ندارد',1=>'حقیقی',2=>'حقوقی'],null,['class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -307,12 +282,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >استان</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">تهران</option>
-                                                    <option value="3">شیراز</option>
-                                                    <option value="3">اصفهان</option>
-                                                </select>
+                                                {!! Form::select('province',$provinces,null,['id'=>'province_id','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -321,12 +291,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >شهر</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">تهران</option>
-                                                    <option value="3">شیراز</option>
-                                                    <option value="3">اصفهان</option>
-                                                </select>
+                                                {!! Form::select('city',$cities,null,['id'=>'city_id','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -347,12 +312,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >طبقه بندی سطح اول</label>
                                             <div class="col-sm-7">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">طبقه بندی سطح اول مهارت</option>
-                                                    <option value="3">طبقه بندی سطح اول مهارت</option>
-                                                    <option value="3">طبقه بندی سطح اول مهارت</option>
-                                                </select>
+                                                {!! Form::select('firstCat',$firstSkillCat,null,['id'=>'main_category_id','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -361,12 +321,7 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >طبقه بندی سطح دوم</label>
                                             <div class="col-sm-7">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">طبقه بندی سطح اول مهارت</option>
-                                                    <option value="3">طبقه بندی سطح اول مهارت</option>
-                                                    <option value="3">طبقه بندی سطح اول مهارت</option>
-                                                </select>
+                                                {!! Form::select('secondCat',$secondSkillCat,null,['id'=>'sub_category_id','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -389,73 +344,49 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >عنوان مهارت</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control">
+                                                {!! Form::text('title',null,['class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label class="col- control-label" >سطح مهارت</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">طبقه بندی سطح اول مهارت</option>
-                                                    <option value="3">طبقه بندی سطح اول مهارت</option>
-                                                    <option value="3">طبقه بندی سطح اول مهارت</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
 
                                     <div class="col-sm-4">
                                         <div class="form-group">
                                             <label class="col- control-label" >سطح خود ارزیابی</label>
-                                            <div class="col-sm-7">
-                                                <select class="form-control">
-                                                    <option value="1">اهمیتی ندارد</option>
-                                                    <option value="2">تازه کار</option>
-                                                    <option value="3">قابل قبول</option>
-                                                    <option value="3">حرفه ای</option>
-                                                </select>
+                                            <div class="col-sm-8">
+                                                {!! Form::select('my_rate',[0=>'اهمیتی ندارد',1=>'کاملا حرفه ایی',2=>'قابل قبول',3=>'تازه کار'],null,['class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+
+
+
+                                    <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label class="col- control-label" >محل ارائه مهارت</label>
-                                            <div class="col-sm-7">
-                                                <input type="text" class="form-control">
+                                            <label class="col- control-label" >استان</label>
+                                            <div class="col-sm-9">
+                                                {!! Form::select('skillProvince',$provinces,null,['id'=>'skill_province_id','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label class="col- control-label" >سابقه بیش از</label>
-                                            <div class="col-sm-7">
-                                                <input type="text" class="form-control">
+                                            <label class="col- control-label" >شهر</label>
+                                            <div class="col-sm-9">
+                                                {!! Form::select('skillCity',$cities,null,['id'=>'skill_city_id','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
+
+
 
 
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox6" value="option1">
-                                                <label for="inlineCheckbox6">داشتن نمونه کار</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-2">
-                                        <div class="form-group">
-                                            <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox7" value="option1">
-                                                <label for="inlineCheckbox7">داشتن مدرک گواهینامه</label>
+                                                {!! Form::checkbox('experience','experience',null,['class'=>'form-control']) !!}
+                                                <label for="experience">داشتن نمونه کار</label>
                                             </div>
                                         </div>
                                     </div>
@@ -463,7 +394,16 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox8" value="option1">
+                                                {!! Form::checkbox('degree','degree',null,['class'=>'form-control']) !!}
+                                                <label for="degree">داشتن مدرک گواهینامه</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                {!! Form::checkbox('history','history',null,['class'=>'form-control']) !!}
                                                 <label for="inlineCheckbox8">داشتن سابقه</label>
                                             </div>
                                         </div>
@@ -481,8 +421,8 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success checkbox-inline">
-                                                <input type="checkbox" id="inlineCheckbox3" value="option1">
-                                                <label for="inlineCheckbox3">فقط مهارت های قابل ارائه</label>
+                                                {!! Form::checkbox('status',1,null,['class'=>'form-control']) !!}
+                                                <label for="status">فقط مهارت های قابل ارائه</label>
                                             </div>
                                         </div>
                                     </div>
@@ -502,51 +442,21 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >روز ارائه مهارت از</label>
                                             <div class="col-sm-4">
-                                                <select class="form-control">
-                                                    <option value="1">شنبه</option>
-                                                    <option value="2">یکشنبه</option>
-                                                    <option value="3">دوشنبه</option>
-                                                    <option value="4">سه شنبه</option>
-                                                    <option value="5">چهارشنبه</option>
-                                                    <option value="6">پنجشنبه</option>
-                                                    <option value="7">جمعه</option>
-                                                </select>
+                                                {!! Form::select('firstWeekDay',[0=>'اهمیتی ندارد',1=>'شنبه',2=>'یکشنبه',3=>'دوشنبه',4=>'سه شنبه',5=>'چهارشنبه',6=>'پنجشنبه',7=>'جمعه'],null,['id'=>'skill_first_week','class'=>'form-control']) !!}
                                             </div>
                                             <label class="col- control-label" >تا</label>
                                             <div class="col-sm-4">
-                                                <select class="form-control">
-                                                    <option value="1">شنبه</option>
-                                                    <option value="2">یکشنبه</option>
-                                                    <option value="3">دوشنبه</option>
-                                                    <option value="4">سه شنبه</option>
-                                                    <option value="5">چهارشنبه</option>
-                                                    <option value="6">پنجشنبه</option>
-                                                    <option value="7">جمعه</option>
-                                                </select>
+                                                {!! Form::select('secondWeekDay',[0=>'اهمیتی ندارد',1=>'شنبه',2=>'یکشنبه',3=>'دوشنبه',4=>'سه شنبه',5=>'چهارشنبه',6=>'پنجشنبه',7=>'جمعه'],null,['id'=>'skill_second_week','class'=>'form-control']) !!}
                                             </div>
                                         </div>
                                     </div>
 
 
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col- control-label" >ساعت ارائه از</label>
-                                            <div class="col-sm-4">
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <label class="col- control-label" >تا</label>
-                                            <div class="col-sm-4">
-                                                <input type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
+
 
                                 </div>
                             </div>
                         </div>
-
-
-                        <h3><button class="btn btn-default btn-sm">جستجو در سایت</button></h3>
 
                         <div class="collapse-content">
                             <div class="row">
@@ -556,18 +466,20 @@
                                         <div class="form-group">
                                             <label class="col- control-label" >مرتب سازی بر اساس</label>
                                             <div class="col-sm-8">
-                                                <select class="form-control">
-                                                    <option value="1">سطح مهارت – خود اظهاری</option>
-                                                    <option value="2"> نزدیک ترین به من</option>
-                                                    <option value="3">سطح مهارت – ارزیابی سایت</option>
-                                                    <option value="3">امتیاز گواهینامه</option>
-                                                    <option value="3">  میزان سابقه</option>
-                                                    <option value="3">میزان تحصیلات</option>
-                                                    <option value="3">درصد تکمیل بودن پروفایل</option>
-                                                    <option value="3">  تعداد کارهای واگذار شده از طریق سایت</option>
-                                                    <option value="3">پیشنهاد ویژه</option>
-                                                    <option value="3">سطح مهارت</option>
-                                                </select>
+                                                {!! Form::select('userSort',[1=>'سطح مهارت - خوداظهاری',2=>'مدت عضویت'],null,['class'=>'form-control']) !!}
+
+
+                                                    {{--<option value="2"> نزدیک ترین به من</option>--}}
+                                                    {{--<option value="3">سطح مهارت – ارزیابی سایت</option>--}}
+                                                    {{--<option value="3">امتیاز گواهینامه</option>--}}
+
+                                                    {{--<option value="3">  میزان سابقه</option>--}}
+                                                    {{--<option value="3">میزان تحصیلات</option>--}}
+                                                    {{--<option value="3">درصد تکمیل بودن پروفایل</option>--}}
+                                                    {{--<option value="3">  تعداد کارهای واگذار شده از طریق سایت</option>--}}
+                                                    {{--<option value="3">پیشنهاد ویژه</option>--}}
+                                                    {{--<option value="3">سطح مهارت</option>--}}
+
                                             </div>
                                         </div>
                                     </div>
@@ -578,12 +490,15 @@
                                 </div>
                             </div>
                         </div>
+                        <h3><button type="submit" class="btn btn-default btn-sm">جستجو در سایت</button></h3>
+
+
 
 
                     </div>
 
 
-                </form>
+                {!! Form::close() !!}
 
 
             </div>
@@ -591,72 +506,58 @@
 
     </div>
 
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
+    @if(isset($userResults) && $userResults!=null)
+        @foreach($userResults as $result)
+            <div class="search-result">
+                <div class="col-sm-3">
+                    <div class="search-card">
+                        <div class="avatar">
+                            <img src="{{ asset('img/persons') }}/{{$result->avatar}}">
+                        </div>
+                        <div class="name">
+                            {{$result->username}}
+                        </div>
+                        <div class="rate">
+                            <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
+                        </div>
+                        <div class="about-me">
+                            {{$result->description}}
+                        </div>
+                        <div class="action text-center">
+                            <a href="{{route('home.profile',$result->id)}}" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        @endforeach
+    @endif
 
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    ظروف نقش دار اصیل ایرانی
-                </div>
-                <div class="rate">
-                    <div class="item"><i class="fa fa-shopping-cart fa-lg" ></i> 25 خرید </div>
-                    <div class="item"><i class="fa fa-commenting-o fa-lg" ></i> 12 دیدگاه </div>
-                </div>
-                <div class="about-me">
-                    صنایع دستی اصیل ایرانی سوغات اصفهان با طرحی بسیار زیبا و دلنشین می تواند بهترین هدیه برای عزیزانتان باشد
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-success btn-sm "><i class="fa icon-shopping-basket fa-lg" ></i>مشخصات کالا</button>
+    @if(isset($productResults) && $productResults!=null)
+        @foreach($productResults as $result)
+            <div class="search-result">
+                <div class="col-sm-3">
+                    <div class="search-card">
+                        <div class="avatar">
+                            <img src="{{asset('img/files/shop')}}/{{$result->files()->firstOrFail()->name}}">
+                        </div>
+                        <div class="name">
+                            {{$result->name}}
+                        </div>
+                        <div class="rate">
+                            <div class="item"><i class="fa fa-shopping-cart fa-lg" ></i> {{$result->num_comment}} <span>خرید</span></div>
+                            <div class="item"><i class="fa fa-commenting-o fa-lg" ></i> {{$result->num_visit}} <span>دیدگاه</span></div>
+                        </div>
+                        <div class="about-me">
+                            {{$result->description}}
+                        </div>
+                        <div class="action text-center">
+                            <a  href="{{route('home.shop.product',[$result->shop->id,$result->id])}}" type="button" class="btn btn-success btn-sm "><i class="fa icon-shopping-basket fa-lg" ></i>مشخصات کالا</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        @endforeach
+    @endif
 
 @endsection
 
@@ -672,14 +573,14 @@
                 $("#advance_search_elements").slideToggle()
             });
 
-            $('input[type=radio][name=view-d]').change(function() {
-                if (this.value == 'product') {
+            $('input[type=radio][name=view_d]').change(function() {
+                if (this.value == 'products') {
                     $("#person_search").fadeOut('fast', function(){
                         $("#product_search").fadeIn('fast');
                     });
                     console.log('product');
                 }
-                else if (this.value == 'person') {
+                else if (this.value == 'users') {
                     $("#product_search").fadeOut('fast' , function(){
                         $("#person_search").fadeIn('fast');
                     });
