@@ -49,8 +49,9 @@
             {!! Form::open(['method'=>'get','route'=>'search.index','class'=>'navbar-form navbar-left search-navbar hidden-sm','role'=>'search']) !!}
                 <span id="users" class="img-circle search-filter active"><i class="fa fa-user fa-2x"></i></span>
                 <span id="products" class="img-circle search-filter"><i class="fa fa-shopping-cart fa-2x"></i></span>
-                <div class="form-group">
+                <div class="form-group" style="position: relative">
                     <input autocomplete="off" id="fast-search" name="query" type="text" class="form-control glass-input" style="background: #EEE ; color:#666" size="40" placeholder=" جستجوی سریع در سایت ">
+                    <i style="display:none; position: absolute; top: 10px; left: 8px" class="fa fa-spinner fa-spin" id="fast_search_preloader"></i>
                 </div>
                 <input name="cat" type="hidden" value="users">
                 <button type="submit" class="btn btn-default search-now"><i class="fa fa-search fa-lg" ></i></button>

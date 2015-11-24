@@ -29,7 +29,7 @@
                         <p>{{ $post->content }}</p>
                     </div>
                 @endif
-                    <a href="{{route('profile.report.create',['type'=>'post','id'=>$post->id])}}" class="btn btn-warning">گزارش</a>
+
             </div>
         </div>
         <div class="view-all-comments">
@@ -41,7 +41,7 @@
             @else
                 <span>اولین نفری باشد که دیدگاهتان را ثبت می کنید.</span>
             @endif
-
+            <a href="{{route('profile.report.create',['type'=>'post','id'=>$post->id])}}" class="pull-left report-content">گزارش</a>
         </div>
         <ul class="comments" id="post_comments_list">
             <div class="list" data-nicescroll>

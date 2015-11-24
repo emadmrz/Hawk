@@ -14,9 +14,10 @@
                     <thead>
                     <tr>
                         <th class="text-right">#</th>
-                        <th class="text-right">نام گروه</th>
-                        <th class="text-right">مدیر گروه</th>
-                        <th class="text-right">عملیات</th>
+                        <th width="30%" class="text-right">نام گروه</th>
+                        <th width="20%" class="text-right">مدیر گروه</th>
+                        <th width="20%" class="text-right">تاریخ ایجاد گروه</th>
+                        <th width="30%" class="text-right">عملیات</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -24,14 +25,16 @@
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$group->name}}</td>
-                            <td>{{$group->user->first_name}} {{$group->user->last_name}}</td>
-                            @if($group->user_id==$user->id)
-                                <td>
-                                    <a href="{{route('profile.group.edit',[$group->id])}}">ویرایش</a>
-                                    <a class="text-center" href="{{route('profile.group.delete',[$group->id])}}">حذف</a>
-                                </td>
+                            <td>{{$group->user->username}}</td>
+                            <td>{{$group->shamsi_created_at}}</td>
+                            <td>
+                                <a class="btn btn-success btn-xs" href="{{route('group.index',[$group->id])}}"><i class="fa fa-eye"></i> مشاهده </a>
+                                @if($group->user_id==$user->id)
+                                    <a class="btn btn-info btn-xs" href="{{route('profile.group.edit',[$group->id])}}"><i class="fa fa-pencil"></i> ویرایش </a>
+                                    <a class="btn btn-danger btn-xs" href="{{route('profile.group.delete',[$group->id])}}"><i class="fa fa-trash-o"></i> حذف </a>
+                                @endif
+                            </td>
 
-                            @endif
                         </tr>
                     @endforeach
                     </tbody>

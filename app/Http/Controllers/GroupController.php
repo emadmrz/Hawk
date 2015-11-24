@@ -58,7 +58,7 @@ class GroupController extends Controller
             'banner' => $user->id . "/" . $imageName,
         ]);
         $user->groups()->attach($group->id);
-        return redirect()->back();
+        return redirect(route('profile.group.list'));
 
     }
 
@@ -129,7 +129,7 @@ class GroupController extends Controller
             abort(403);
         }
         $group->delete();
-        return redirect(route('profile.me'));
+        return redirect(route('profile.group.list'));
     }
 
     public function index(Group $group,StreamRepository $streamRepository)
@@ -199,11 +199,9 @@ class GroupController extends Controller
         $data = $request->input('cropper_json');
         $data = json_decode(stripslashes($data));
 
-        $imageName = $user->id . str_random(20) . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path() . '/img/files/' . $user->id . '/', $imageName);
-        $src = public_path() . '/img/files/' . $user->id . '/' . $imageName;
-        $real_name = $file->getClientOriginalName();
-        $size = $file->getClientSize() / (1024 * 1024); //calculate the file size in MB
+        $imageName = 'g'.$user->id . str_random(20) . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path() . '/img/persons/', $imageName);
+        $src = public_path() . '/img/persons/' . $imageName;
 
         $img = Image::make($src);
         $img->rotate($data->rotate);
@@ -213,9 +211,9 @@ class GroupController extends Controller
         });
         $img->save($src, 90);
 
-        $user->usage->add(filesize(public_path() . '/img/files/' . $user->id . '/' . $imageName) / (1024 * 1024));// storage add
+        $user->usage->add(filesize(public_path() . '/img/persons/' . $imageName) / (1024 * 1024));// storage add
         $group->update([
-           'image'=>$user->id . "/" . $imageName
+           'image'=>$imageName
         ]);
         return redirect()->back();
 

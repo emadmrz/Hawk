@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Session;
 use Laracasts\Flash\Flash;
+use Morilog\Jalali\jDate;
 use Symfony\Component\HttpFoundation\Response;
 
 class StoreController extends Controller
@@ -261,33 +262,56 @@ class StoreController extends Controller
     public function advertise(){
         $user = Auth::user();
         $advertise = Addon::advertise()->first();
-        return view('store.advertise', compact('user', 'advertise'))->with(['title'=>'تبلیغات در صفحه اول']);
+        $reservation_dates = $this->advertiseAvailableList();
+        return view('store.advertise', compact('user', 'advertise', 'reservation_dates'))->with(['title'=>'تبلیغات در صفحه اول']);
+    }
+
+    private function advertiseAvailableList(){
+        $advertises = Advertise::where('expired_at', '>', Carbon::now())->active()->get();
+        $reservation_dates=[];
+        $columns = Config::get('addonAdvertise.columns');
+        for($i=1; $i<=15; $i++){
+            $capacity = $columns;
+            $start_date = Carbon::now()->addDays($i-1);
+            $expire_date = Carbon::now()->addDays($i);
+            $selected_advertises = $advertises->filter(function ($advertise) use ($start_date, $expire_date) {
+                return ($advertise->expired_at > $start_date and $advertise->expired_at < $expire_date);
+            });
+            foreach($selected_advertises as $selected_advertise){
+                $weight = Config::get('addonAdvertise.attributes')[1]['values'][$selected_advertise->type]['weight'];
+                $capacity = $capacity - $weight;
+            }
+            if($capacity-Config::get('addonAdvertise.attributes')[1]['values'][1]['weight'] >= 0){ $gold_availability = 1;}else{$gold_availability = 0;}
+            if($capacity-Config::get('addonAdvertise.attributes')[1]['values'][2]['weight']>= 0){$silver_availability = 1;}else{$silver_availability = 0;}
+            if($capacity-Config::get('addonAdvertise.attributes')[1]['values'][3]['weight'] >= 0){$bronze_availability = 1;}else{$bronze_availability = 0;}
+            $selected_advertises = $selected_advertises->all();
+            $expire_date = jDate::forge($expire_date)->format('Y/m/d H:i');
+            $start_date = jDate::forge($start_date)->format('Y/m/d H:i');
+            $reservation_dates[$i] = compact('start_date', 'expire_date', 'gold_availability', 'silver_availability', 'bronze_availability', 'selected_advertises');
+        }
+        return $reservation_dates;
     }
 
     public function advertiseBuy(Request $request){
         $user = Auth::user();
         $this->validate($request, [
-            'type' => 'required',
-            'reserve' => 'required|integer',
+            'reserve' => 'required',
             'payment_gate' => 'required | in:mellat,pasargad'
         ]);
-        $type = $request->input('type');
-        $reserve = $request->input('reserve');
-
-        $availables = $this->advertiseAvailability(explode('::', $type), $reserve);
-        $max = Config::get('addonAdvertise.attributes')[explode('::',$type)[0]]['values'][explode('::',$type)[1]]['max'];
-        foreach($availables as $key=>$available){
-            if($max <= $available->count){
-                Flash::error('Unavailable Addon');
-                return redirect()->back();
+        $reserves = $request->input('reserve');
+        $package_group = str_random(5);
+        $advertise = null;
+        foreach($reserves as $key=>$reserve){
+            $info = explode('::', $reserve);
+            if(is_null($advertise)){
+                $advertise = $user->advertises()->create(['type'=>$info[1], 'package'=>$package_group, 'status'=>0, 'expired_at'=>Carbon::now()->addDays($info[0])]);
+            }else{
+                $user->advertises()->create(['type'=>$info[1], 'package'=>$package_group, 'status'=>0, 'expired_at'=>Carbon::now()->addDays($info[0])]);
             }
         }
-
-        $price = ($this->AdvertisePrice($type))*$reserve;
-        $type_val = Config::get('addonAdvertise.attributes')[explode('::',$type)[0]]['values'][explode('::',$type)[1]]['type'];
+        $price = $this->advertisePrice($reserves);
         $callback = route('store.advertise.buy.callback');
         $description = 'تبلیغات در صفحه اول';
-        $advertise = $user->advertises()->create(['type'=>$type_val, 'status'=>0, 'expired_at'=>Carbon::now()->addDays($reserve)]);
         $order = $advertise->payment()->create([
             'user_id'=>$user->id,
             'amount'=>$price,
@@ -315,27 +339,26 @@ class StoreController extends Controller
     }
 
     public function advertisePriceCalculator(Request $request){
-        $type = $request->input('type');
-        $reserve = $request->input('reserve');
-        $final_amount = ($this->AdvertisePrice($type))*$reserve;
-        $type = explode('::', $type);
-        $base_amount = (Config::get('addonAdvertise.base_price') + Config::get('addonAdvertise.attributes')[$type[0]]['values'][$type[1]]['add_price'])*$reserve;
-        $discount_amount = (Config::get('addonAdvertise.base_price')*Config::get('addonAdvertise.discount'))*$reserve;
-        $max = Config::get('addonAdvertise.attributes')[$type[0]]['values'][$type[1]]['max'];
-        $availability = 1;
-        $availables = $this->advertiseAvailability($type, $reserve);
-        foreach($availables as $key=>$available){
-            if($max <= $available->count){
-                $availability = 0;
-                break;
-            }
+        if(!$request->has('reserve')){ return false; }
+        $reserves = $request->input('reserve');
+        $base_amount = 0;
+        foreach($reserves as $reserve){
+            $info = explode('::',$reserve);
+            $base_amount = $base_amount + Config::get('addonAdvertise.attributes')[1]['values'][$info[1]]['add_price'];
         }
-        return compact('final_amount', 'base_amount', 'discount_amount', 'availability');
+        $final_amount = $base_amount-(Config::get('addonAdvertise.discount')*$base_amount);
+        $discount_amount = ($base_amount*Config::get('addonAdvertise.discount'));
+        return compact('final_amount', 'base_amount', 'discount_amount');
     }
 
-    private function advertisePrice($type){
-        $type = explode('::', $type);
-        return (Config::get('addonAdvertise.base_price')-Config::get('addonAdvertise.base_price')*Config::get('addonAdvertise.discount')) + Config::get('addonAdvertise.attributes')[$type[0]]['values'][$type[1]]['add_price'];
+    private function advertisePrice($reserves){
+        $base_amount = 0;
+        foreach($reserves as $reserve){
+            $info = explode('::',$reserve);
+            $base_amount = $base_amount + Config::get('addonAdvertise.attributes')[1]['values'][$info[1]]['add_price'];
+        }
+        $final_amount = $base_amount-(Config::get('addonAdvertise.discount')*$base_amount);
+        return $final_amount;
     }
 
     private function advertiseAvailability($type, $reserve){

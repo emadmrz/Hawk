@@ -22,6 +22,7 @@
     @include('profile.partials.latestArticles')
     @include('profile.partials.latestPosts')
     @include('partials.groupAdd')
+    @include('partials.myGroups')
 @endsection
 
 @section('script')

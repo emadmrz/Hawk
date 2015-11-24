@@ -31,6 +31,9 @@
                     @endforeach
                     <div class="form-group">
                         <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-hand-pointer-o"></i> ارسال پاسخ پرسشنامه </button>
+                        @if($questionnaire->show_result)
+                            <a href="{{ route('home.questionnaire.result',[$questionnaire->user_id, $questionnaire->id]) }}" class="pull-left btn btn-violet btn-sm">مشاهده نتایج پرسشنامه</a>
+                        @endif
                     </div>
                 {!! Form::close() !!}
                 <p style="color: #999">

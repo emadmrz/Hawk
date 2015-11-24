@@ -1,6 +1,7 @@
 @extends('profile.layout')
 
 @section('side')
+    @include('profile.group.partials.editSide')
     @include('profile.partials.managementMenu')
 @endsection
 @section('content')
@@ -21,8 +22,8 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-sm-10 col-sm-offset-1">
-                            <div id="crop_image_preview"><img src="{{ asset('img/cover/slider1.jpg') }}"></div>
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div id="crop_image_preview"><img src="{{ asset('img/persons/group-icon.jpg') }}"></div>
                         </div>
                     </div>
 
@@ -47,8 +48,8 @@
             // Import image
             var $image = $('#crop_image_preview > img');
             $image.cropper({
-                aspectRatio: 9 / 9,
-                autoCropArea: 0.65,
+                aspectRatio: 1,
+                autoCropArea: 0.85,
                 guides: false,
                 dragCrop: false,
                 crop: function (e) {

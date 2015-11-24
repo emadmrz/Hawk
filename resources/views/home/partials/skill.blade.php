@@ -430,15 +430,15 @@
         </div>
     </div>
 
-    @if(count($skill->endorses))
     <div class="endorse-person" id="endorse_persons">
+    @if(count($skill->endorses))
         <ul>
             @foreach($skill->endorses as $endorse)
             <li><img data-toggle="tooltip" data-placement="bottom" title="{{ $endorse->user->username}} " src="{{ asset('img/persons/'.$endorse->user->avatar) }}" class="img-circle"  ></li>
             @endforeach
         </ul>
-    </div>
     @endif
+    </div>
 
     @if(count($skill->recommendations))
     <div class="recommendation">

@@ -52,6 +52,7 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
      * offer handling
      */
     Route::get('/profile/{profile}/offer/{offer}/coupon/{coupon}/buy',['as'=>'profile.offer.coupon.buy','uses'=>'CouponController@buy']);
+    Route::get('/profile/{profile}/offer/{offer}/coupon/{coupon}/invoice',['as'=>'profile.offer.coupon.invoice','uses'=>'CouponController@invoice']);
     Route::any('/profile/offer/coupon/buy/callback',['as'=>'profile.offer.coupon.callback','uses'=>'CouponController@callback']);
 
     Route::get('/profile/{profile}/questionnaire/{questionnaire}/preview',['as'=>'questionnaire.preview', 'uses'=>'QuestionnaireController@preview']);
@@ -202,7 +203,7 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
      * handling the group routes
      */
     Route::group(['prefix' => 'group', 'as' => 'group.'], function () {
-        Route::get('groups/list', ['as' => 'list', 'uses' => 'GroupController@allGroups']);
+        Route::get('/list', ['as' => 'list', 'uses' => 'GroupController@allGroups']);
         Route::get('create', ['as' => 'create', 'uses' => 'GroupController@create']);
         Route::post('create', ['as' => 'store', 'uses' => 'GroupController@store']);
         Route::get('/{group}/edit', ['as' => 'edit', 'uses' => 'GroupController@edit']);
@@ -598,4 +599,11 @@ Route::group(['prefix' => 'search', 'as'=>'search.'], function () {
     Route::get('/',['as'=>'index', 'uses'=>'SearchController@index']);
     Route::post('fastSearch',['as'=>'fastSearch','uses'=>'SearchController@fastSearch']);
     Route::post('fullSearch',['as'=>'fullSearch','uses'=>'SearchController@search']);
+});
+
+Route::group(['prefix' => 'chat', 'as'=>'chat.'], function () {
+    Route::get('/{profile?}',['as'=>'index', 'uses'=>'ChatController@index']);
+    Route::post('/send/{profile}',['as'=>'send', 'uses'=>'ChatController@send']);
+    Route::post('/history',['as'=>'history', 'uses'=>'ChatController@history']);
+    Route::post('/typing',['as'=>'typing', 'uses'=>'ChatController@typing']);
 });

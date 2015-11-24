@@ -8,7 +8,7 @@
     <div class="timeline-block">
         <div class="panel panel-default share clearfix-xs">
             <div class="panel-heading panel-heading-gray title">
-                مدیریت نظرسنجی ها
+                مدیریت پرسشنامه ها
             </div>
             <div class="panel-body">
                 <table class="table table-striped table-bordered">
@@ -40,9 +40,9 @@
                             </td>
                             <td>
                                 @if($questionnaire->status == 1)
-                                    <a href="{{ route('profile.management.addon.poll.edit',['poll'=>$questionnaire->id]) }}" class="btn btn-info btn-xs">ویرایش</a>
+                                    <a href="{{ route('profile.management.addon.questionnaire.edit',['questionnaire'=>$questionnaire->id]) }}" class="btn btn-info btn-xs">ویرایش</a>
                                 @elseif($questionnaire->status == 2)
-                                    <a href="{{ route('home.poll.preview',['profile'=>$questionnaire->user_id, 'poll'=>$questionnaire->id]) }}" class="btn btn-success btn-xs">مشاهده</a>
+                                    <a href="{{ route('home.questionnaire.preview',['profile'=>$questionnaire->user_id, 'questionnaire'=>$questionnaire->id]) }}" class="btn btn-success btn-xs">مشاهده</a>
                                 @endif
                             </td>
                         </tr>

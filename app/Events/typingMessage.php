@@ -3,15 +3,15 @@
 namespace App\Events;
 
 use App\Events\Event;
-use App\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Facades\Auth;
 
-class sendMessage extends Event implements ShouldBroadcast
+class typingMessage extends Event implements ShouldBroadcast
 {
     use SerializesModels;
 
-    public $data;
+    public $typist;
     public $holder;
 
     /**
@@ -19,9 +19,9 @@ class sendMessage extends Event implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($data, $holder)
+    public function __construct($holder)
     {
-        $this->data = $data;
+        $this->typist = Auth::user();
         $this->holder = $holder;
     }
 
@@ -32,7 +32,6 @@ class sendMessage extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-//        return ['user.'.$this->user->id];
         return ['user.'.$this->holder];
     }
 }

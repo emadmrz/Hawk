@@ -1,8 +1,8 @@
 @extends('profile.layout')
 
 @section('side')
-    @include('profile.partials.managementMenu')
     @include('profile.group.partials.editSide')
+    @include('profile.partials.managementMenu')
 @endsection
 @section('content')
     <div class="timeline-block">

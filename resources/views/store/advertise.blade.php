@@ -36,6 +36,7 @@
                 </div>
 
                 <div class="col-sm-8 pull-right">
+                    {{--store_advertise_form--}}
                     {!! Form::open(['route'=>'store.advertise.buy', 'method'=>'get', 'id'=>'store_advertise_form']) !!}
                     <div class="title">
                         <h3>{{ Config::get('addonAdvertise.title') }}</h3>
@@ -48,24 +49,47 @@
                     <div class="content">
                         <p>{{ Config::get('addonAdvertise.description') }}</p>
 
-                        @foreach(Config::get('addonAdvertise.attributes') as $index=>$attribute)
-                            <div class="lists row">
-                                <div class="col-sm-2">{{ $attribute['title'] }} : </div>
-                                <div class="center-block">
-                                    @foreach($attribute['values'] as $key=>$value)
-                                        <div class="radio radio-info radio-inline">
-                                            <input type="radio" id="inlineRadio{{ $key }}" value="{{ $index }}::{{ $key }}" name="{{ $attribute['name'] }}" >
-                                            <label for="inlineRadio{{ $key }}">{{ $value['name'] }}</label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endforeach
 
                         <div class="lists row">
-                            <div class="col-sm-2">مدت رزرو :</div>
-                            <div class="col-sm-2 row">
-                                {!! Form::input('number', 'reserve', 1, ['class'=>'form-control en-number']) !!}
+                            <div class="col-sm-2">انتخاب طرح :</div>
+                            <div class="col-sm-10 row">
+                                <table class="advertise_reservation_dates table-striped">
+                                    @foreach($reservation_dates as $key=>$reservation_date)
+                                    <tr>
+                                        <td width="53%">&ensp; از&ensp; {{ $reservation_date['start_date'] }}&ensp; تا &ensp;{{ $reservation_date['expire_date'] }} </td>
+                                        <td width="15%">
+                                            @if($reservation_date['gold_availability'])
+                                                <div class="radio radio-info radio-inline">
+                                                    <input type="radio" id="inlineRadio{{ $key }}" value="{{$key}}::1" name="reserve[{{ $key }}]" decheckable>
+                                                    <label for="inlineRadio{{ $key }}">طلایی</label>
+                                                </div>
+                                            @else
+                                                <div class="text-danger">ناموجود</div>
+                                            @endif
+                                        </td>
+                                        <td width="18%">
+                                            @if($reservation_date['silver_availability'])
+                                                <div class="radio radio-info radio-inline">
+                                                    <input type="radio" id="sinlineRadio{{ $key }}" value="{{$key}}::2" name="reserve[{{ $key }}]" decheckable>
+                                                    <label for="sinlineRadio{{ $key }}">نقره ایی</label>
+                                                </div>
+                                            @else
+                                                <span class="text-danger">ناموجود</span>
+                                            @endif
+                                        </td>
+                                        <td width="15%">
+                                            @if($reservation_date['bronze_availability'])
+                                                <div class="radio radio-info radio-inline">
+                                                    <input type="radio" id="binlineRadio{{ $key }}" value="{{$key}}::3" name="reserve[{{ $key }}]" decheckable >
+                                                    <label for="binlineRadio{{ $key }}">برنزی</label>
+                                                </div>
+                                            @else
+                                                <span class="text-danger">ناموجود</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </table>
                             </div>
                         </div>
 

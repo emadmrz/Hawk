@@ -61,7 +61,7 @@
                                                         <td> {{$msc->real_amount}} <span>تومان</span></td>
                                                         <td> {{$msc->pay_amount}} <span>تومان</span></td>
                                                         <td> {{$msc->diff_expired_at}}<span>دیگر</span></td>
-                                                        <td><a href="{{route('home.profile.offer.coupon.buy',[$user->id,$coupon->offer->id,$msc->id])}}" class="btn btn-xs btn-success" >خرید کوپن</a></td>
+                                                        <td><a href="{{route('home.profile.offer.coupon.invoice',[$user->id,$coupon->offer->id,$msc->id])}}" class="btn btn-xs btn-success" >خرید کوپن</a></td>
                                                     </tr>
                                                 @endforeach
                                                 <tbody>

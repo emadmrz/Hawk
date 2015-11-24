@@ -61,7 +61,8 @@
 </main>
 
 <script src="{{ asset('js/jquery.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+{{--<script src="{{ asset('js/bootstrap.min.js') }}"></script>--}}
+<script src="{{ asset('js/bootstrap.js') }}"></script>
 <script src="{{ asset('js/cropper.js') }}"></script>
 <script src="{{ asset('js/crop/main.js') }}"></script>
 <script src="{{ asset('js/bootstrap-notify.js') }}"></script>

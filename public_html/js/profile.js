@@ -1121,20 +1121,39 @@ $(document).ready(function(){
                 form.find('#final_amount').html(numberWithCommas(data.final_amount)+' تومان ');
                 form.find('#base_amount').html(numberWithCommas(data.base_amount)+' تومان ');
                 form.find('#discount_amount').html(numberWithCommas(data.discount_amount));
-                if(data.availability == 0){
-                    $("#advertise_availability").html('این افزونه برای این مدت توسط سایر کاربران رزرو شده است.').slideDown(300, function(){
-                        $("button#buy_advertise").attr('disabled','disabled')
-                    });
-                }else{
-                    $("#advertise_availability").slideUp(300, function(){
-                        $("#advertise_availability").html();
-                        $("button#buy_advertise").removeAttr('disabled')
-                    });
-                }
+                //if(data.availability == 0){
+                //    $("#advertise_availability").html('این افزونه برای این مدت توسط سایر کاربران رزرو شده است.').slideDown(300, function(){
+                //        $("button#buy_advertise").attr('disabled','disabled')
+                //    });
+                //}else{
+                //    $("#advertise_availability").slideUp(300, function(){
+                //        $("#advertise_availability").html();
+                //        $("button#buy_advertise").removeAttr('disabled')
+                //    });
+                //}
             },
             error: function(xhr){
                 alert("An error occured: " + xhr.status + " " + xhr.statusText);
             }
+        });
+    });
+
+    $(function(){
+        $('input[decheckable]').click(function(){
+            var $radio = $(this);
+
+            // if this was previously checked
+            if ($radio.data('waschecked') == true)
+            {
+                $radio.prop('checked', false);
+                $radio.data('waschecked', false);
+            }
+            else
+                $radio.data('waschecked', true);
+
+            // remove was checked from other radios
+            $radio.siblings('input[type="radio"]').data('waschecked', false);
+            $radio.trigger('change');
         });
     });
 

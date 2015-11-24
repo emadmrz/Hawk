@@ -32,7 +32,6 @@
                         @endif
                     </div>
             </div>
-            <a class="btn btn-warning" href="{{route('profile.report.create',['type'=>'problem','id'=>$problem->id])}}">گزارش</a>
         </div>
         <div class="view-all-comments">
             <a href="#" class="pull-right">
@@ -43,7 +42,7 @@
             @else
                 <span>اولین نفری باشد که دیدگاهتان را ثبت می کنید.</span>
             @endif
-
+            <a class="report-content pull-left" href="{{route('profile.report.create',['type'=>'problem','id'=>$problem->id])}}">گزارش</a>
         </div>
         <ul class="comments" id="post_comments_list">
             <div class="list" data-nicescroll>

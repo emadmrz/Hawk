@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Addon;
+use App\Advertise;
 use App\Events\advertisePurchased;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,7 +31,7 @@ class activeAdvertise
         $payment = $event->payment;
         $advertise = $payment->itemable;
         $payment->update(['status'=>1]);
-        $advertise->update(['status'=>1]);
+        Advertise::where('user_id', $advertise->user_id)->where('package', $advertise->package)->update(['status'=>1]);
         Addon::advertise()->first()->buy();
     }
 }

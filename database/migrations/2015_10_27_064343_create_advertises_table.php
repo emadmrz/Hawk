@@ -16,6 +16,7 @@ class CreateAdvertisesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('type')->unsigned();
+            $table->string('package',20)->index();
             $table->integer('status');
             $table->dateTime('expired_at');
             $table->timestamps();

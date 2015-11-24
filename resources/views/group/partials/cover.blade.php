@@ -19,7 +19,7 @@
         </div>
         <div class="cover-info" id="avatarContainer">
             <div class="avatar">
-                <img id="avatar-image" src="{{ asset('img/files/'.$group->image) }}" alt="people">
+                <img id="avatar-image" src="{{ asset('img/persons/'.$group->avatar) }}" alt="people">
             </div>
             <div class="name">
                 <a href="{{route('group.index',[$group->id])}}">{{ $group->name }}</a>

@@ -9,7 +9,7 @@ use Morilog\Jalali\Facades\jDate;
 class Advertise extends Model
 {
     protected $table = 'advertises';
-    protected $fillable = ['user_id', 'type', 'status', 'expired_at'];
+    protected $fillable = ['user_id', 'type', 'package', 'status', 'expired_at'];
 
     public function user(){
         return $this->belongsTo('App\User');
@@ -35,5 +35,10 @@ class Advertise extends Model
     public function getShamsiExpiredAtAttribute(){
         return jDate::forge($this->attributes['expired_at'])->format("Y/m/d H:i:s");
     }
+
+    public function scopeActive($query){
+        return $query->where('status', 1);
+    }
+
 
 }

@@ -56,7 +56,7 @@
 
                 <div class="carousel-inner" role="listbox">
                     <?php $key = 0; ?>
-                    @foreach($output as $key => $advertise)
+                    @foreach($sorted_advertises as $key => $advertise)
                         @if($key == 0)
                             <div class="item active">
                         @elseif($key % 5 == 0)
@@ -69,8 +69,8 @@
                                          <a href="{{ route('home.profile', $advertise->user_id) }}"><img src="{{ asset('img/persons/'.$advertise->user->avatar) }}" class="img-circle"></a>
                                     </div>
                                     <a href="{{ route('home.profile', $advertise->user_id) }}" class="title">{{ $advertise->user->username }}</a>
-                                    @if(count($advertise->user->skill))
-                                        <div class="info">{{ $advertise->user->skill->first()->title }}</div>
+                                    @if(count($advertise->user->skills))
+                                        <div class="info">{{ $advertise->user->skills->first()->title }}</div>
                                     @else
                                         <div class="info">بدون مهارت</div>
                                     @endif

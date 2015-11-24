@@ -327,4 +327,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $friendRepository->isFriend($this->attributes['id']);
     }
 
+    public function message()
+    {
+        return $this->morphMany('App\MessageUser', 'parentable');
+    }
+
 }

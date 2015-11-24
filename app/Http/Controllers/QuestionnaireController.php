@@ -168,4 +168,10 @@ class QuestionnaireController extends Controller
 
         })->export('xlsx');
     }
+
+    public function publish(Questionnaire $questionnaire){
+        $questionnaire->update(['status'=>2]);
+        Flash::success('questionnaire published');
+        return redirect()->route('profile.management.addon.questionnaire');
+    }
 }

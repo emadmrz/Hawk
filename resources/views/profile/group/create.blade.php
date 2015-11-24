@@ -12,7 +12,7 @@
                 <div class="clearfix form-horizontal">
                     <div class="form-group panel-form">
                         {!! Form::label('name','نام گروه :',['class'=>'control-label pull-right col-sm-2']) !!}
-                        <div class="col-sm-3">
+                        <div class="col-sm-5">
                             {!! Form::text('name',null,['class'=>'form-control']) !!}
                             <i class="input-icon fa fa-edit"></i>
                         </div>
@@ -53,7 +53,7 @@
             // Import image
             var $image = $('#crop_image_preview > img');
             $image.cropper({
-                aspectRatio: 1280 / 290,
+                aspectRatio: 24.3 / 9,
                 autoCropArea: 0.65,
                 guides: false,
                 dragCrop: false,

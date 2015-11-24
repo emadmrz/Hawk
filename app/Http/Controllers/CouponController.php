@@ -89,12 +89,27 @@ class CouponController extends Controller
 
     public function buy(User $profile, Offer $offer, Coupon $coupon, Request $request)
     {
+        $this->validate($request, [
+            'payment_gate' => 'required|in:mellat,in-place',
+        ]);
         if($coupon->valid && $coupon->valid_num){
             //the coupon is valid and ready to be bought
             $user = Auth::user();
+            $gate = $request->input('payment_gate');
+            if($gate == 'in-place'){
+                $couponUser = $user->coupon_user()->create([
+                    'coupon_id' => $coupon->id,
+                    'real_amount'=>$coupon->real_amount,
+                    'pay_amount'=>$coupon->pay_amount,
+                    'tracking_code'=>str_random('8'),
+                    'legal_code'=>rand(1000,9999),
+                    'status'=>1
+                ]);
+                Flash::success('coupon added successfully');
+                return redirect(route('profile.coupon.preview', $couponUser->id));
+            }
             $price = $coupon->pay_amount;
             $description = "خرید کوپن";
-            $gate = "mellat";
             $callback = route('home.profile.offer.coupon.callback');
             $couponUser = $user->coupon_user()->create([
                 'coupon_id' => $coupon->id,
@@ -178,5 +193,10 @@ class CouponController extends Controller
         $user=Auth::user();
         $coupons=$user->coupon_user()->get();
         return view('profile.boughtCoupons',compact('coupons','user'))->with(['title'=>'کوپن های خریداری شده']);
+    }
+
+    public function invoice(User $user, Offer $offer, Coupon $coupon){
+        $gallery = $coupon->coupon_gallery;
+        return view('home.couponInvoice', compact('user', 'offer', 'coupon', 'gallery'))->with(['title'=>'خرید کوپن']);
     }
 }

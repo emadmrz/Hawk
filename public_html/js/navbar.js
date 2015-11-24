@@ -44,31 +44,34 @@ $('#new_notifications_nav').on('show.bs.dropdown', function () {
 
 });
 
-setTimeout( notifications_refresh , 3000);
+//setInterval( notifications_refresh , 3000);
 
-function notifications_refresh(){
-    $.ajax({
-        url : '/api/notification/num',
-        type : 'get',
-        dataType: 'json',
-        data : {},
-        success: function(data){
-            if(data.friend_request > 0){
-                $("nav").find("#new_friend_request_num").html('<i class="notification_num">'+data.friend_request+'</i>');
-            }else{
-                $("nav").find("#new_friend_request_num").html('');
-            }
-            if(data.notification > 0){
-                $("nav").find("#new_notifications_num").html('<i class="notification_num">'+data.notification+'</i>');
-            }else{
-                $("nav").find("#new_notifications_num").html('');
-            }
-        },
-        error: function(xhr){
-            //alert("An error occured: " + xhr.status + " " + xhr.statusText);
-        }
-    });
-}
+$(function notifications_refresh(){
+    setTimeout(function(){
+        $.ajax({
+            url : '/api/notification/num',
+            type : 'get',
+            dataType: 'json',
+            data : {},
+            success: function(data){
+                if(data.friend_request > 0){
+                    $("nav").find("#new_friend_request_num").html('<i class="notification_num">'+data.friend_request+'</i>');
+                }else{
+                    $("nav").find("#new_friend_request_num").html('');
+                }
+                if(data.notification > 0){
+                    $("nav").find("#new_notifications_num").html('<i class="notification_num">'+data.notification+'</i>');
+                }else{
+                    $("nav").find("#new_notifications_num").html('');
+                }
+            },
+            error: function(xhr){
+                //alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            },
+            complete: notifications_refresh
+        });
+    }, 3000);
+});
 
 
 /**
@@ -85,16 +88,18 @@ $(document).ready(function(){
             $.ajax({
                 url : "/search/fastSearch",
                 type : 'post',
+                //async: false,
                 data :{
                     query:$(this).val(),
                     section:value
                 },
 
                 beforeSend: function(){
+                    $("#fast_search_preloader").show();
                     content.html('<div class="dropdown-preloader"><i class="fa fa-spinner fa-spin fa-2x"></i><div>در حال دریافت اطلاعات</div></div>');
                 },
                 complete: function(){
-
+                    $("#fast_search_preloader").hide();
                 },
                 success: function(data){
                     if(data.hasCallback){
