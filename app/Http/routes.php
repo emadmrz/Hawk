@@ -29,9 +29,6 @@ Route::get('/socket', function(){
     return view('socket');
 });
 
-//Route::get('/testak/{profile}', 'HomeController@relatedUsers');
-Route::get('/testak', 'FriendController@test');
-
 /**
  * Created by Emad Mirzaie on 02/09/2015.
  * Home Routes in this page user receive new feeds

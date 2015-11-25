@@ -85,8 +85,6 @@ $(document).ready(function(){
         var content=$this.find('ul.dropdown-menu');
         if($(this).val().length>2){
             //begin the search process
-            content.html('<div class="dropdown-preloader"><i class="fa fa-spinner fa-spin fa-2x"></i><div>در حال دریافت اطلاعات</div></div>');
-
             $.ajax({
                 url : "/search/fastSearch",
                 type : 'post',
