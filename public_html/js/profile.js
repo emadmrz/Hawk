@@ -1606,6 +1606,16 @@ function friendRequest(data){
     }
 }
 
+/**
+ * Created By Dara on 23/11/2015
+ * friend suggest request callback
+ */
+function friendSuggestRequest(data,form){
+    if(data.status == 2){
+        form.find('button').html('<i class="fa fa-hand-peace-o"></i> منتظر تایید دوستی ');
+    }
+}
+
 function post_comment(data, form){
     var $this = form;
     $this.closest('ul#post_comments_list').find('.list').prepend(data.new_comment);

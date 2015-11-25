@@ -115,5 +115,47 @@ class FriendRepository {
         return $friends;
     }
 
+    /**
+     * Created By Dara on 23/11/2015
+     * return the mutual friends for a current user
+     */
+    public function mutual(){
+        $userFriends=$this->myFriends();
+        $friendIds=[];
+        foreach($userFriends as $userFriend){
+            $friendIds[]=$userFriend->friend_info->id; // return the friend ids of the user
+        }
+        $myRequestFriends=$this->myRequestsToOthers();
+        $toMeRequestFriends=$this->requestsToMe();
+        $requestIds=[];
+        foreach($myRequestFriends as $myRequestFriend){
+            $requestIds[]=$myRequestFriend->friend_info->id;
+        }
+        foreach($toMeRequestFriends as $toMeRequestFriend){
+            $requestIds[]=$toMeRequestFriend->friend_info->id;
+        }
+        $results=[];
+        $addedIds=[];
+        foreach($userFriends as $key=>$userFriend) {
+            $friend_id = $userFriend->friend_info->id;
+            $results[$key] = $this->friendsOf($friend_id);
+
+            foreach ($results[$key] as $index => $friend) {
+                if($friend->friend_info->id==$this->current_user->id || in_array($friend->friend_info->id,$friendIds) || in_array($friend->friend_info->id,$addedIds) || in_array($friend->friend_info->id,$requestIds)){
+                    unset($results[$key][$index]);
+                }else{
+                    $addedIds[]=$friend->friend_info->id;
+                }
+            }
+        }
+        $users=[];
+        foreach ($results as $key=>$result) {
+            foreach($result as $index=>$collection) {
+                $users[] = $collection;
+            }
+        }
+        return $users;
+    }
+
 
 }
