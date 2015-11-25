@@ -27,7 +27,7 @@
 @endsection
 
 @section('full')
-    <div id="related_users_container" align="center"></div>
+    @include('home.partials.relatedUsers')
 @endsection
 
 @section('script')

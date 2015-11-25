@@ -29,6 +29,9 @@ Route::get('/socket', function(){
     return view('socket');
 });
 
+//Route::get('/testak/{profile}', 'HomeController@relatedUsers');
+Route::get('/testak', 'FriendController@test');
+
 /**
  * Created by Emad Mirzaie on 02/09/2015.
  * Home Routes in this page user receive new feeds
@@ -41,6 +44,7 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
     Route::get('/profile/{profile}/article/{article}/preview', ['as'=>'article.preview', 'uses'=>'ArticleController@otherPreview']);
     Route::get('/profile/{profile}/post/{post}/preview',['as'=>'post.preview', 'uses'=>'PostController@otherPreview']);
     Route::post('/friend/request', ['as'=>'friend.request', 'uses'=>'FriendController@request']);
+    Route::post('/friend/suggestRequest', ['as'=>'friend.suggestRequest', 'uses'=>'FriendController@suggestRequest']);
     Route::post('/profile/related','ProfileController@related');
     Route::post('/stream/notification','StreamController@notification');
 
@@ -222,6 +226,12 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::get('/friends/requests',['as'=>'friends.requests', 'uses'=>'FriendController@requests']);
     Route::get('/friends/pending',['as'=>'friends.pending', 'uses'=>'FriendController@pending']);
     Route::get('/friend/find',['as'=>'friend.find', 'uses'=>'FriendController@find']);
+
+    /**
+     * Created By Dara on 23/11/15
+     */
+    Route::get('/friends/search',['as'=>"friends.search",'uses'=>'FriendController@searchIndex']);
+    Route::post('/friends/search',['as'=>"friends.search.results",'uses'=>'FriendController@search']);
     Route::delete('/friend/unfriend',['uses'=>'FriendController@unFriend']);
     Route::post('/friend/accept',['uses'=>'FriendController@accept']);
     Route::post('/friend/requestslist',['uses'=>'FriendController@requestsList']);

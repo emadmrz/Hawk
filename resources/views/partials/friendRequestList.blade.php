@@ -23,7 +23,7 @@
                 <div class="fa fa-frown-o fa-5x"></div>
                 <h3>در Skillema تنها نباشید</h3>
                 <h5>همین حالا دوستان جدید پیدا کنید</h5>
-                <a href="#" class="btn btn-violet">یافتن دوستان جدید</a>
+                <a href="{{route('profile.friends.search')}}" class="btn btn-violet">یافتن دوستان جدید</a>
 
             </div>
         </div>
