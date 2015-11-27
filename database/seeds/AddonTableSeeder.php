@@ -19,6 +19,7 @@ class AddonTableSeeder extends Seeder
         $addons[] = ['name'=>'shop'];
         $addons[] = ['name'=>'offer'];
         $addons[] = ['name'=>'advertise'];
+        $addons[] = ['name'=>'relater'];
         foreach($addons as $addon){
             Addon::create($addon);
         }

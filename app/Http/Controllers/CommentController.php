@@ -162,6 +162,19 @@ class CommentController extends Controller
     }
 
     /**
+     * Created By Dara on 27/11/2015
+     * manage the relater addon comment
+     */
+    public function relater(Request $request){
+        $user = Auth::user();
+        $relater = Addon::relater()->first();
+        $relater->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $relater->update(['num_comment'=>$relater->comments()->count()]);
+        Flash::success('comment sent');
+        return redirect()->back();
+    }
+
+    /**
      * Created By Dara on 2/11/2015
      * problem comment handling
      */

@@ -1088,6 +1088,30 @@ $(document).ready(function(){
         });
     });
 
+    /**
+     * Created By Dara on 27/11/2015
+     * relater input change
+     */
+    $('form#store_relater_form').find('input').change(function(){
+        var form = $('form#store_relater_form');
+        $.ajax({
+            url : '/store/relater/price',
+            type : 'post',
+            data : form.serialize(),
+            dataType: 'json',
+            beforeSend: function(){},
+            complete: function(){},
+            success: function(data){
+                form.find('#final_amount').html(numberWithCommas(data.final_amount)+' تومان ');
+                form.find('#base_amount').html(numberWithCommas(data.base_amount)+' تومان ');
+                form.find('#discount_amount').html(numberWithCommas(data.discount_amount));
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
     $('form#store_questionnaire_form').find('input').change(function(){
         var form = $('form#store_questionnaire_form');
         $.ajax({

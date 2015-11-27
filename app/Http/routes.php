@@ -558,6 +558,16 @@ Route::group(['prefix' => 'store', 'as'=>'store.'], function () {
     Route::any('advertise/buy/callback',['as'=>'advertise.buy.callback', 'uses'=>'StoreController@advertiseCallback']);
     Route::any('advertise/comment',['as'=>'advertise.comment', 'uses'=>'CommentController@advertise']);
 
+    /**
+     * Created By Dara on 27/11/2015
+     * Relater addon routes
+     */
+    Route::get('relater',['as'=>'relater','uses'=>'StoreController@relater']);
+    Route::post('relater/price','StoreController@relaterPriceCalculator');
+    Route::get('relater/buy',['as'=>'relater.buy','uses'=>'StoreController@relaterBuy']);
+    Route::any('relater/buy/callback',['as'=>'relater.buy.callback', 'uses'=>'StoreController@relaterCallback']);
+    Route::any('relater/comment',['as'=>'relater.comment', 'uses'=>'CommentController@relater']);
+
 });
 
 

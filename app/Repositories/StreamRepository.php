@@ -19,6 +19,7 @@ use App\Post;
 use App\Problem;
 use App\Questionnaire;
 use App\Recommendation;
+use App\Relater;
 use App\Shop;
 use App\Storage;
 use App\Stream;
@@ -56,6 +57,8 @@ class StreamRepository {
                     $this->feed[] = $this->shop($payment->itemable);
                 }elseif($payment->itemable_type == 'App\Offer'){
                     $this->feed[]= $this->offer($payment->itemable);
+                }elseif($payment->itemable_type=='App\Relater'){
+                    $this->feed[]=$this->relater($payment->itemable);
                 }
             }
         }
@@ -135,4 +138,11 @@ class StreamRepository {
         return view('streams.offer', compact('offer'))->render();
     }
 
+    /**
+     * Created By Dara on 27/11/2015
+     * handling the stream view related to the relater addon
+     */
+    public function relater(Relater $relater){
+        return view('streams.relater', compact('relater'))->render();
+    }
 }

@@ -37,18 +37,22 @@ class HomeController extends Controller
         $q = "select users.*, ";
         $count=0;
         if($skills->isEmpty()){ // check if the user has skill or not
+            $secondCategoryParam=0;
             $skillParam=0;
-            $count=1;
+            $count=2;
         }
         foreach ($skills as $key => $skill) {
+            $subCategoryId=$skill->sub_category_id;
+            $secondCategoryParam=Config::get('relatedUsers.secondCategoryParam');
+            $secondCategoryModified=$secondCategoryParam*30;
             $title = $skill->title;
-            $searchs = explode(' ', $title);
+            $searches = explode(' ', $title);
             if ($key) {
                 $q = $q . ' + ';
             }
 
             $q = $q . "(case when ";
-            foreach ($searchs as $index => $search) {
+            foreach ($searches as $index => $search) {
                 if ($index) {
                     $q = $q . " || ";
                 }
@@ -59,7 +63,7 @@ class HomeController extends Controller
             $q = $q . " then '" . $modified . "' else 0 end) + ";
 
             $q = $q . "(case when ";
-            foreach ($searchs as $index => $search) {
+            foreach ($searches as $index => $search) {
                 if ($index) {
                     $q = $q . " || ";
                 }
@@ -69,7 +73,7 @@ class HomeController extends Controller
             $q = $q . " then '" . $modified . "' else 0 end) + ";
 
             $q = $q . "(case when ";
-            foreach ($searchs as $index => $search) {
+            foreach ($searches as $index => $search) {
                 if ($index) {
                     $q = $q . " || ";
                 }
@@ -79,6 +83,7 @@ class HomeController extends Controller
             $q = $q . " then '" . $modified . "' else 0 end) + ";
             $skillTot = $skillParam * 30;
             $q = $q . "(case when skills.title LIKE '" . $title . "%' then '" . $skillTot . "' else 0 end)";
+            $q=$q." +(case when skills.sub_category_id=$subCategoryId then '".$secondCategoryModified."' else 0 end)";
         }
         $provinceParam=Config::get('relatedUsers.provinceParam');
         $provinceModified=$provinceParam*30;
@@ -89,17 +94,19 @@ class HomeController extends Controller
         }
         $q = $q . "(case when infos.city_id = '" . $user->info->city_id . "' then '".$cityModified."' else 0 end) + ";
         $q = $q . "(case when infos.province_id = '" . $user->info->province_id . "' then '".$provinceModified."' else 0 end) AS relevance ";
-        $q = $q . "FROM `users` ";
+        $q = $q . ",relaters.type FROM `users` ";
         $q = $q . "INNER JOIN `skills` ON `users`.`id` = `skills`.`user_id`";
         $q = $q . "INNER JOIN `infos` ON `users`.`id` = `infos`.`user_id`";
+        $q = $q . "LEFT JOIN `relaters` ON `users`.`id` = `relaters`.`user_id`";
         $q = $q . " WHERE `users`.`id`!='" . $user->id . "'";
         $q = $q . " GROUP BY users.id";
-        $q = $q . " having relevance>($skillParam+$provinceParam+$cityParam)/(3-$count) ";
+        $q = $q . " having relevance>($secondCategoryParam+$skillParam+$provinceParam+$cityParam)/(4-$count) ";
         $q = $q . " ORDER BY relevance DESC ";
-        $q = $q . "LIMIT 3";
+        $q = $q . "LIMIT 20";
 
         //dd($q);
         $users = DB::select($q);
+
         $pp = [];
         foreach ($users as $key => $user) {
             $pp[$key] = new User();
@@ -110,8 +117,20 @@ class HomeController extends Controller
             $pp[$key]->image = $user->image;
             $pp[$key]->company = $user->company;
             $pp[$key]->description = $user->description;
-            $pp[$key]->relevance = $user->relevance;
+            $pp[$key]->created_at = $user->created_at;
+            if(!$user->type){ // the user is normal
+               $pp[$key]->relevance = ($user->relevance);
+            }elseif($user->type==1){ //gold membership
+                $pp[$key]->relevance = ($user->relevance)*2;
+            }elseif($user->type==2){ //silver membership
+                $pp[$key]->relevance = ($user->relevance)*1.5;
+            }elseif($user->type==3){ //bronze membership
+                $pp[$key]->relevance = ($user->relevance)*1.25;
+            }
+
         }
+
+        dd($pp);
         return $pp;
     }
 
