@@ -22,9 +22,9 @@ return [
             'name'=>'type',// Important value
             'title'=>'افزایش رتبه',
             'values'=>[
-                1 => ['name'=>'کاربر طلایی','add_price'=>6000,'qualification'=>1],
-                2 => ['name'=>'کاربر نقره ای','add_price'=>4000,'qualification'=>2],
-                3 => ['name'=>'کاربر برنزی','add_price'=>2000,'qualification'=>3],
+                1 => ['name'=>'کاربر طلایی','add_price'=>6000,'qualification'=>1,'weight'=>2],
+                2 => ['name'=>'کاربر نقره ای','add_price'=>4000,'qualification'=>2,'weight'=>1.5],
+                3 => ['name'=>'کاربر برنزی','add_price'=>2000,'qualification'=>3,'weight'=>1.25],
             ],
         ]
     ]
