@@ -8,10 +8,13 @@ use App\Addon;
 use App\Advertise;
 use App\Events\advertisePurchased;
 use App\Events\pollPurchased;
+use App\Events\profitPurchased;
 use App\Events\questionnairePurchased;
+use App\Events\relaterPurchased;
 use App\Events\shopPurchased;
 use App\Events\storagePurchased;
 use App\Payment;
+use App\Profit;
 use App\Repositories\FriendRepository;
 use App\Storage;
 use App\Stream;
@@ -431,6 +434,131 @@ class StoreController extends Controller
     private function offerPrice()
     {
         return (Config::get('addonOffer.base_price') - config::get('addonOffer.base_price') * config::get('addonOffer.discount'));
+    }
+
+    /**
+     * Created By Dara on 27/11/2015
+     * relater addon handling
+     */
+    public function relater(){
+        $user=Auth::user();
+        $relater=Addon::relater()->first();
+        return view('store.relater',compact('user','relater'))->with(['title'=>'افزایش رتبه در جستجو']);
+    }
+
+    public function relaterBuy(Request $request){
+        $user = Auth::user();
+        $this->validate($request, [
+            'type' => 'required',
+            'payment_gate' => 'required | in:mellat,pasargad'
+        ]);
+        $type = $request->input('type');
+        $price = $this->storagePrice($type);
+        $qualification = Config::get('addonRelater.attributes')[explode('::',$type)[0]]['values'][explode('::',$type)[1]]['qualification'];
+        $callback = route('store.relater.buy.callback');
+        $description = 'افزایش رتبه در جستجو پروفایل';
+        $relater = $user->relaters()->create(['type'=>$qualification, 'status'=>0]);
+        $order = $relater->payment()->create([
+            'user_id'=>$user->id,
+            'amount'=>$price,
+            'gateway'=>$request->input('payment_gate'),
+            'description'=>$description,
+            'status'=> 0
+        ]);
+        $orderId = $order->id;
+        $this->pay($price, $callback,$orderId,$description,$request->input('payment_gate'));
+    }
+
+    public function relaterPriceCalculator(Request $request){
+        $type = $request->input('type');
+        $final_amount = $this->relaterPrice($type);
+        $type = explode('::', $type);
+        $base_amount = Config::get('addonRelater.base_price') + Config::get('addonRelater.attributes')[$type[0]]['values'][$type[1]]['add_price'];
+        $discount_amount = Config::get('addonRelater.base_price')*Config::get('addonRelater.discount');
+        return compact('final_amount', 'base_amount', 'discount_amount');
+    }
+
+    private function relaterPrice($type){
+        $type = explode('::', $type);
+        return (Config::get('addonRelater.base_price')-Config::get('addonRelater.base_price')*Config::get('addonRelater.discount')) + Config::get('addonRelater.attributes')[$type[0]]['values'][$type[1]]['add_price'];
+    }
+
+    public function relaterCallback(Request $request){
+        $payment = Payment::findOrFail($request->input('order_id'));
+        $this->verify($request->input('au'), $payment->amount, $payment->gateway);
+        if(true){ //!empty($this->verify) and $this->verify == 1
+            $payment->update(['au'=>$request->input('au')]); // tracking code
+            Event::fire(new relaterPurchased($payment));
+            $this->stream($payment);
+            Flash::success('relater added successfully');
+            return redirect(route('store.index'));
+        }else{
+            Flash::error($this->errorCode($this->verify));
+            return redirect(route('store.relater'));
+        }
+    }
+
+    /**
+     * Created By Dara on 28/11/2015
+     * profit addon handling
+     */
+    public function profit(){
+        $user=Auth::user();
+        $profit=Addon::profit()->first();
+        return view('store.profit',compact('user','profit'))->with(['title'=>'افزایش رتبه در جستجو']);
+    }
+
+    public function profitBuy(Request $request){
+        $this->validate($request,[
+            'type'=>'required',
+            'payment_gate'=>'required|in:pasargad,mellat'
+        ]);
+        $user=Auth::user();
+        $type=$request->input('type');
+        $price=$this->profitPrice($type);
+        $qualification = Config::get('addonRelater.attributes')[explode('::',$type)[0]]['values'][explode('::',$type)[1]]['qualification'];
+        $callback = route('store.profit.buy.callback');
+        $description = 'افزایش رتبه در جستجو پیشرفته';
+        $profit=$user->profits()->create(['status'=>0,'type'=>$qualification]);
+        $order=$profit->payment()->create([
+            'user_id'=>$user->id,
+            'amount'=>$price,
+            'description'=>$description,
+            'gateway'=>$request->input('payment_gate'),
+            'status'=>0
+        ]);
+        $orderId=$order->id;
+        $this->pay($price, $callback,$orderId,$description,$request->input('payment_gate'));
+    }
+
+    public function profitCallback(Request $request){
+        $payment = Payment::findOrFail($request->input('order_id'));
+        $this->verify($request->input('au'), $payment->amount, $payment->gateway);
+        if(true){ //!empty($this->verify) and $this->verify == 1
+            $payment->update(['au'=>$request->input('au')]); // tracking code
+            Event::fire(new profitPurchased($payment));
+            $this->stream($payment);
+            Flash::success('profit added successfully');
+            return redirect(route('store.index'));
+        }else{
+            Flash::error($this->errorCode($this->verify));
+            return redirect(route('store.profit'));
+        }
+    }
+
+    public function profitPriceCalculator(Request $request){
+        $type=$request->input('type');
+        $final_amount=$this->profitPrice($type);
+        $type = explode('::', $type);
+        $base_amount = Config::get('addonProfit.base_price') + Config::get('addonProfit.attributes')[$type[0]]['values'][$type[1]]['add_price'];
+        $discount_amount = Config::get('addonProfit.base_price')*Config::get('addonProfit.discount');
+        return compact('final_amount', 'base_amount', 'discount_amount');
+
+    }
+
+    private function profitPrice($type){
+        $type=explode('::',$type);
+        return (Config::get('addonProfit.base_price')-Config::get('addonProfit.base_price')*Config::get('addonProfit.discount')) + Config::get('addonProfit.attributes')[$type[0]]['values'][$type[1]]['add_price'];
     }
 
 

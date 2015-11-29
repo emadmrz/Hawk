@@ -270,6 +270,19 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('/addon/offer/coupons/sold',['as'=>'addon.offer.coupons.list','uses'=>'CouponController@soldCoupons']);
         Route::post('/addon/offer/coupon/{coupon_user}/sold', 'CouponController@sold');
 
+        /**
+         * Created By Dara on 29/11/2015
+         * handling the relater management routes
+         */
+        Route::get('/addon/relater',['as'=>'addon.relater','uses'=>'AddonsController@relater']);
+
+        /**
+         * Created By Dara on 29/11/2015
+         * handling the profit management routes
+         */
+        Route::get('/addon/profit',['as'=>'addon.profit','uses'=>'AddonsController@profit']);
+
+
         Route::get('/addon/poll',['as'=>'addon.poll', 'uses'=>'AddonsController@poll']);
         Route::post('/addon/poll/parameter/update',['as'=>'addon.poll.parameter.update', 'uses'=>'pollController@parameterUpdate']);
         Route::get('/addon/poll/{poll}/edit',['as'=>'addon.poll.edit', 'uses'=>'pollController@edit']);
@@ -557,6 +570,26 @@ Route::group(['prefix' => 'store', 'as'=>'store.'], function () {
     Route::get('advertise/buy',['as'=>'advertise.buy', 'uses'=>'StoreController@advertiseBuy']);
     Route::any('advertise/buy/callback',['as'=>'advertise.buy.callback', 'uses'=>'StoreController@advertiseCallback']);
     Route::any('advertise/comment',['as'=>'advertise.comment', 'uses'=>'CommentController@advertise']);
+
+    /**
+     * Created By Dara on 27/11/2015
+     * Relater addon routes
+     */
+    Route::get('relater',['as'=>'relater','uses'=>'StoreController@relater']);
+    Route::post('relater/price','StoreController@relaterPriceCalculator');
+    Route::get('relater/buy',['as'=>'relater.buy','uses'=>'StoreController@relaterBuy']);
+    Route::any('relater/buy/callback',['as'=>'relater.buy.callback', 'uses'=>'StoreController@relaterCallback']);
+    Route::any('relater/comment',['as'=>'relater.comment', 'uses'=>'CommentController@relater']);
+
+    /**
+     * Created By Dara on 28/11/2015
+     * Profit addon routes
+     */
+    Route::get('profit',['as'=>'profit','uses'=>'StoreController@profit']);
+    Route::post('profit/price','StoreController@profitPriceCalculator');
+    Route::get('profit/buy',['as'=>'profit.buy','uses'=>'StoreController@profitBuy']);
+    Route::any('profit/buy/callback',['as'=>'profit.buy.callback', 'uses'=>'StoreController@profitCallback']);
+    Route::any('profit/comment',['as'=>'profit.comment', 'uses'=>'CommentController@profit']);
 
 });
 
