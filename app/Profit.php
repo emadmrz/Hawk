@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Morilog\Jalali\Facades\jDate;
 
-class Relater extends Model
+class Profit extends Model
 {
-    protected $table='relaters';
+    protected $table='profits';
 
     protected $fillable=['type','status','user_id'];
 

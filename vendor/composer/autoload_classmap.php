@@ -51,6 +51,7 @@ return array(
     'CreatePostsTable' => $baseDir . '/database/migrations/2015_09_14_125726_create_posts_table.php',
     'CreateProblemsTable' => $baseDir . '/database/migrations/2015_11_02_090836_create_problems_table.php',
     'CreateProductsTable' => $baseDir . '/database/migrations/2015_10_21_145846_create_products_table.php',
+    'CreateProfitsTable' => $baseDir . '/database/migrations/2015_11_28_094809_create_profits_table.php',
     'CreateProvincesTable' => $baseDir . '/database/migrations/2015_09_08_115716_create_provinces_table.php',
     'CreateQuestionnairesTable' => $baseDir . '/database/migrations/2015_10_17_174229_create_questionnaires_table.php',
     'CreateRecommendationsTable' => $baseDir . '/database/migrations/2015_09_25_062942_create_recommendations_table.php',

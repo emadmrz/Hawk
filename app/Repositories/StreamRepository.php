@@ -17,6 +17,7 @@ use App\Offer;
 use App\Poll;
 use App\Post;
 use App\Problem;
+use App\Profit;
 use App\Questionnaire;
 use App\Recommendation;
 use App\Relater;
@@ -59,6 +60,8 @@ class StreamRepository {
                     $this->feed[]= $this->offer($payment->itemable);
                 }elseif($payment->itemable_type=='App\Relater'){
                     $this->feed[]=$this->relater($payment->itemable);
+                }elseif($payment->itemable_type=='App\Profit'){
+                    $this->feed[]=$this->profit($payment->itemable);
                 }
             }
         }
@@ -142,7 +145,15 @@ class StreamRepository {
      * Created By Dara on 27/11/2015
      * handling the stream view related to the relater addon
      */
-    public function relater(Relater $relater){
+    private function relater(Relater $relater){
         return view('streams.relater', compact('relater'))->render();
+    }
+
+    /**
+     * Created By Dara on 29/11/2015
+     * handling the stream view related to the profit addon
+     */
+    private function profit(Profit $profit){
+        return view('streams.profit',compact('profit'))->render();
     }
 }

@@ -7,11 +7,13 @@ use App\Product;
 use App\Province;
 use App\User;
 use Bican\Roles\Models\Role;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
@@ -187,6 +189,9 @@ class SearchController extends Controller
             //check for history in skill (years of work)
             $query=$this->skillHistory($request->input('history'),$query);
 
+            //left join for profits table
+            $query=$query->leftJoin('profits','users.id','=','profits.user_id');
+
             //sort by the selected parameters
             $query=$this->userSort($request->input('userSort'),$query);
 
@@ -258,7 +263,9 @@ class SearchController extends Controller
         ]);
         if ($request->input('section') == 'users') {
             $query = User::search($request->input('query'), null, true);
-            $results = $query->groupBy('users.id')->get();
+            $query->leftJoin('profits','users.id','=','profits.user_id');
+            $query=$query->select(DB::raw("IF(profits.created_at>'".Carbon::now()->subWeek()."','yes','no') AS test,IFNULL(`profits`.`type`,0) AS type,(SELECT relevance)*(case when type=1 AND (SELECT test)='yes' then  '".Config::get('addonProfit.attributes')[1]['values'][1]['weight']."' when type=2 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][2]['weight']."' when type=3 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][3]['weight']."' else 1 end) AS total_relevance"))->addSelect('users.*')->groupBy('users.id')->orderBy('total_relevance','DESC');
+            $results=$query->get();
         } elseif ($request->input('section') == 'products') {
             $query = Product::search($request->input('query'), null, true);
             $results = $query->groupBy('products.id')->get();
@@ -493,13 +500,13 @@ class SearchController extends Controller
      */
     private function userSort($sort,$query){
         if($sort==2){ //sort by the created_at selected
-            $query=$query->groupBy('users.id')->orderBy('users.created_at','ASC');
+            $query=$query->select(DB::raw("IF(profits.created_at>'".Carbon::now()->subWeek()."','yes','no') AS test,IFNULL(`profits`.`type`,0) AS type,(SELECT relevance)*(case when type=1 AND (SELECT test)='yes' then  '".Config::get('addonProfit.attributes')[1]['values'][1]['weight']."' when type=2 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][2]['weight']."' when type=3 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][3]['weight']."' else 1 end) AS total_relevance"))->addSelect('users.*')->groupBy('users.id')->orderBy('created_at','ASC')->orderBy('total_relevance','DESC');
         }elseif($sort==1){ //sort by the user skill rate
             if($this->skillJoin==0){ // the join has not been made for skill yet
                 $query=$query->join('skills','users.id','=','skills.user_id')
-                    ->groupBy('users.id')->orderBy('skills.my_rate','DESC');
+                    ->select(DB::raw("IF(profits.created_at>'".Carbon::now()->subWeek()."','yes','no') AS test,IFNULL(`profits`.`type`,0) AS type,(SELECT relevance)*(case when type=1 AND (SELECT test)='yes' then  '".Config::get('addonProfit.attributes')[1]['values'][1]['weight']."' when type=2 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][2]['weight']."' when type=3 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][3]['weight']."' else 1 end) AS total_relevance"))->addSelect('users.*')->groupBy('users.id')->orderBy('skills.my_rate','DESC')->orderBy('total_relevance','DESC');
             }else{ //the join for skill table has already been made
-                $query->groupBy('users.id')->orderBy('skills.my_rate','DESC');
+                $query=$query->select(DB::raw("IF(profits.created_at>'".Carbon::now()->subWeek()."','yes','no') AS test,IFNULL(`profits`.`type`,0) AS type,(SELECT relevance)*(case when type=1 AND (SELECT test)='yes' then  '".Config::get('addonProfit.attributes')[1]['values'][1]['weight']."' when type=2 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][2]['weight']."' when type=3 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][3]['weight']."' else 1 end) AS total_relevance"))->addSelect('users.*')->groupBy('users.id')->orderBy('skills.my_rate','DESC')->orderBy('total_relevance','DESC');
             }
         }
         return $query;

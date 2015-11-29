@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Advantage;
 use App\Repositories\StreamRepository;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -202,7 +203,9 @@ class HomeController extends Controller
         $q=$q." + (case when infos.province_id = '".$user->info->province_id."' then '".$modifiedProvinceParam."' else 0 end)";
         $q=$q." + (case when infos.province_id = '".$user->info->city_id."' then '".$modifiedCityParam."' else 0 end)";
         $q=$q." AS relevance";
-        $q=$q." , IFNULL(relaters.type,0) AS type , (SELECT relevance)*(case when type = 1 then '".Config::get('addonRelater.attributes')[1]['values'][1]['weight']."' when type=2 then '".Config::get('addonRelater.attributes')[1]['values'][2]['weight']."' when type=3 then '".Config::get('addonRelater.attributes')[1]['values'][2]['weight']."' else 1 end) AS total_relevance FROM users";
+        $q=$q." ,IF(relaters.created_at>'".Carbon::now()->subWeek()."','yes','no') AS test"; //check for expiration of the addon
+        $q=$q." , IFNULL(relaters.type,0) AS type , (SELECT relevance)*(case when type = 1 AND (select test)='yes' then '".Config::get('addonRelater.attributes')[1]['values'][1]['weight']."' when type=2 AND (select test)='yes' then '".Config::get('addonRelater.attributes')[1]['values'][2]['weight']."' when type=3 AND (select test)='yes' then '".Config::get('addonRelater.attributes')[1]['values'][2]['weight']."' else 1 end) AS total_relevance";
+        $q=$q." FROM users";
         $q=$q." LEFT JOIN `skills` ON `users`.`id` = `skills`.`user_id`";
         $q=$q." LEFT JOIN `infos` ON `users`.`id` = `infos`.`user_id`";
         $q=$q." LEFT JOIN `relaters` ON `users`.`id` = `relaters`.`user_id`";

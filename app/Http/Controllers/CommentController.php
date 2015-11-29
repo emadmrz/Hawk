@@ -175,6 +175,19 @@ class CommentController extends Controller
     }
 
     /**
+     * Created By Dara on 28/11/2015
+     * manage the profit addon comment
+     */
+    public function profit(Request $request){
+        $user = Auth::user();
+        $profit = Addon::profit()->first();
+        $profit->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $profit->update(['num_comment'=>$profit->comments()->count()]);
+        Flash::success('comment sent');
+        return redirect()->back();
+    }
+
+    /**
      * Created By Dara on 2/11/2015
      * problem comment handling
      */

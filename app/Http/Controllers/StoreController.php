@@ -8,11 +8,13 @@ use App\Addon;
 use App\Advertise;
 use App\Events\advertisePurchased;
 use App\Events\pollPurchased;
+use App\Events\profitPurchased;
 use App\Events\questionnairePurchased;
 use App\Events\relaterPurchased;
 use App\Events\shopPurchased;
 use App\Events\storagePurchased;
 use App\Payment;
+use App\Profit;
 use App\Repositories\FriendRepository;
 use App\Storage;
 use App\Stream;
@@ -494,6 +496,69 @@ class StoreController extends Controller
             Flash::error($this->errorCode($this->verify));
             return redirect(route('store.relater'));
         }
+    }
+
+    /**
+     * Created By Dara on 28/11/2015
+     * profit addon handling
+     */
+    public function profit(){
+        $user=Auth::user();
+        $profit=Addon::profit()->first();
+        return view('store.profit',compact('user','profit'))->with(['title'=>'افزایش رتبه در جستجو']);
+    }
+
+    public function profitBuy(Request $request){
+        $this->validate($request,[
+            'type'=>'required',
+            'payment_gate'=>'required|in:pasargad,mellat'
+        ]);
+        $user=Auth::user();
+        $type=$request->input('type');
+        $price=$this->profitPrice($type);
+        $qualification = Config::get('addonRelater.attributes')[explode('::',$type)[0]]['values'][explode('::',$type)[1]]['qualification'];
+        $callback = route('store.profit.buy.callback');
+        $description = 'افزایش رتبه در جستجو پیشرفته';
+        $profit=$user->profits()->create(['status'=>0,'type'=>$qualification]);
+        $order=$profit->payment()->create([
+            'user_id'=>$user->id,
+            'amount'=>$price,
+            'description'=>$description,
+            'gateway'=>$request->input('payment_gate'),
+            'status'=>0
+        ]);
+        $orderId=$order->id;
+        $this->pay($price, $callback,$orderId,$description,$request->input('payment_gate'));
+    }
+
+    public function profitCallback(Request $request){
+        $payment = Payment::findOrFail($request->input('order_id'));
+        $this->verify($request->input('au'), $payment->amount, $payment->gateway);
+        if(true){ //!empty($this->verify) and $this->verify == 1
+            $payment->update(['au'=>$request->input('au')]); // tracking code
+            Event::fire(new profitPurchased($payment));
+            $this->stream($payment);
+            Flash::success('profit added successfully');
+            return redirect(route('store.index'));
+        }else{
+            Flash::error($this->errorCode($this->verify));
+            return redirect(route('store.profit'));
+        }
+    }
+
+    public function profitPriceCalculator(Request $request){
+        $type=$request->input('type');
+        $final_amount=$this->profitPrice($type);
+        $type = explode('::', $type);
+        $base_amount = Config::get('addonProfit.base_price') + Config::get('addonProfit.attributes')[$type[0]]['values'][$type[1]]['add_price'];
+        $discount_amount = Config::get('addonProfit.base_price')*Config::get('addonProfit.discount');
+        return compact('final_amount', 'base_amount', 'discount_amount');
+
+    }
+
+    private function profitPrice($type){
+        $type=explode('::',$type);
+        return (Config::get('addonProfit.base_price')-Config::get('addonProfit.base_price')*Config::get('addonProfit.discount')) + Config::get('addonProfit.attributes')[$type[0]]['values'][$type[1]]['add_price'];
     }
 
 

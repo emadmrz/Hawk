@@ -41,6 +41,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\relaterPurchased' => [
             'App\Listeners\relateProfile',
         ],
+        'App\Events\profitPurchased' => [
+            'App\Listeners\profitSearch',
+        ],
     ];
 
     /**
