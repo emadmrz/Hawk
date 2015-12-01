@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Corporation;
 use App\Coupon;
 use App\CouponGallery;
 use App\Event;
@@ -97,6 +98,10 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->bind('report',function($value){
             return Report::findOrFail($value);
+        });
+
+        $router->bind('corporation',function($value){
+            return Corporation::findOrFail($value);
         });
 
     }

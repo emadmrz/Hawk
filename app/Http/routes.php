@@ -49,6 +49,14 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
     Route::post('/poll/{poll}/preview',['as'=>'poll.vote', 'uses'=>'PollController@vote']);
 
     /**
+     * Created By Dara on 1/12/2012
+     * Corporation routes
+     */
+    Route::group(['prefix'=>'corporation','as'=>'corporation.'],function(){
+        Route::get('profile/{profile}/corporation/skill/{skill}/create',['as'=>'create','uses'=>'CorporationController@create']);
+    });
+
+    /**
      * Created By Dara on 27/10/2015
      * offer handling
      */
@@ -357,6 +365,19 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
 
     });
 
+    /**
+     * Created By Dara on 1/12/2015
+     * handling corporation routes
+     */
+    Route::group(['prefix'=>'corporation','as'=>'corporation.'],function(){
+        Route::get('/',['as'=>'list','uses'=>'CorporationController@showAll']);
+        Route::get('/{corporation}',['as'=>'index','uses'=>'CorporationController@index']);
+        Route::post('/{corporation}',['as'=>'submit','uses'=>'CorporationController@submit']);
+        Route::get('/{corporation}/question',['as'=>'question.index','uses'=>'CorporationController@questionIndex']);
+        Route::post('/{corporation}/question',['as'=>'question.submit','uses'=>'CorporationController@questionSubmit']);
+        Route::get('/{corporation}/question/show',['as'=>'question.show','uses'=>'CorporationController@questionShow']);
+    });
+
 });
 
 
@@ -508,6 +529,26 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::put('/university/{university}',['as'=>'university.update', 'uses'=>'Admin\UniversityController@update']);
         Route::get('/university/{university}/delete',['as'=>'university.delete', 'uses'=>'Admin\UniversityController@delete']);
 
+
+    });
+
+    /**
+     * Created By Dara on 30/11/2015
+     * managing user posts
+     */
+    Route::group(['prefix'=>'post','as'=>'post.'],function(){
+        Route::get('/{profile?}',['as'=>'show','uses'=>'Admin\PostManagementController@index']);
+        Route::get('/change/{post}',['as'=>'change','uses'=>'Admin\PostManagementController@changeStatus']);
+
+    });
+
+    /**
+     * Created By Dara on 30/11/2015
+     * managing user articles
+     */
+    Route::group(['prefix'=>'article','as'=>'article.'],function(){
+        Route::get('/{profile?}',['as'=>'show','uses'=>'Admin\ArticleManagementController@index']);
+        Route::get('/change/{article}',['as'=>'change','uses'=>'Admin\ArticleManagementController@changeStatus']);
 
     });
 

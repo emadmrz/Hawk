@@ -12,5 +12,10 @@ return [
     'offerExpired'=>'خدمت موردنظر منقضی شده است .',
     'settleInformed'=>'درخواست تسویه با موفقیت ثبت گردید .',
     'reportSent'=>'گزارش با موفقیت ارسال گردید .',
-    'feedbackSent'=>'نظر با موفقیت ارسال گردید .'
+    'feedbackSent'=>'نظر با موفقیت ارسال گردید .',
+    'corporationCreated'=>'درخواست دست دادن با موفقیت ارسال گردید',
+    'corporationExists'=>'درخواست قبلا ثبت گردیده است',
+    'corporationQuestionAnswered'=>'پرسشنامه با موفقیت تکمیل گردید .',
+    'corporationQuestionMissing'=>'لطفا به تمام سوالات پاسخ دهید .',
+    'corporationQuestionAnsweredAlready'=>'پرسشنامه قبلا تکمیل گردیده است .'
 ];

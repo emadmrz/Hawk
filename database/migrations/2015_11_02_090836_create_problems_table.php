@@ -22,6 +22,7 @@ class CreateProblemsTable extends Migration
             $table->string('content');
             $table->integer('num_like')->unsigned()->default(0);
             $table->integer('num_comment')->unsigned()->default(0);
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

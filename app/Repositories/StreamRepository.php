@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\Article;
+use App\Corporation;
 use App\Endorse;
 use App\Friend;
 use App\Group;
@@ -57,6 +58,8 @@ class StreamRepository {
                 }elseif($payment->itemable_type == 'App\Offer'){
                     $this->feed[]= $this->offer($payment->itemable);
                 }
+            }elseif($stream->contentable_type=='App\Corporation'){
+                    $this->feed[]=$this->corporation($stream->contentable);
             }
         }
         return $this->feed;
@@ -134,5 +137,23 @@ class StreamRepository {
     private function offer(Offer $offer){
         return view('streams.offer', compact('offer'))->render();
     }
+
+    /**
+     * Created By Dara on 1/12/2015
+     * handling the stream view related to corporation
+     */
+    private function corporation(Corporation $corporation){
+        $user=Auth::user();
+        if($user->id==$corporation->sender_id){ //the current user is the one who made the request
+            if($corporation->status==1){ //his/her request has been approved
+                return view('streams.acceptanceCorporation',compact('corporation'))->render();
+            }elseif($corporation->status==0){ //his/her request has been denied
+                //
+            }
+        }elseif($user->id==$corporation->receiver_id){ //the current user is the one who receives the request
+            return view('streams.corporation',compact('corporation'))->render();
+        }
+    }
+
 
 }

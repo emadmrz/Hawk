@@ -11,7 +11,7 @@ class Post extends Model
     use LikeRepository;
 
     protected $tabel = 'posts';
-    protected $fillable = ['user_id', 'content', 'location', 'image', 'num_like', 'num_comment','parentable_id','parentable_type'];
+    protected $fillable = ['user_id', 'content', 'location', 'image', 'num_like', 'num_comment','parentable_id','parentable_type','status'];
 
     public function user(){
         return $this->belongsTo('App\User');

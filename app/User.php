@@ -318,6 +318,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * Created By Dara on 1/12/2015
+     * corporation relation
+     */
+    public function corporations(){ //return the corporations that others make request to me
+        return $this->hasMany('App\Corporation','receiver_id','id');
+    }
+
+    public function myCorporations(){ //return the corporations that i made
+        return $this->hasMany('App\Corporation','sender_id','id');
+    }
+
+    /**
      * Created by Emad Mirzaie on 06/10/2015.
      * Check if auth user is friend with user
      */

@@ -11,6 +11,7 @@ namespace App\Repositories;
 
 use App\Article;
 use App\Comment;
+use App\Corporation;
 use App\Endorse;
 use App\Post;
 use App\Problem;
@@ -56,8 +57,10 @@ class NotificationRepository {
                     $this->notification[] = $this->postComment($comment->commentable, $comment);
                 }elseif($comment->commentable_type == 'App\Article'){
                 $this->notification[] = $this->articleComment($comment->commentable, $comment);
-                    }
                 }
+            }elseif($stream->contentable_type=='App\Corporation'){
+                $this->notification[]=$this->corporation($stream->contentable);
+            }
             }elseif($stream->parentable_type=='App\Group'){
                 if($stream->contentable_type=='App\Problem'){
                     $this->notification[]=$this->problem($stream->contentable);
@@ -120,5 +123,23 @@ class NotificationRepository {
     private function postGroupComment(Post $post, Comment $comment){
         return view('notifications.postGroupComment', compact('post','comment'))->render();
     }
+
+    /**
+     * Created By Dara on 1/12/2015
+     * handling the corporation notification
+     */
+    private function corporation(Corporation $corporation){
+        $user=Auth::user();
+        if($user->id==$corporation->sender_id){ //the current user is the one who made the request
+            if($corporation->status==1){ //his/her request has been approved
+                return view('notifications.acceptanceCorporation',compact('corporation'))->render();
+            }elseif($corporation->status==0){ //his/her request has been denied
+                //
+            }
+        }elseif($user->id==$corporation->receiver_id){ //the current user is the one who receives the request
+            return view('notifications.corporation',compact('corporation'))->render();
+        }
+    }
+
 
 }

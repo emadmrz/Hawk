@@ -405,7 +405,7 @@
             {!! Form::open(['route'=>['profile.skill.endorse.store', $skill->id], 'method'=>'post', 'style'=>'display:inline-block', 'data-remote-multiple']) !!}
             <button type="submit" class="btn btn-violet btn-sm"><i class="fa fa-check fa-lg" ></i> تایید مهارت </button>
             {!! Form::close() !!}
-            <button class="btn btn-success btn-sm"><img src="{{ asset('img/icons/handshake.png') }}" > دست دادن </button>
+            <a href="{{route('home.corporation.create',[$user->id,$skill->id])}}" class="btn btn-success btn-sm"><img src="{{ asset('img/icons/handshake.png') }}" > دست دادن </a>
             <button id="open_recommendation" class="btn btn-info btn-sm" ><i class="fa fa-pencil fa-lg" ></i> افزودن توصیه نامه </button>
             @if($skill->status == 0)
                 <span class="btn btn-danger btn-xs pull-left skill-status">غیر قابل ارائه </span>

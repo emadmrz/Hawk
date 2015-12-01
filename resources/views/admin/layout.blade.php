@@ -61,7 +61,19 @@
             if (!confirm('Are you sure you want to delete this record from database')) {
                 return false;
             }
-        })
+        });
+
+        $('a[data-post-active]').click(function () {
+            if (!confirm('Are you sure you want to active this record from database')) {
+                return false;
+            }
+        });
+
+        $('a[data-post-ban]').click(function () {
+            if (!confirm('Are you sure you want to ban this record from database')) {
+                return false;
+            }
+        });
     });
 </script>
 

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddStatToArticlesTable' => $baseDir . '/database/migrations/2015_11_30_125933_add_stat_to_articles_table.php',
     'AddonTableSeeder' => $baseDir . '/database/seeds/AddonTableSeeder.php',
     'AdvantageTableSeeder' => $baseDir . '/database/seeds/AdvantageTableSeeder.php',
     'AttributeGroupsTableSeeder' => $baseDir . '/database/seeds/AttributeGroupsTableSeeder.php',
@@ -20,6 +21,8 @@ return array(
     'CreateCategoriesTable' => $baseDir . '/database/migrations/2015_09_16_090000_create_categories_table.php',
     'CreateCommentsTable' => $baseDir . '/database/migrations/2015_09_23_051721_create_comments_table.php',
     'CreateCommercialsTable' => $baseDir . '/database/migrations/2015_10_22_165920_create_commercials_table.php',
+    'CreateCorporationQuestionnaireTable' => $baseDir . '/database/migrations/2015_12_01_082111_create_corporation_questionnaire_table.php',
+    'CreateCorporationsTable' => $baseDir . '/database/migrations/2015_12_01_061207_create_corporations_table.php',
     'CreateCouponGalleryTable' => $baseDir . '/database/migrations/2015_10_20_195108_create_coupon_gallery_table.php',
     'CreateCouponUserTable' => $baseDir . '/database/migrations/2015_10_27_112811_create_coupon_user_table.php',
     'CreateCouponsTable' => $baseDir . '/database/migrations/2015_10_21_090221_create_coupons_table.php',
@@ -66,6 +69,7 @@ return array(
     'CreateStreamsTable' => $baseDir . '/database/migrations/2015_10_25_052142_create_streams_table.php',
     'CreateTagsTable' => $baseDir . '/database/migrations/2015_09_16_161420_create_tags_table.php',
     'CreateUniversitiesTable' => $baseDir . '/database/migrations/2015_09_09_140404_create_universities_table.php',
+    'CreateUniversitysTable' => $baseDir . '/database/migrations/2015_09_09_140021_create_universitys_table.php',
     'CreateUsagesTable' => $baseDir . '/database/migrations/2015_10_12_160038_create_usages_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CreateVisitorsTable' => $baseDir . '/database/migrations/2015_09_11_163613_create_visitors_table.php',
