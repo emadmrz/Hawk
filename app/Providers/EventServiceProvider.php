@@ -38,6 +38,12 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\activeAdvertise',
         ],
         'App\Events\sendMessage'=>[],
+        'App\Events\relaterPurchased' => [
+            'App\Listeners\relateProfile',
+        ],
+        'App\Events\profitPurchased' => [
+            'App\Listeners\profitSearch',
+        ],
     ];
 
     /**

@@ -78,6 +78,8 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
         Route::post('product/price','ProductController@calculatePrice');
     });
 
+    Route::get('/profile/{profile}/skill',['as'=>'skill.list', 'uses'=>'SkillController@index']);
+
 });
 
 /**
@@ -278,13 +280,28 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('/addon/offer/coupons/sold',['as'=>'addon.offer.coupons.list','uses'=>'CouponController@soldCoupons']);
         Route::post('/addon/offer/coupon/{coupon_user}/sold', 'CouponController@sold');
 
+        /**
+         * Created By Dara on 29/11/2015
+         * handling the relater management routes
+         */
+        Route::get('/addon/relater',['as'=>'addon.relater','uses'=>'AddonsController@relater']);
+
+        /**
+         * Created By Dara on 29/11/2015
+         * handling the profit management routes
+         */
+        Route::get('/addon/profit',['as'=>'addon.profit','uses'=>'AddonsController@profit']);
+
+
         Route::get('/addon/poll',['as'=>'addon.poll', 'uses'=>'AddonsController@poll']);
         Route::post('/addon/poll/parameter/update',['as'=>'addon.poll.parameter.update', 'uses'=>'pollController@parameterUpdate']);
         Route::get('/addon/poll/{poll}/edit',['as'=>'addon.poll.edit', 'uses'=>'pollController@edit']);
         Route::post('/addon/poll/{poll}/update',['as'=>'addon.poll.update', 'uses'=>'pollController@update']);
         Route::post('/addon/poll/{poll}/parameter/add',['as'=>'addon.poll.parameter.add', 'uses'=>'pollController@parameterAdd']);
         Route::delete('/addon/poll/parameter/delete',['as'=>'addon.poll.parameter.delete', 'uses'=>'pollController@parameterDelete']);
-        Route::get('/addon/poll/{poll}/publish',['as'=>'addon.poll.publish', 'uses'=>'pollController@publish']);
+        Route::get('/addon/poll/{poll}/contributors',['as'=>'addon.poll.select', 'uses'=>'pollController@select']);
+        Route::post('/addon/poll/{poll}/contributors',['as'=>'addon.poll.search', 'uses'=>'pollController@search']);
+        Route::post('/addon/poll/{poll}/publish',['as'=>'addon.poll.publish', 'uses'=>'pollController@publish']);
 
         Route::get('/addon/questionnaire',['as'=>'addon.questionnaire', 'uses'=>'AddonsController@questionnaire']);
         Route::post('/addon/questionnaire/question/update',['as'=>'addon.questionnaire.question.update', 'uses'=>'QuestionnaireController@questionUpdate']);
@@ -293,7 +310,9 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::post('/addon/questionnaire/{questionnaire}/update',['as'=>'addon.questionnaire.update', 'uses'=>'QuestionnaireController@update']);
         Route::post('/addon/questionnaire/{questionnaire}/question/add',['as'=>'addon.questionnaire.question.add', 'uses'=>'QuestionnaireController@questionAdd']);
 //        Route::delete('/addon/poll/parameter/delete',['as'=>'addon.poll.parameter.delete', 'uses'=>'pollController@parameterDelete']);
-        Route::get('/addon/questionnaire/{questionnaire}/publish',['as'=>'addon.questionnaire.publish', 'uses'=>'QuestionnaireController@publish']);
+        Route::get('/addon/questionnaire/{questionnaire}/contributors',['as'=>'addon.questionnaire.select', 'uses'=>'QuestionnaireController@select']);
+        Route::post('/addon/questionnaire/{questionnaire}/contributors',['as'=>'addon.questionnaire.search', 'uses'=>'QuestionnaireController@search']);
+        Route::post('/addon/questionnaire/{questionnaire}/publish',['as'=>'addon.questionnaire.publish', 'uses'=>'QuestionnaireController@publish']);
         Route::get('/addon/questionnaire/{questionnaire}/export',['as'=>'addon.questionnaire.export', 'uses'=>'QuestionnaireController@export']);
 
         Route::get('/addon/shop',['as'=>'addon.shop', 'uses'=>'AddonsController@shop']);
@@ -599,6 +618,26 @@ Route::group(['prefix' => 'store', 'as'=>'store.'], function () {
     Route::any('advertise/buy/callback',['as'=>'advertise.buy.callback', 'uses'=>'StoreController@advertiseCallback']);
     Route::any('advertise/comment',['as'=>'advertise.comment', 'uses'=>'CommentController@advertise']);
 
+    /**
+     * Created By Dara on 27/11/2015
+     * Relater addon routes
+     */
+    Route::get('relater',['as'=>'relater','uses'=>'StoreController@relater']);
+    Route::post('relater/price','StoreController@relaterPriceCalculator');
+    Route::get('relater/buy',['as'=>'relater.buy','uses'=>'StoreController@relaterBuy']);
+    Route::any('relater/buy/callback',['as'=>'relater.buy.callback', 'uses'=>'StoreController@relaterCallback']);
+    Route::any('relater/comment',['as'=>'relater.comment', 'uses'=>'CommentController@relater']);
+
+    /**
+     * Created By Dara on 28/11/2015
+     * Profit addon routes
+     */
+    Route::get('profit',['as'=>'profit','uses'=>'StoreController@profit']);
+    Route::post('profit/price','StoreController@profitPriceCalculator');
+    Route::get('profit/buy',['as'=>'profit.buy','uses'=>'StoreController@profitBuy']);
+    Route::any('profit/buy/callback',['as'=>'profit.buy.callback', 'uses'=>'StoreController@profitCallback']);
+    Route::any('profit/comment',['as'=>'profit.comment', 'uses'=>'CommentController@profit']);
+
 });
 
 
@@ -618,8 +657,15 @@ Route::group(['prefix' => 'api', 'as'=>'api.'], function () {
     });
 
     Route::group(['prefix' => 'notification', 'as'=>'notification.'], function () {
-        Route::get('num',['as'=>'num', 'uses'=>'Api\NotificationController@num']);
+        Route::post('num',['as'=>'num', 'uses'=>'Api\NotificationController@num']);
     });
+
+    Route::group(['prefix' => 'friends', 'as'=>'friends.'], function () {
+//        Route::post('/{profile}', 'Api/friendsController@friends');
+        Route::post('/online', ['as'=>'online', 'uses'=>'Api\friendsController@online']);
+    });
+
+
 });
 
 
@@ -654,4 +700,6 @@ Route::group(['prefix' => 'chat', 'as'=>'chat.'], function () {
     Route::post('/send/{profile}',['as'=>'send', 'uses'=>'ChatController@send']);
     Route::post('/history',['as'=>'history', 'uses'=>'ChatController@history']);
     Route::post('/typing',['as'=>'typing', 'uses'=>'ChatController@typing']);
+    Route::post('/seen',['as'=>'seen', 'uses'=>'ChatController@seen']);
+    Route::post('/latest',['as'=>'latest', 'uses'=>'ChatController@latest']);
 });

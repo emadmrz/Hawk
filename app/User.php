@@ -326,7 +326,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     public function myCorporations(){ //return the corporations that i made
-        return $this->hasMany('App\Corporation','sender_id','id');
+        return $this->hasMany('App\Corporation', 'sender_id', 'id');
+    }
+     /**
+      * Created By Dara on 26/11/2015
+     * relater-user relation
+     */
+    public function relaters(){
+        return $this->hasMany('App\Relater');
+    }
+
+    /**
+     * Created By Dara on 28/11/2015
+     * profit - user relation
+     */
+    public function profits(){
+        return $this->hasMany('App\Profit');
     }
 
     /**
@@ -342,6 +357,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function message()
     {
         return $this->morphMany('App\MessageUser', 'parentable');
+    }
+
+    public function activity(){
+        return $this->hasOne('App\Activity');
     }
 
 }

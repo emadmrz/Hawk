@@ -50,6 +50,8 @@ class NotificationRepository {
                 $this->notification[] = $this->endorse($stream->contentable, $user);
             }elseif($stream->contentable_type == 'App\Recommendation'){
                 $this->notification[] = $this->recommendation($stream->contentable, $user);
+            }elseif($stream->contentable_type=='App\Corporation'){
+                $this->notification[]=$this->corporation($stream->contentable);
             }
             elseif($stream->contentable_type == 'App\Comment'){
                 $comment = $stream->contentable;
@@ -57,10 +59,8 @@ class NotificationRepository {
                     $this->notification[] = $this->postComment($comment->commentable, $comment);
                 }elseif($comment->commentable_type == 'App\Article'){
                 $this->notification[] = $this->articleComment($comment->commentable, $comment);
+                    }
                 }
-            }elseif($stream->contentable_type=='App\Corporation'){
-                $this->notification[]=$this->corporation($stream->contentable);
-            }
             }elseif($stream->parentable_type=='App\Group'){
                 if($stream->contentable_type=='App\Problem'){
                     $this->notification[]=$this->problem($stream->contentable);

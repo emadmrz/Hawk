@@ -50,4 +50,24 @@ class AddonsController extends Controller
         $offers=$user->offers()->latest()->get();
         return view('store.offer.index',compact('offers','user'))->with(['title'=>'مدیریت افزونه پیشنهاد ویژه']);
     }
+
+    /**
+     * Created By Dara on 29/11/2015
+     * relater management handling
+     */
+    public function relater(){
+        $user=Auth::user();
+        $relaters=$user->relaters()->latest()->get();
+        return view('store.relater.index',compact('relaters','user'))->with(['title'=>'مدیریت افزونه افزایش رتیه پروفایل']);
+    }
+
+    /**
+     * Created By Dara on 29/11/2015
+     * profit management handling
+     */
+    public function profit(){
+        $user=Auth::user();
+        $profits=$user->profits()->latest()->get();
+        return view('store.profit.index',compact('profits','user'))->with(['title'=>'مدیریت افزونه افزایش رتیه در جستجو']);
+    }
 }

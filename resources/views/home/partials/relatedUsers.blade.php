@@ -1,5 +1,5 @@
 @foreach($relatedUsers as $user)
-    <div class="search-result">
+    <div class="search-result clearfix" style="margin-top: 15px">
         <div class="col-sm-3">
             <div class="search-card">
                 <div class="avatar">

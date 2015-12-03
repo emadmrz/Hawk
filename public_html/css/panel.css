@@ -127,7 +127,7 @@ main{
     bottom:11px;
     left: 10%;
     width: 50%;
-    z-index: 1000;
+    z-index: 5;
 }
 .cover.profile .wrapper  .description input[type=text]{
     outline: none;
@@ -691,8 +691,12 @@ main{
     padding-left: 2px;
     top: 0;
 }
-.panel-footer button{
+.panel-footer .btn{
     margin-left: 5px;
+}
+.panel-footer .btn img{
+    margin-left: 2px;
+    height: 15px;
 }
 .panel-body .list-item-image ul{
     padding-right: 0;
@@ -3266,4 +3270,80 @@ sup {
 .chat .list .media-body p{
     font-size: 12px;
     line-height: 20px;
+}
+
+.chat.panel .panel-body{
+    max-height: 500px;
+    overflow-y: scroll;
+    padding-bottom: 20px;
+}
+.chat.panel .panel-footer{
+    position: relative;
+}
+#is_typing{
+    width: 100%;
+    height: 20px;
+    background: rgba(238, 238, 238, 0.7);
+    position: absolute;
+    left: 0;
+    top: -20px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+.chat.panel  .message-status{
+    font-size: 12px;
+    color: #DDD;
+}
+.chat.panel  .message-status.seen{
+    color: green;
+}
+.start-chat-with-friend .media-right{
+    position: relative;
+}
+.start-chat-with-friend .media-right .online{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: rgba(0, 128, 0, 0.70);
+    color: #ffffff;
+    font-size: 11px;
+    width: 60px;
+    text-align: center;
+    height: 15px;
+
+}
+.start-chat-with-friend .media-body .offline{
+    color: #999;
+    font-size: 12px;
+}
+.start-chat-with-friend.deactive{
+    opacity:0.5;
+}
+.start-chat-with-friend .media-right  .new-message{
+    font-size: 10px;
+    background-color: rgba(201, 0, 0, 0.8);
+    color: #ffffff;
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+
+}
+.chatting-with{
+    margin-bottom: 15px;
+}
+.chatting-with .media-right img{
+    width: 60px;
+    height: 60px;
+}
+.table.search-result-table td{
+    vertical-align: middle;
+    text-align: right;
+}
+.table.search-result-table img{
+    width: 50px;
+    height: 50px;
 }

@@ -1,4 +1,3 @@
-@section('content')
     <div class="timeline-block">
         <div class="panel panel-default share clearfix-xs">
             <div class="panel-heading panel-heading-gray title">
@@ -6,8 +5,6 @@
             </div>
             <div class="panel-body" id="friendship_list">
                 <div class="list-item-image">
-
-
 
                     <ul class="">
                         @foreach($mutuals as $friend)
@@ -40,4 +37,3 @@
             </div>
         </div>
     </div>
-@endsection                                                                                                                                                                                                                                                                                                                                            

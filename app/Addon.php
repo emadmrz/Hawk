@@ -46,4 +46,12 @@ class Addon extends Model
         $query->where('name','offer');
     }
 
+    public function scopeRelater($query){
+        $query->where('name','relater');
+    }
+
+    public function scopeProfit($query){
+        $query->where('name','profit');
+    }
+
 }

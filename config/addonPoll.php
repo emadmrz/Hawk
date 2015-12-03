@@ -24,9 +24,9 @@ return [
             'name'=>'scope',// Important value
             'title'=>'ارسال  برای',
             'values'=>[
-                1 => ['name'=>'دوستان','add_price'=>2000,'scope'=>1], // #1 friends
-                2 => ['name'=>'کاربران سطح سوم','add_price'=>4000,'scope'=>2], // #2 3th categories
-                3 => ['name'=>'کاربران سطح دوم','add_price'=>6000,'scope'=>3], // #3 2th categories
+                1 => ['name'=>'دوستان','add_price'=>2000,'scope'=>1,'count'=>100], // #1 friends
+                2 => ['name'=>'کاربران سطح سوم','add_price'=>4000,'scope'=>2,'count'=>300], // #2 3th categories
+                3 => ['name'=>'کاربران سطح دوم','add_price'=>6000,'scope'=>3,'count'=>600], // #3 2th categories
             ],
         ]
     ]

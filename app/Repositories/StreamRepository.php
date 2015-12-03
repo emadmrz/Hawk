@@ -18,8 +18,10 @@ use App\Offer;
 use App\Poll;
 use App\Post;
 use App\Problem;
+use App\Profit;
 use App\Questionnaire;
 use App\Recommendation;
+use App\Relater;
 use App\Shop;
 use App\Storage;
 use App\Stream;
@@ -45,21 +47,29 @@ class StreamRepository {
                 $this->feed[] = $this->recommendation($stream->contentable);
             }elseif($stream->contentable_type == 'App\Problem'){
                 $this->feed[] = $this->problem($stream->contentable);
+            }elseif($stream->contentable_type == 'App\Poll'){
+                $this->feed[] = $this->pollPreview($stream->contentable);
+            }elseif($stream->contentable_type == 'App\Questionnaire') {
+                $this->feed[] = $this->questionnairePreview($stream->contentable);
+            }elseif($stream->contentable_type=='App\Corporation'){
+                $this->feed[]=$this->corporation($stream->contentable);
             }elseif($stream->contentable_type == 'App\Payment') {
                 $payment = $stream->contentable;
-                if($payment->itemable_type == 'App\Storage'){
+                if ($payment->itemable_type == 'App\Storage') {
                     $this->feed[] = $this->storage($payment->itemable);
-                }elseif($payment->itemable_type == 'App\Poll'){
+                } elseif ($payment->itemable_type == 'App\Poll') {
                     $this->feed[] = $this->poll($payment->itemable);
-                }elseif($payment->itemable_type == 'App\Questionnaire'){
+                } elseif ($payment->itemable_type == 'App\Questionnaire') {
                     $this->feed[] = $this->questionnaire($payment->itemable);
-                }elseif($payment->itemable_type == 'App\Shop'){
+                } elseif ($payment->itemable_type == 'App\Shop') {
                     $this->feed[] = $this->shop($payment->itemable);
-                }elseif($payment->itemable_type == 'App\Offer'){
-                    $this->feed[]= $this->offer($payment->itemable);
+                } elseif ($payment->itemable_type == 'App\Offer') {
+                    $this->feed[] = $this->offer($payment->itemable);
+                } elseif ($payment->itemable_type == 'App\Relater') {
+                    $this->feed[] = $this->relater($payment->itemable);
+                } elseif ($payment->itemable_type == 'App\Profit') {
+                    $this->feed[] = $this->profit($payment->itemable);
                 }
-            }elseif($stream->contentable_type=='App\Corporation'){
-                    $this->feed[]=$this->corporation($stream->contentable);
             }
         }
         return $this->feed;
@@ -156,4 +166,22 @@ class StreamRepository {
     }
 
 
+    /**
+     * Created By Dara on 27/11/2015
+     * handling the stream view related to the relater addon
+     */
+    public function relater(Relater $relater){
+        return view('streams.relater', compact('relater'))->render();
+    }
+
+    private function pollPreview(Poll $poll){
+        $parameters = $poll->parameters()->get();
+        $total_votes = $parameters->sum('num_vote');
+        if($total_votes == 0) $total_votes=1;
+        return view('partials.pollPreview', compact('poll', 'parameters', 'total_votes'))->render();
+    }
+
+    private function questionnairePreview(Questionnaire$questionnaire){
+        return view('partials.questionnairePreview', compact('questionnaire'));
+    }
 }
