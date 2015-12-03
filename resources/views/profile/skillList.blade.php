@@ -1,8 +1,8 @@
 @extends('profile.layout')
 
 @section('content')
-
-    <div id="skill-carousel" class="carousel slide skill-carousel carousel-fade" data-ride="carousel">
+    @if(count($skills))
+        <div id="skill-carousel" class="carousel slide skill-carousel carousel-fade" data-ride="carousel">
 
     <div class="skill-panel">
         <div class="title">لیست مهارت ها</div>
@@ -405,6 +405,10 @@
 
         </div>
     </div>
+    @else
+
+    @endif
+
 @endsection
 
 @section('side')

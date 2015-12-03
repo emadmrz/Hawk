@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Parameter;
 use App\Poll;
+use App\Province;
+use App\Stream;
 use App\Tag;
 use App\User;
 use App\Vote;
@@ -72,6 +74,7 @@ class PollController extends Controller
             'returns'=>$poll->parameters()->latest()->get()
         ];
     }
+
     public function ParameterDelete(Request $request){
         Parameter::findOrFail($request->input('id'))->delete();
         return [
@@ -87,8 +90,37 @@ class PollController extends Controller
         Parameter::find($request->input('pk'))->update([$request->input('name')=>$request->input('value')]);
     }
 
-    public function publish(Poll $poll){
+    public function select(Poll $poll){
+        $provinces = Province::where('parent_id', null)->lists('name', 'id');
+        $provinces[0] = 'اهمیتی ندارد';
+        $cities = Province::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+        $cities[0] = 'اهمیتی ندارد';
+        $firstSkillCat = Category::where('parent_id', null)->lists('name', 'id');
+        $firstSkillCat[0] = 'اهمیتی ندارد';
+        $secondSkillCat = Category::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+        $secondSkillCat[0] = 'اهمیتی ندارد';
+
+
+        return view('store.poll.publish')->with([
+            'title'=>'دریافت کنندگان نشر سنجی',
+            'provinces' => $provinces,
+            'cities' => $cities,
+            'firstSkillCat' => $firstSkillCat,
+            'secondSkillCat' => $secondSkillCat,
+            'poll'=>$poll,
+            'hasFilters'=>true
+        ]);
+    }
+
+    public function search(Poll $poll, Request $request, SearchController $searchController){
+        $results = $searchController->userProccess($request);
+        $hasFilters = false;
+        return view('store.poll.publish', compact('results', 'poll', 'hasFilters'))->with(['title'=>'انتخاب دریافت کنندگان نظر سنجی']);
+    }
+
+    public function publish(Poll $poll, Request $request){
         $poll->update(['status'=>2]);
+        $this->stream($request->input('receiver'), $poll);
         Flash::success('poll published');
         return redirect()->route('profile.management.addon.poll');
     }
@@ -133,4 +165,30 @@ class PollController extends Controller
             ]
         ];
     }
+
+    private function stream($receivers, $poll){
+        foreach($receivers as $receiver){
+            if($poll->user_id != $receiver){
+                Stream::create([
+                    'user_id'=>$receiver,
+                    'edge_ranke'=> 0,
+                    'contentable_id'=> $poll->id,
+                    'contentable_type'=> 'App\Poll',
+                    'parentable_id'=>$poll->user_id,
+                    'parentable_type'=>'App\User',
+                    'is_see'=>0
+                ]);
+            }
+        }
+        Stream::create([
+            'user_id'=>$poll->user_id,
+            'edge_ranke'=> 0,
+            'contentable_id'=>$poll->id,
+            'contentable_type'=> 'App\Poll',
+            'parentable_id'=>$poll->user_id,
+            'parentable_type'=>'App\User',
+            'is_see' => 1
+        ]);
+    }
+
 }

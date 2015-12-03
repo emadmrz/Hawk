@@ -21,6 +21,7 @@ use App\Schedule;
 use App\Service;
 use App\Skill;
 use App\Tag;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -34,8 +35,12 @@ use Morilog\Jalali\Facades\jDate;
 
 class SkillController extends Controller
 {
-    public function index(){
-        $user = Auth::user();
+    public function index(User $user){
+        $pos = 'home';
+        if(empty($user->id)){
+            $user = Auth::user();
+            $pos = 'profile';
+        }
         $skills = $user->skills()->with(
             'experiences',
             'experiences.files',
@@ -48,7 +53,7 @@ class SkillController extends Controller
             'tags',
             'schedules'
         )->get();
-        return view('profile.skillList', compact('skills'))->with(['title'=>'لیست مهارت ها']);
+        return view($pos.'.skillList', compact('skills','user'))->with(['title'=>'لیست مهارت ها']);
     }
 
     public function create(SkillRepository $skillRepository){

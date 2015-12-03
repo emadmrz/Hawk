@@ -506,13 +506,13 @@
 
     </div>
 
-    @if(isset($userResults) && $userResults!=null)
-        @foreach($userResults as $result)
+        @foreach($results as $result)
+            @if($result->getTable() == 'users')
             <div class="search-result">
                 <div class="col-sm-3">
                     <div class="search-card">
                         <div class="avatar">
-                            <img src="{{ asset('img/persons') }}/{{$result->avatar}}">
+                            <img src="{{ asset('img/persons/'.$result->avatar) }}">
                         </div>
                         <div class="name">
                             {{$result->username}}
@@ -529,16 +529,17 @@
                     </div>
                 </div>
             </div>
-        @endforeach
-    @endif
 
-    @if(isset($productResults) && $productResults!=null)
-        @foreach($productResults as $result)
+            @elseif($result->getTable() == 'products')
             <div class="search-result">
                 <div class="col-sm-3">
                     <div class="search-card">
                         <div class="avatar">
-                            <img src="{{asset('img/files/shop')}}/{{$result->files()->firstOrFail()->name}}">
+                            @if(count($result->files))
+                                <img src="{{asset('img/files/shop/'.$result->files->first()->name)}}">
+                            @else
+                                <img src="aaa">
+                            @endif
                         </div>
                         <div class="name">
                             {{$result->name}}
@@ -556,8 +557,11 @@
                     </div>
                 </div>
             </div>
+            @endif
+
         @endforeach
-    @endif
+
+
 
 @endsection
 

@@ -18,7 +18,8 @@ class CreatePollsTable extends Migration
             $table->string('title')->nullable();
             $table->string('question')->nullable();
             $table->integer('category_id')->unsigned()->nullable();
-            $table->tinyInteger('scope');
+            $table->tinyInteger('scope')->nullable();
+            $table->integer('count')->unsigned();
             $table->boolean('show_result')->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->unsigned()->default(0);

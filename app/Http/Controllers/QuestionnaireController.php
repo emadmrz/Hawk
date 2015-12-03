@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Option;
+use App\Province;
 use App\Question;
 use App\Questionnaire;
+use App\Stream;
 use App\Tag;
 use App\Tick;
 use App\User;
@@ -107,7 +109,6 @@ class QuestionnaireController extends Controller
         Question::findOrFail($request->input('id'))->delete();
     }
 
-
     public function preview(User $user, Questionnaire $questionnaire){
         return view('store.questionnaire.preview',compact('questionnaire','user'))->with(['title'=>$questionnaire->title]);
     }
@@ -169,9 +170,63 @@ class QuestionnaireController extends Controller
         })->export('xlsx');
     }
 
-    public function publish(Questionnaire $questionnaire){
+    public function select(Questionnaire $questionnaire){
+        $provinces = Province::where('parent_id', null)->lists('name', 'id');
+        $provinces[0] = 'اهمیتی ندارد';
+        $cities = Province::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+        $cities[0] = 'اهمیتی ندارد';
+        $firstSkillCat = Category::where('parent_id', null)->lists('name', 'id');
+        $firstSkillCat[0] = 'اهمیتی ندارد';
+        $secondSkillCat = Category::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+        $secondSkillCat[0] = 'اهمیتی ندارد';
+
+
+        return view('store.questionnaire.publish')->with([
+            'title'=>'دریافت کنندگان پرسشنامه',
+            'provinces' => $provinces,
+            'cities' => $cities,
+            'firstSkillCat' => $firstSkillCat,
+            'secondSkillCat' => $secondSkillCat,
+            'questionnaire'=>$questionnaire,
+            'hasFilters'=>true
+        ]);
+    }
+
+    public function search(Questionnaire $questionnaire, Request $request, SearchController $searchController){
+        $results = $searchController->userProccess($request);
+        $hasFilters = false;
+        return view('store.questionnaire.publish', compact('results', 'questionnaire', 'hasFilters'))->with(['title'=>'انتخاب دریافت کنندگان پرسشنامه']);
+    }
+
+    public function publish(Questionnaire $questionnaire, Request $request){
         $questionnaire->update(['status'=>2]);
+        $this->stream($request->input('receiver'), $questionnaire);
         Flash::success('questionnaire published');
         return redirect()->route('profile.management.addon.questionnaire');
+    }
+
+    private function stream($receivers, $questionnaire){
+        foreach($receivers as $receiver){
+            if($questionnaire->user_id != $receiver){
+                Stream::create([
+                    'user_id'=>$receiver,
+                    'edge_ranke'=> 0,
+                    'contentable_id'=> $questionnaire->id,
+                    'contentable_type'=> 'App\Questionnaire',
+                    'parentable_id'=>$questionnaire->user_id,
+                    'parentable_type'=>'App\User',
+                    'is_see'=>0
+                ]);
+            }
+        }
+        Stream::create([
+            'user_id'=>$questionnaire->user_id,
+            'edge_ranke'=> 0,
+            'contentable_id'=>$questionnaire->id,
+            'contentable_type'=> 'App\Questionnaire',
+            'parentable_id'=>$questionnaire->user_id,
+            'parentable_type'=>'App\User',
+            'is_see' => 1
+        ]);
     }
 }

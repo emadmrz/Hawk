@@ -162,7 +162,7 @@
     </div>
 
     <div class="form-group">
-        <a href="{{ route('profile.management.addon.questionnaire.publish',$questionnaire->id) }}" class="btn btn-success btn-block">انتشار پرسشنامه برای کاربران</a>
+        <a href="{{ route('profile.management.addon.questionnaire.select',$questionnaire->id) }}" class="btn btn-success btn-block">انتخاب دریافت کنندگان پرسشنامه</a>
     </div>
 
     <p class="alert alert-warning">

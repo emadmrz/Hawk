@@ -120,7 +120,7 @@
     </div>
 
     <div class="form-group">
-        <a href="{{ route('profile.management.addon.poll.publish',$poll->id) }}" class="btn btn-success btn-block">انتشار نظرسنجی برای کاربران</a>
+        <a href="{{ route('profile.management.addon.poll.select',$poll->id) }}" class="btn btn-success btn-block">انتخاب دریافت کنندگان نظرسنجی</a>
     </div>
 
     <p class="alert alert-warning">

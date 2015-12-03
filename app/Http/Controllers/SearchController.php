@@ -63,7 +63,8 @@ class SearchController extends Controller
                 'firstSkillCat' => $firstSkillCat,
                 'secondSkillCat' => $secondSkillCat,
                 'productCat'=>$productCat,
-                'user' => $user
+                'user' => $user,
+                'results'=>[]
             ]);
         } else {
             //fill the select boxes
@@ -90,7 +91,8 @@ class SearchController extends Controller
                 'firstSkillCat' => $firstSkillCat,
                 'secondSkillCat' => $secondSkillCat,
                 'productCat'=>$productCat,
-                'user' => $user
+                'user' => $user,
+                'results'=>[]
             ]);
         }
 
@@ -112,7 +114,132 @@ class SearchController extends Controller
         $productCat=Category::where('depth',1)->lists('name','id');
         $productCat[0]='اهمیتی ندارد';
 
+        $user = $this->binding($request);
 
+        if( $request->input('view_d') == 'users'){
+            $results = $this->userProccess($request);
+        }elseif( $request->input('view_d') == 'products'){
+            $results = $this->productProccess($request);
+        }
+
+
+        return view('search.index', compact('user','results'))->with([
+            'title' => 'نتایج جستجو',
+            'catSelected' => $catSelected,
+            'provinces' => $provinces,
+            'cities' => $cities,
+            'firstSkillCat' => $firstSkillCat,
+            'secondSkillCat' => $secondSkillCat,
+            'productCat'=>$productCat
+        ]);
+    }
+
+    public function userProccess(Request $request){
+        //search for users
+        $query = User::search($request->input('username'), null, true);
+
+        //check for roles
+        if($request->has('role'))
+            $query = $this->role($request->input('role'), $query);
+
+        //check for province and city
+        if($request->has('province') and $request->has('city'))
+            $query = $this->province($request->input('province'), $request->input('city'), $query);
+
+        //check for main-category and sub-category in skills
+        if($request->has('firstCat') and $request->has('secondCat'))
+            $query = $this->skillCategory($request->input('firstCat'), $request->input('secondCat'), $query);
+
+        //check for title of the skill
+        if($request->has('title'))
+            $query = $this->skillTitle($request->input('title'), $query);
+
+        //check for my_rate in skill section
+        if($request->has('my_rate'))
+            $query = $this->skillRate($request->input('my_rate'), $query);
+
+        //check for experience in skill
+        if($request->has('experience'))
+            $query = $this->skillExperience($request->input('experience'), $query);
+
+        //check for degree in experience
+        if($request->has('degree'))
+            $query=$this->skillDegree($request->input('degree'),$query);
+
+        //check for status in skill
+        if($request->has('status'))
+            $query=$this->skillStatus($request->input('status'),$query);
+
+        //check for province in skill
+        if($request->has('skillCity') and $request->has('skillProvince'))
+            $query=$this->skillProvince($request->input('skillProvince'),$request->input('skillCity'),$query);
+
+        //check for week-day in skill
+        if($request->has('firstWeekDay') and $request->has('secondWeekDay'))
+            $query=$this->skillWeekDay($request->input('firstWeekDay'),$request->input('secondWeekDay'),$query);
+
+        //check for history in skill (years of work)
+        if($request->has('history'))
+            $query=$this->skillHistory($request->input('history'),$query);
+
+        //left join for profits table
+        $query=$query->leftJoin('profits','users.id','=','profits.user_id');
+
+        //sort by the selected parameters
+        $query=$this->userSort($request->input('userSort'),$query);
+
+        //finally the results for the user-search ;)
+        return $query->get();
+    }
+
+    public function productProccess(Request $request){
+//search for products
+        $query=Product::search($request->input('productTitle'),null,true);
+
+        //check for product category
+        $query=$this->productCategory($request->input('productCat'),$query);
+
+        //check for product price
+        $query=$this->productPrice($request->input('firstPrice'),$request->input('secondPrice'),$query);
+
+        //check for available products
+        $query=$this->productAvailable($request->input('available'),$query);
+
+        //check for image in product
+        $query=$this->productImage($request->input('image'),$query);
+
+        //check for discount in product
+        $query=$this->productDiscount($request->input('discount'),$query);
+
+        //check for shop name in products
+        $query=$this->shopTitle($request->input('shopTitle'),$query);
+
+        //check for product return in shop
+        $query=$this->productReturn($request->input('productReturn'),$query);
+
+        //check for pay in home in shop
+        $query=$this->productPayInHome($request->input('payInHome'),$query);
+
+        //check for product guarantee in shop
+        $query=$this->productGuarantee($request->input('productGuarantee'),$query);
+
+        //check for product original in shop
+        $query=$this->productOriginal($request->input('productOriginal'),$query);
+
+        //check for product fast deliver in shop
+        $query=$this->productFastDeliver($request->input('fastDeliver'),$query);
+
+        //check for product province and city
+        $query=$this->productProvince($request->input('productProvince'),$request->input('productCity'),$query);
+
+        //sort by the selected parameters
+        $query=$this->productSort($request->input('productSort'),$query);
+
+        //finally the result for product search
+        return $query->get();
+    }
+
+    public function binding($request){
         //the user selected options
         $user = new \stdClass();
         $user->view_d=$request->input('view_d');
@@ -150,109 +277,7 @@ class SearchController extends Controller
         $user->productCity=$request->input('productCity');
         $user->productSort=$request->input('productSort');
 
-
-        //begin the search process
-        if ($catSelected == 'users') {
-            //search for users
-            $query = User::search($request->input('username'), null, true);
-
-            //check for roles
-            $query = $this->role($request->input('role'), $query);
-
-            //check for province and city
-            $query = $this->province($request->input('province'), $request->input('city'), $query);
-
-            //check for main-category and sub-category in skills
-            $query = $this->skillCategory($request->input('firstCat'), $request->input('secondCat'), $query);
-
-            //check for title of the skill
-            $query = $this->skillTitle($request->input('title'), $query);
-
-            //check for my_rate in skill section
-            $query = $this->skillRate($request->input('my_rate'), $query);
-
-            //check for experience in skill
-            $query = $this->skillExperience($request->input('experience'), $query);
-
-            //check for degree in experience
-            $query=$this->skillDegree($request->input('degree'),$query);
-
-            //check for status in skill
-            $query=$this->skillStatus($request->input('status'),$query);
-
-            //check for province in skill
-            $query=$this->skillProvince($request->input('skillProvince'),$request->input('skillCity'),$query);
-
-            //check for week-day in skill
-            $query=$this->skillWeekDay($request->input('firstWeekDay'),$request->input('secondWeekDay'),$query);
-
-            //check for history in skill (years of work)
-            $query=$this->skillHistory($request->input('history'),$query);
-
-            //left join for profits table
-            $query=$query->leftJoin('profits','users.id','=','profits.user_id');
-
-            //sort by the selected parameters
-            $query=$this->userSort($request->input('userSort'),$query);
-
-            //finally the results for the user-search ;)
-            $userResults=$query->get();
-        }elseif($catSelected='products'){
-            //search for products
-            $query=Product::search($request->input('productTitle'),null,true);
-
-            //check for product category
-            $query=$this->productCategory($request->input('productCat'),$query);
-
-            //check for product price
-            $query=$this->productPrice($request->input('firstPrice'),$request->input('secondPrice'),$query);
-
-            //check for available products
-            $query=$this->productAvailable($request->input('available'),$query);
-
-            //check for image in product
-            $query=$this->productImage($request->input('image'),$query);
-
-            //check for discount in product
-            $query=$this->productDiscount($request->input('discount'),$query);
-
-            //check for shop name in products
-            $query=$this->shopTitle($request->input('shopTitle'),$query);
-
-            //check for product return in shop
-            $query=$this->productReturn($request->input('productReturn'),$query);
-
-            //check for pay in home in shop
-            $query=$this->productPayInHome($request->input('payInHome'),$query);
-
-            //check for product guarantee in shop
-            $query=$this->productGuarantee($request->input('productGuarantee'),$query);
-
-            //check for product original in shop
-            $query=$this->productOriginal($request->input('productOriginal'),$query);
-
-            //check for product fast deliver in shop
-            $query=$this->productFastDeliver($request->input('fastDeliver'),$query);
-
-            //check for product province and city
-            $query=$this->productProvince($request->input('productProvince'),$request->input('productCity'),$query);
-
-            //sort by the selected parameters
-            $query=$this->productSort($request->input('productSort'),$query);
-
-            //finally the result for product search
-            $productResults=$query->get();
-        }
-
-        return view('search.index', compact('user','userResults','productResults'))->with([
-            'title' => 'نتایج جستجو',
-            'catSelected' => $catSelected,
-            'provinces' => $provinces,
-            'cities' => $cities,
-            'firstSkillCat' => $firstSkillCat,
-            'secondSkillCat' => $secondSkillCat,
-            'productCat'=>$productCat
-        ]);
+        return $user;
     }
 
     public function fastSearch(Request $request)
@@ -499,14 +524,16 @@ class SearchController extends Controller
      * sorting the user-search
      */
     private function userSort($sort,$query){
+        $query=$query->addSelect(DB::raw("IF(profits.created_at>'".Carbon::now()->subWeek()."','yes','no') AS has_profit,IFNULL(`profits`.`type`,0) AS profit_type,(SELECT relevance)*(case when (SELECT profit_type) = 1 AND (SELECT has_profit)='yes' then  '".Config::get('addonProfit.attributes')[1]['values'][1]['weight']."' when (SELECT profit_type) = 2 AND (SELECT has_profit)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][2]['weight']."' when (SELECT profit_type)=3 AND (SELECT has_profit)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][3]['weight']."' else 1 end) AS total_relevance"))->addSelect('users.*');
+        $query = $query->orderBy('total_relevance','DESC');
         if($sort==2){ //sort by the created_at selected
-            $query=$query->select(DB::raw("IF(profits.created_at>'".Carbon::now()->subWeek()."','yes','no') AS test,IFNULL(`profits`.`type`,0) AS type,(SELECT relevance)*(case when type=1 AND (SELECT test)='yes' then  '".Config::get('addonProfit.attributes')[1]['values'][1]['weight']."' when type=2 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][2]['weight']."' when type=3 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][3]['weight']."' else 1 end) AS total_relevance"))->addSelect('users.*')->groupBy('users.id')->orderBy('created_at','ASC')->orderBy('total_relevance','DESC');
+            $query=$query->orderBy('created_at','ASC');
         }elseif($sort==1){ //sort by the user skill rate
             if($this->skillJoin==0){ // the join has not been made for skill yet
                 $query=$query->join('skills','users.id','=','skills.user_id')
-                    ->select(DB::raw("IF(profits.created_at>'".Carbon::now()->subWeek()."','yes','no') AS test,IFNULL(`profits`.`type`,0) AS type,(SELECT relevance)*(case when type=1 AND (SELECT test)='yes' then  '".Config::get('addonProfit.attributes')[1]['values'][1]['weight']."' when type=2 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][2]['weight']."' when type=3 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][3]['weight']."' else 1 end) AS total_relevance"))->addSelect('users.*')->groupBy('users.id')->orderBy('skills.my_rate','DESC')->orderBy('total_relevance','DESC');
+                    ->orderBy('skills.my_rate','DESC');
             }else{ //the join for skill table has already been made
-                $query=$query->select(DB::raw("IF(profits.created_at>'".Carbon::now()->subWeek()."','yes','no') AS test,IFNULL(`profits`.`type`,0) AS type,(SELECT relevance)*(case when type=1 AND (SELECT test)='yes' then  '".Config::get('addonProfit.attributes')[1]['values'][1]['weight']."' when type=2 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][2]['weight']."' when type=3 AND (SELECT test)='yes' then '".Config::get('addonProfit.attributes')[1]['values'][3]['weight']."' else 1 end) AS total_relevance"))->addSelect('users.*')->groupBy('users.id')->orderBy('skills.my_rate','DESC')->orderBy('total_relevance','DESC');
+                $query=$query->orderBy('skills.my_rate','DESC');
             }
         }
         return $query;

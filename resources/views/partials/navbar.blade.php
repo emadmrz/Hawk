@@ -42,7 +42,14 @@
                     </ul>
                     <span id="new_friend_request_num"></span>
                 </li>
-                <li><a href="#"><i class="fa fa-envelope-o fa-2x"></i></a></li>
+                <li class="dropdown" id="new_messages_nav">
+                    <a  id="new_messages_nav_dropdown" href="#" data-target="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-envelope-o fa-2x"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="new_notifications_nav_dropdown">
+
+                    </ul>
+                    <span id="new_notifications_num"></span>
+
+                </li>
                 <li><a href="#"><i class="fa fa-th fa-2x"></i></a></li>
             </ul>
 

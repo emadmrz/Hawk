@@ -86,12 +86,6 @@
                         @if(count($user->offers))
                             <li><a href="{{ route('profile.management.addon.offer') }}" ><i class="fa fa-diamond fa-1x"></i>افزونه پیشنهاد ویژه</a></li>
                         @endif
-                        @if(count($user->profits))
-                            <li><a href="{{ route('profile.management.addon.profit') }}" ><i class="fa fa-diamond fa-1x"></i>افزونه افزایش رتبه در نتایج جستجو</a></li>
-                        @endif
-                        @if(count($user->relaters))
-                            <li><a href="{{ route('profile.management.addon.relater') }}" ><i class="fa fa-diamond fa-1x"></i>افزونه افزایش رتبه پروفایل</a></li>
-                        @endif
                     </ul>
                 </li>
             </ul>

@@ -49,6 +49,14 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
     Route::post('/poll/{poll}/preview',['as'=>'poll.vote', 'uses'=>'PollController@vote']);
 
     /**
+     * Created By Dara on 1/12/2012
+     * Corporation routes
+     */
+    Route::group(['prefix'=>'corporation','as'=>'corporation.'],function(){
+        Route::get('profile/{profile}/corporation/skill/{skill}/create',['as'=>'create','uses'=>'CorporationController@create']);
+    });
+
+    /**
      * Created By Dara on 27/10/2015
      * offer handling
      */
@@ -69,6 +77,8 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
         Route::post('{shop}/product/{product}/comment',['as'=>'product.comment', 'uses'=>'CommentController@product']);
         Route::post('product/price','ProductController@calculatePrice');
     });
+
+    Route::get('/profile/{profile}/skill',['as'=>'skill.list', 'uses'=>'SkillController@index']);
 
 });
 
@@ -289,7 +299,9 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::post('/addon/poll/{poll}/update',['as'=>'addon.poll.update', 'uses'=>'pollController@update']);
         Route::post('/addon/poll/{poll}/parameter/add',['as'=>'addon.poll.parameter.add', 'uses'=>'pollController@parameterAdd']);
         Route::delete('/addon/poll/parameter/delete',['as'=>'addon.poll.parameter.delete', 'uses'=>'pollController@parameterDelete']);
-        Route::get('/addon/poll/{poll}/publish',['as'=>'addon.poll.publish', 'uses'=>'pollController@publish']);
+        Route::get('/addon/poll/{poll}/contributors',['as'=>'addon.poll.select', 'uses'=>'pollController@select']);
+        Route::post('/addon/poll/{poll}/contributors',['as'=>'addon.poll.search', 'uses'=>'pollController@search']);
+        Route::post('/addon/poll/{poll}/publish',['as'=>'addon.poll.publish', 'uses'=>'pollController@publish']);
 
         Route::get('/addon/questionnaire',['as'=>'addon.questionnaire', 'uses'=>'AddonsController@questionnaire']);
         Route::post('/addon/questionnaire/question/update',['as'=>'addon.questionnaire.question.update', 'uses'=>'QuestionnaireController@questionUpdate']);
@@ -298,7 +310,9 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::post('/addon/questionnaire/{questionnaire}/update',['as'=>'addon.questionnaire.update', 'uses'=>'QuestionnaireController@update']);
         Route::post('/addon/questionnaire/{questionnaire}/question/add',['as'=>'addon.questionnaire.question.add', 'uses'=>'QuestionnaireController@questionAdd']);
 //        Route::delete('/addon/poll/parameter/delete',['as'=>'addon.poll.parameter.delete', 'uses'=>'pollController@parameterDelete']);
-        Route::get('/addon/questionnaire/{questionnaire}/publish',['as'=>'addon.questionnaire.publish', 'uses'=>'QuestionnaireController@publish']);
+        Route::get('/addon/questionnaire/{questionnaire}/contributors',['as'=>'addon.questionnaire.select', 'uses'=>'QuestionnaireController@select']);
+        Route::post('/addon/questionnaire/{questionnaire}/contributors',['as'=>'addon.questionnaire.search', 'uses'=>'QuestionnaireController@search']);
+        Route::post('/addon/questionnaire/{questionnaire}/publish',['as'=>'addon.questionnaire.publish', 'uses'=>'QuestionnaireController@publish']);
         Route::get('/addon/questionnaire/{questionnaire}/export',['as'=>'addon.questionnaire.export', 'uses'=>'QuestionnaireController@export']);
 
         Route::get('/addon/shop',['as'=>'addon.shop', 'uses'=>'AddonsController@shop']);
@@ -368,6 +382,19 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('create',['as'=>'create','uses'=>'FeedbackController@create']);
         Route::post('create',['as'=>'store','uses'=>'FeedbackController@store']);
 
+    });
+
+    /**
+     * Created By Dara on 1/12/2015
+     * handling corporation routes
+     */
+    Route::group(['prefix'=>'corporation','as'=>'corporation.'],function(){
+        Route::get('/',['as'=>'list','uses'=>'CorporationController@showAll']);
+        Route::get('/{corporation}',['as'=>'index','uses'=>'CorporationController@index']);
+        Route::post('/{corporation}',['as'=>'submit','uses'=>'CorporationController@submit']);
+        Route::get('/{corporation}/question',['as'=>'question.index','uses'=>'CorporationController@questionIndex']);
+        Route::post('/{corporation}/question',['as'=>'question.submit','uses'=>'CorporationController@questionSubmit']);
+        Route::get('/{corporation}/question/show',['as'=>'question.show','uses'=>'CorporationController@questionShow']);
     });
 
 });
@@ -524,6 +551,26 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
 
     });
 
+    /**
+     * Created By Dara on 30/11/2015
+     * managing user posts
+     */
+    Route::group(['prefix'=>'post','as'=>'post.'],function(){
+        Route::get('/{profile?}',['as'=>'show','uses'=>'Admin\PostManagementController@index']);
+        Route::get('/change/{post}',['as'=>'change','uses'=>'Admin\PostManagementController@changeStatus']);
+
+    });
+
+    /**
+     * Created By Dara on 30/11/2015
+     * managing user articles
+     */
+    Route::group(['prefix'=>'article','as'=>'article.'],function(){
+        Route::get('/{profile?}',['as'=>'show','uses'=>'Admin\ArticleManagementController@index']);
+        Route::get('/change/{article}',['as'=>'change','uses'=>'Admin\ArticleManagementController@changeStatus']);
+
+    });
+
 });
 
 /**
@@ -654,4 +701,5 @@ Route::group(['prefix' => 'chat', 'as'=>'chat.'], function () {
     Route::post('/history',['as'=>'history', 'uses'=>'ChatController@history']);
     Route::post('/typing',['as'=>'typing', 'uses'=>'ChatController@typing']);
     Route::post('/seen',['as'=>'seen', 'uses'=>'ChatController@seen']);
+    Route::post('/latest',['as'=>'latest', 'uses'=>'ChatController@latest']);
 });

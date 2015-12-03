@@ -41,9 +41,7 @@ class FriendController extends Controller
     }
 
     public function index(FriendRepository $friendRepository){
-        return view('profile.friend')
-            ->nest('content', 'profile.partials.friends', compact('friendRepository'))
-            ->with(['title'=>'friends']);
+        return view('profile.friend',compact('friendRepository'))->with(['title'=>'friends']);
     }
 
     public function requestsList(FriendRepository $friendRepository){
@@ -119,7 +117,7 @@ class FriendController extends Controller
     public function find()
     {
         $friendRepository = new FriendRepository();
-        $mutuals = $friendRepository->mutual();
+
         //dd($mutuals);
         return view('profile.friend')
             ->nest('content', 'profile.partials.findMutualFriends', compact('mutuals'))
@@ -159,9 +157,10 @@ class FriendController extends Controller
      * Created By Dara on 23/11/2015
      * search for friends index page
      */
-    public function searchIndex()
+    public function searchIndex(FriendRepository $friendRepository)
     {
-        return view('profile.friend')->nest('content', 'profile.partials.friendSearch')->with(['title' => 'جستجو دوستان']);
+        $mutuals = $friendRepository->mutual();
+        return view('profile.findFriend', compact('mutuals', 'results'))->with(['title' => 'جستجو دوستان', 'type'=>'']);
     }
 
     public function search(Request $request)
@@ -201,9 +200,7 @@ class FriendController extends Controller
                 'cell_phone' => 'required'
             ]);
         }
-        return view('profile.friend')
-            ->nest('content', 'profile.partials.findFriends', compact('results'))
-            ->with(['title' => 'نتایج جستجو']);
+        return view('profile.findFriend',compact('results'))->with(['title' => 'نتایج جستجو', 'type'=>'search']);
 
     }
 }

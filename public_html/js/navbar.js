@@ -6,6 +6,7 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
 $('#friends_request_nav').on('show.bs.dropdown', function () {
     var $this = $(this);
     var content = $this.find('ul.dropdown-menu');
@@ -15,11 +16,10 @@ $('#friends_request_nav').on('show.bs.dropdown', function () {
         type : 'post',
         data : {},
         success: function(data){
-            console.log(data)
             content.html(data);
         },
         error: function(xhr){
-            alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            //alert("An error occured: " + xhr.status + " " + xhr.statusText);
         }
     });
 
@@ -34,11 +34,28 @@ $('#new_notifications_nav').on('show.bs.dropdown', function () {
         type : 'post',
         data : {},
         success: function(data){
-            console.log(data)
             content.html(data);
         },
         error: function(xhr){
-            alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            //alert("An error occured: " + xhr.status + " " + xhr.statusText);
+        }
+    });
+
+});
+
+$('#new_messages_nav').on('show.bs.dropdown', function () {
+    var $this = $(this);
+    var content = $this.find('ul.dropdown-menu');
+    content.html('<div class="dropdown-preloader"><i class="fa fa-spinner fa-spin fa-2x"></i><div>در حال دریافت اطلاعات</div></div>');
+    $.ajax({
+        url : '/chat/latest',
+        type : 'post',
+        data : {},
+        success: function(data){
+            content.html(data);
+        },
+        error: function(xhr){
+            //alert("An error occured: " + xhr.status + " " + xhr.statusText);
         }
     });
 
@@ -50,7 +67,7 @@ $(function notifications_refresh(){
     setTimeout(function(){
         $.ajax({
             url : '/api/notification/num',
-            type : 'get',
+            type : 'post',
             dataType: 'json',
             data : {},
             success: function(data){
@@ -70,7 +87,7 @@ $(function notifications_refresh(){
             },
             complete: notifications_refresh
         });
-    }, 3000);
+    }, 10000);
 });
 
 
@@ -79,46 +96,57 @@ $(function notifications_refresh(){
  * handling the search
  */
 $(document).ready(function(){
+
+    var canSearch = true;
+    var isSearchingTimeout ;
+    var searchingQuery;
+
     $('input#fast-search').keyup(function(){
         var $this=$('form[role="search"]');
         var value=$this.find('span.active').attr('id');
         var content=$this.find('ul.dropdown-menu');
+        console.log($(this).val());
         if($(this).val().length>2){
             //begin the search process
-            $.ajax({
-                url : "/search/fastSearch",
-                type : 'post',
-                //async: false,
-                data :{
-                    query:$(this).val(),
-                    section:value
-                },
+            if(canSearch){
+                $.ajax({
+                    url : "/search/fastSearch",
+                    type : 'post',
+                    //async: false,
+                    data :{
+                        query:$(this).val(),
+                        section:value
+                    },
 
-                beforeSend: function(){
-                    $("#fast_search_preloader").show();
-                    content.html('<div class="dropdown-preloader"><i class="fa fa-spinner fa-spin fa-2x"></i><div>در حال دریافت اطلاعات</div></div>');
-                },
-                complete: function(){
-                    $("#fast_search_preloader").hide();
-                },
-                success: function(data){
-                    if(data.hasCallback){
-                        window[data.callback](data.returns);
-                    }
-                    if(data.hasMsg){
-                        var type = 'success';
-                        if(data.msgType){
-                            type = data.msgType;
+                    beforeSend: function(){
+                        $("#fast_search_preloader").show();
+                        content.html('<div class="dropdown-preloader"><i class="fa fa-spinner fa-spin fa-2x"></i><div>در حال دریافت اطلاعات</div></div>');
+                    },
+                    complete: function(){
+                        $("#fast_search_preloader").hide();
+                        canSearch = false;
+                        var isSearchingTimeout = setTimeout(isSearching, 500);
+
+                    },
+                    success: function(data){
+                        if(data.hasCallback){
+                            window[data.callback](data.returns);
                         }
-                        $.notify(data.msg, {type:type});
+                        if(data.hasMsg){
+                            var type = 'success';
+                            if(data.msgType){
+                                type = data.msgType;
+                            }
+                            $.notify(data.msg, {type:type});
+                        }
+                    },
+                    error: function(xhr){
+                        //alert("An error occured: " + xhr.status + " " + xhr.statusText);
                     }
-                },
-                error: function(xhr){
-                    alert("An error occured: " + xhr.status + " " + xhr.statusText);
-                }
-            });
-        }else{
+                });
+            }
 
+        }else{
             content.slideUp(300,function(){
                 content.html('');
             });
@@ -147,6 +175,12 @@ $(document).ready(function(){
             $("div#navbar").find('input[name="cat"]').val('products')
         }
     });
+
+    function isSearching(){
+        canSearch = true;
+        //clearTimeout(isSearchingTimeout);
+    }
+
 });
 
 /**

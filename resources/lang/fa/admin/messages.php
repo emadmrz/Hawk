@@ -33,7 +33,11 @@ return [
     'settleCreated'=>'settlement period has been successfully created',
     'settleDeleted'=>'settlement has been deleted successfully',
     'settleApproved'=>'settlement has been paid successfully',
-    'settleDenied'=>'settlement has been canceled'
+    'settleDenied'=>'settlement has been canceled',
+    'postActivate'=>'post has been successfully activated',
+    'postBan'=>'post has been successfully banned',
+    'articleActivate'=>'article has been successfully activated',
+    'articleBan'=>'article has been successfully banned'
 
 
 ];

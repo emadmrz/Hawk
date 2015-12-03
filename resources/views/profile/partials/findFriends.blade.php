@@ -1,4 +1,3 @@
-@section('content')
     <div class="timeline-block">
         <div class="panel panel-default share clearfix-xs">
             <div class="panel-heading panel-heading-gray title">
@@ -6,8 +5,6 @@
             </div>
             <div class="panel-body" id="friendship_list">
                 <div class="list-item-image">
-
-
 
                     <ul class="">
                         @if(count($results))
@@ -22,7 +19,6 @@
                                                 <a href="{{ route('home.profile', [$friend->id]) }}"> {{ $friend->username }} </a>
 
                                             </div>
-
 
                                         </div>
                                     </div>
@@ -48,4 +44,6 @@
             </div>
         </div>
     </div>
-@endsection
+    <div class="form-group">
+        <a href="{{ route('profile.friends.search') }}" class="btn btn-success btn-block">پیشنهادات سایت</a>
+    </div>

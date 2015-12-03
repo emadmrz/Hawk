@@ -25,10 +25,10 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-sm-4 pull-right">
-                @yield('side')
+            <div class="col-sm-3 pull-right">
+                @yield('right-side')
             </div>
-            <div class="col-sm-8 pull-right">
+            <div class="col-sm-6 pull-right">
 
                 @if($errors->any())
                     <ul class="alert alert-danger">
@@ -42,6 +42,9 @@
 
                 @yield('content')
 
+            </div>
+            <div class="col-sm-3 pull-left">
+                @yield('left-side')
             </div>
 
         </div>

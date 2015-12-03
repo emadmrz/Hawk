@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\Article;
+use App\Corporation;
 use App\Endorse;
 use App\Friend;
 use App\Group;
@@ -46,22 +47,28 @@ class StreamRepository {
                 $this->feed[] = $this->recommendation($stream->contentable);
             }elseif($stream->contentable_type == 'App\Problem'){
                 $this->feed[] = $this->problem($stream->contentable);
+            }elseif($stream->contentable_type == 'App\Poll'){
+                $this->feed[] = $this->pollPreview($stream->contentable);
+            }elseif($stream->contentable_type == 'App\Questionnaire') {
+                $this->feed[] = $this->questionnairePreview($stream->contentable);
+            }elseif($stream->contentable_type=='App\Corporation'){
+                $this->feed[]=$this->corporation($stream->contentable);
             }elseif($stream->contentable_type == 'App\Payment') {
                 $payment = $stream->contentable;
-                if($payment->itemable_type == 'App\Storage'){
+                if ($payment->itemable_type == 'App\Storage') {
                     $this->feed[] = $this->storage($payment->itemable);
-                }elseif($payment->itemable_type == 'App\Poll'){
+                } elseif ($payment->itemable_type == 'App\Poll') {
                     $this->feed[] = $this->poll($payment->itemable);
-                }elseif($payment->itemable_type == 'App\Questionnaire'){
+                } elseif ($payment->itemable_type == 'App\Questionnaire') {
                     $this->feed[] = $this->questionnaire($payment->itemable);
-                }elseif($payment->itemable_type == 'App\Shop'){
+                } elseif ($payment->itemable_type == 'App\Shop') {
                     $this->feed[] = $this->shop($payment->itemable);
-                }elseif($payment->itemable_type == 'App\Offer'){
-                    $this->feed[]= $this->offer($payment->itemable);
-                }elseif($payment->itemable_type=='App\Relater'){
-                    $this->feed[]=$this->relater($payment->itemable);
-                }elseif($payment->itemable_type=='App\Profit'){
-                    $this->feed[]=$this->profit($payment->itemable);
+                } elseif ($payment->itemable_type == 'App\Offer') {
+                    $this->feed[] = $this->offer($payment->itemable);
+                } elseif ($payment->itemable_type == 'App\Relater') {
+                    $this->feed[] = $this->relater($payment->itemable);
+                } elseif ($payment->itemable_type == 'App\Profit') {
+                    $this->feed[] = $this->profit($payment->itemable);
                 }
             }
         }
@@ -142,18 +149,39 @@ class StreamRepository {
     }
 
     /**
+     * Created By Dara on 1/12/2015
+     * handling the stream view related to corporation
+     */
+    private function corporation(Corporation $corporation){
+        $user=Auth::user();
+        if($user->id==$corporation->sender_id){ //the current user is the one who made the request
+            if($corporation->status==1){ //his/her request has been approved
+                return view('streams.acceptanceCorporation',compact('corporation'))->render();
+            }elseif($corporation->status==0){ //his/her request has been denied
+                //
+            }
+        }elseif($user->id==$corporation->receiver_id){ //the current user is the one who receives the request
+            return view('streams.corporation',compact('corporation'))->render();
+        }
+    }
+
+
+    /**
      * Created By Dara on 27/11/2015
      * handling the stream view related to the relater addon
      */
-    private function relater(Relater $relater){
+    public function relater(Relater $relater){
         return view('streams.relater', compact('relater'))->render();
     }
 
-    /**
-     * Created By Dara on 29/11/2015
-     * handling the stream view related to the profit addon
-     */
-    private function profit(Profit $profit){
-        return view('streams.profit',compact('profit'))->render();
+    private function pollPreview(Poll $poll){
+        $parameters = $poll->parameters()->get();
+        $total_votes = $parameters->sum('num_vote');
+        if($total_votes == 0) $total_votes=1;
+        return view('partials.pollPreview', compact('poll', 'parameters', 'total_votes'))->render();
+    }
+
+    private function questionnairePreview(Questionnaire$questionnaire){
+        return view('partials.questionnairePreview', compact('questionnaire'));
     }
 }
