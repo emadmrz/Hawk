@@ -610,8 +610,15 @@ Route::group(['prefix' => 'api', 'as'=>'api.'], function () {
     });
 
     Route::group(['prefix' => 'notification', 'as'=>'notification.'], function () {
-        Route::get('num',['as'=>'num', 'uses'=>'Api\NotificationController@num']);
+        Route::post('num',['as'=>'num', 'uses'=>'Api\NotificationController@num']);
     });
+
+    Route::group(['prefix' => 'friends', 'as'=>'friends.'], function () {
+//        Route::post('/{profile}', 'Api/friendsController@friends');
+        Route::post('/online', ['as'=>'online', 'uses'=>'Api\friendsController@online']);
+    });
+
+
 });
 
 
@@ -646,4 +653,5 @@ Route::group(['prefix' => 'chat', 'as'=>'chat.'], function () {
     Route::post('/send/{profile}',['as'=>'send', 'uses'=>'ChatController@send']);
     Route::post('/history',['as'=>'history', 'uses'=>'ChatController@history']);
     Route::post('/typing',['as'=>'typing', 'uses'=>'ChatController@typing']);
+    Route::post('/seen',['as'=>'seen', 'uses'=>'ChatController@seen']);
 });
