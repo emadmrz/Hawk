@@ -31,6 +31,7 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('js/raterater.js') }}"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=fa"></script>
     @if($role == 'legal')
     <script>
@@ -66,7 +67,7 @@
     @endif
 
     <script>
-        {{--$(document).ready(function(){--}}
+//        $(document).ready(function(){
             {{--$.ajax({--}}
                 {{--url : '/home/profile/related',--}}
                 {{--type : 'post',--}}
@@ -84,7 +85,25 @@
                     {{--alert("An error occured: " + xhr.status + " " + xhr.statusText);--}}
                 {{--}--}}
             {{--});--}}
-        {{--});--}}
+//        });
+
+        function rateAlert(id, rating)
+        {
+            alert( 'Rating for '+id+' is '+rating+' stars!' );
+        }
+
+        /* Here we initialize raterater on our rating boxes
+         */
+        $(function() {
+            $( '.user-rate' ).raterater( {
+                submitFunction: 'rateAlert',
+                allowChange: true,
+                starWidth: 18,
+                spaceWidth: 1,
+                numStars: 5
+            } );
+        });
+
     </script>
 
 @endsection

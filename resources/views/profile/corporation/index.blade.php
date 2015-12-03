@@ -15,19 +15,19 @@
                 {!! Form::open(['route'=>['profile.corporation.submit',$corporation->id]]) !!}
                 <div class="clearfix form-horizontal">
                     <div class="col-sm-2">
-                        <div class="form-group">
-                            <div class="radio radio-inline">
-                                {!! Form::radio('status',1,true,['class'=>'form-control']) !!}
-                                <label for="status">موافقم</label>
-                            </div>
+                        <div class="radio">
+                            <input type="radio" name="status" id="radio1" value="1" checked="">
+                            <label for="radio1">
+                                تایید
+                            </label>
                         </div>
                     </div>
                     <div class="col-sm-2">
-                        <div class="form-group">
-                            <div class="radio radio-inline">
-                                {!! Form::radio('status',0,['class'=>'form-control']) !!}
-                                <label for="status">لغو</label>
-                            </div>
+                        <div class="radio">
+                            <input type="radio" name="status" id="radio2" value="0" checked="">
+                            <label for="radio2">
+                                لغو
+                            </label>
                         </div>
                     </div>
                 </div>

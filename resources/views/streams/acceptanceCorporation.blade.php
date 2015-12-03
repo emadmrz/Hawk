@@ -10,6 +10,10 @@
         تقاضای شما را برای همکاری در زمینه
         <a href="#">{{ $corporation->skill->title }}</a>
         را پذیرفت .
-        <a href="{{route('profile.corporation.question.index',[$corporation->id])}}" class="btn btn-info btn-xs pull-left">تکمیل پرسشنامه</a>
+        @if(!$corporation->question_completed)
+            <a href="{{route('profile.corporation.question.index',[$corporation->id])}}" style="color: white" class="btn btn-violet btn-xs pull-left">تکمیل پرسشنامه</a>
+        @else
+            <a href="{{route('profile.corporation.question.show',[$corporation->id])}}" style="color: white" class="btn btn-violet btn-xs pull-left">مشاهده پرسشنامه</a>
+        @endif
     </div>
 </div>

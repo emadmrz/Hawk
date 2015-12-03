@@ -16,20 +16,24 @@
                     <span>{{$key+1}} -</span> <span>{{$question->content}}</span>
                     <div class="form-group">
                         <div class="radio radio-inline">
-                            {!! Form::radio("status".$question->id,4,['class'=>'form-control']) !!}
-                            <label for="status">عالی</label>
+                            <input type="radio" name="answer[{{ $question->id }}]" id="radio1_{{ $question->id }}" value="1" checked="">
+                            <label for="radio1_{{ $question->id }}">بهتر از انتظار</label>
                         </div>
                         <div class="radio radio-inline">
-                            {!! Form::radio("status".$question->id,3,['class'=>'form-control']) !!}
-                            <label for="status">خوب</label>
+                            <input type="radio" name="answer[{{ $question->id }}]" id="radio2_{{ $question->id }}" value="2">
+                            <label for="radio2_{{ $question->id }}">خوب</label>
                         </div>
                         <div class="radio radio-inline">
-                            {!! Form::radio("status".$question->id,2,['class'=>'form-control']) !!}
-                            <label for="status">متوسط</label>
+                            <input type="radio" name="answer[{{ $question->id }}]" id="radio3_{{ $question->id }}" value="3">
+                            <label for="radio3_{{ $question->id }}">معمولی</label>
                         </div>
                         <div class="radio radio-inline">
-                            {!! Form::radio("status".$question->id,1,['class'=>'form-control']) !!}
-                            <label for="status">ضعیف</label>
+                            <input type="radio" name="answer[{{ $question->id }}]" id="radio4_{{ $question->id }}" value="4">
+                            <label for="radio4_{{ $question->id }}">بد</label>
+                        </div>
+                        <div class="radio radio-inline">
+                            <input type="radio" name="answer[{{ $question->id }}]" id="radio5_{{ $question->id }}" value="5">
+                            <label for="radio5_{{ $question->id }}">افتضاح</label>
                         </div>
                     </div>
                 @endforeach

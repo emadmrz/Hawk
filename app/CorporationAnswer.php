@@ -22,4 +22,18 @@ class CorporationAnswer extends Model
     public function getShamsiCreatedAtAttribute(){
         return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
     }
+
+    public function getAnswerNameAttribute(){
+        if($this->attributes['answer'] == 1){
+            return 'بهتر از انتظار';
+        }elseif($this->attributes['answer'] == 2){
+            return 'خوب';
+        }elseif($this->attributes['answer'] == 3){
+            return 'معمولی';
+        }elseif($this->attributes['answer'] == 4){
+            return 'بد';
+        }elseif($this->attributes['answer'] == 5){
+            return 'افتضاح';
+        }
+    }
 }

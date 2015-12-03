@@ -71,7 +71,7 @@ class NotificationRepository {
                     }elseif($comment->commentable_type=='App\Post'){
                         $this->notification[]=$this->postGroupComment($comment->commentable,$comment);
                     }
-                }elseif($stream->contentable_type=="App\Post"){
+                }elseif($stream->contentable_type == 'App\Post'){
                     $this->notification[]=$this->postGroup($stream->contentable);
                 }
             }

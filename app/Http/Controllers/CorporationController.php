@@ -114,20 +114,18 @@ class CorporationController extends Controller
      * the questions form submit
      */
     public function questionSubmit(Request $request,Corporation $corporation){
-        $input=$request->except(['_token']);
+        $answers=$request->input('answer');
         if($corporation->question_completed==1){ //the corporation has been answered before
             Flash::error(trans('messages.corporationQuestionAnsweredAlready'));
             return redirect()->back();
         }
-        $query=CorporationQuestionnaire::all();
-        $questionCount=$query->count();
-        $filledCount=count($input);
-        if($questionCount==$filledCount){ //all questions has been answered
-            foreach($query as $question){
+        $questions=CorporationQuestionnaire::all();
+        if($questions->count() == count($answers)){ //all questions has been answered
+            foreach($answers as $key=>$answer){
                 CorporationAnswer::create([
                     'corporation_id'=>$corporation->id,
-                    'question_id'=>$question->id,
-                    'answer'=>$input["status".$question->id]
+                    'question_id'=>$key,
+                    'answer'=>$answer
                 ]);
             }
             $corporation->update(['question_completed'=>1]);

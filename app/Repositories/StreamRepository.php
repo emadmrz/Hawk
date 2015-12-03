@@ -174,6 +174,14 @@ class StreamRepository {
         return view('streams.relater', compact('relater'))->render();
     }
 
+    /**
+     * Created By Dara on 29/11/2015
+     * handling the stream view related to the profit addon
+     */
+    private function profit(Profit $profit){
+        return view('streams.profit',compact('profit'))->render();
+    }
+
     private function pollPreview(Poll $poll){
         $parameters = $poll->parameters()->get();
         $total_votes = $parameters->sum('num_vote');
