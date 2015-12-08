@@ -552,6 +552,16 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
     });
 
     /**
+     * Created By Dara on 8/12/2015
+     * managing staration routes
+     */
+    Route::group(['prefix'=>'staration','as'=>'staration.'],function(){
+        Route::get('/',['as'=>'index','uses'=>'RateController@index']);
+        Route::get('/start',['as'=>'start','uses'=>'RateController@rate']);
+        Route::get('/{user?}',['as'=>'skill','uses'=>'RateController@skillIndex']);
+    });
+
+    /**
      * Created By Dara on 30/11/2015
      * managing user posts
      */
@@ -703,3 +713,5 @@ Route::group(['prefix' => 'chat', 'as'=>'chat.'], function () {
     Route::post('/seen',['as'=>'seen', 'uses'=>'ChatController@seen']);
     Route::post('/latest',['as'=>'latest', 'uses'=>'ChatController@latest']);
 });
+
+Route::get('test','RateController@rate');

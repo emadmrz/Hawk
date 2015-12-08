@@ -17,7 +17,7 @@ class CreateSkillsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('title');
             $table->integer('my_rate')->unsigned();
-            $table->integer('rate')->unsigned();
+            $table->integer('rate')->unsigned()->default(1);
             $table->integer('sub_category_id')->unsigned();
             $table->text('description');
             $table->string('requirements');
