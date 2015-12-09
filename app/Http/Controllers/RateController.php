@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Rate;
 use App\Repositories\ProfileProgressRepository;
 use App\Skill;
 use App\User;
@@ -22,7 +23,8 @@ class RateController extends Controller
      */
     public function index(){
         $users=User::with('roles')->paginate(20);
-        return view('admin.staration.index',compact('users'))->with(['title'=>'Users Rating']);
+        $latestRatings=Rate::latest()->first();
+        return view('admin.staration.index',compact('users','latestRatings'))->with(['title'=>'Users Rating']);
     }
 
     /**
@@ -70,6 +72,18 @@ class RateController extends Controller
 
             //insert the user star in users table
             $user->update(['rate'=>$userStar]);
+
+            //insert the user star in rates table
+            $userRate=$user->rate();
+            if($userRate->exists()){
+                $user->update([
+                    'rate'=>$userStar
+                ]);
+            }else{
+                $userRate->create([
+                    'rate'=>$userStar
+                ]);
+            }
             
         } //end of users foreach
         return redirect()->back();
@@ -139,6 +153,18 @@ class RateController extends Controller
 
             //insert the skill rate in skills table
             $skill->update(['rate'=>$finalSkillPoint]);
+
+            //insert the skill rate in rates table
+            $skillRate=$skill->rate();
+            if($skillRate->exists()){
+                $skillRate->update([
+                    'rate'=>$finalSkillPoint
+                ]);
+            }else{
+                $skillRate->create([
+                    'rate'=>$finalSkillPoint
+                ]);
+            }
 
         }//end of skills foreach
 

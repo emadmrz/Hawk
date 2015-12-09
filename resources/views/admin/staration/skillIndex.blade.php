@@ -32,7 +32,6 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <a class="btn btn-primary" href="{{route('admin.staration.start')}}">Calculate</a>
                     <div class="text-center">{{$skills->render()}}</div>
                 </div>
                 <!-- /.table-responsive -->

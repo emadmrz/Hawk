@@ -82,6 +82,14 @@ class Skill extends Model
         return $this->hasMany('App\Corporation');
     }
 
+    /**
+     * Created By Dara on 9/12/2015
+     * rate - skill relationship
+     */
+    public function rate(){
+        return $this->morphOne('App\Rate','parentable');
+    }
+
     public function getShamsiCreatedAtAttribute(){
         return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
     }

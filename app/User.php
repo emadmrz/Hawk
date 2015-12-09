@@ -345,6 +345,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * Created By Dara on 9/12/205
+     * rate-user relationships
+     */
+    public function rate(){
+        return $this->morphOne('App\Rate','parentable');
+    }
+
+
+    /**
      * Created by Emad Mirzaie on 06/10/2015.
      * Check if auth user is friend with user
      */
