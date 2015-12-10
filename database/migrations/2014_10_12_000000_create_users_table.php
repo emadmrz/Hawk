@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->boolean('confirmed')->default(0);
             $table->string('confirmation_code')->nullable();
             $table->integer('status')->unsigned()->default(1);
+            $table->integer('rate')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

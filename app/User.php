@@ -32,7 +32,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'company', 'email', 'password', 'image', 'cover', 'description', 'confirmed', 'confirmation_code', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'company', 'email', 'password', 'image', 'cover', 'description', 'confirmed', 'confirmation_code', 'status', 'rate'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -343,6 +343,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function profits(){
         return $this->hasMany('App\Profit');
     }
+
+    /**
+     * Created By Dara on 9/12/205
+     * rate-user relationships
+     */
+    public function rate(){
+        return $this->morphOne('App\Rate','parentable');
+    }
+
 
     /**
      * Created by Emad Mirzaie on 06/10/2015.

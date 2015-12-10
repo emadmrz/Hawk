@@ -3,11 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\Facades\jDate;
 
 class Skill extends Model
 {
     protected $table = 'skills';
-    protected $fillable = ['user_id', 'title', 'description', 'requirements', 'sub_category_id', 'my_rate', 'status'];
+    protected $fillable = ['user_id', 'title', 'description', 'requirements', 'sub_category_id', 'my_rate', 'status','rate'];
 
     public function user(){
         return $this->belongsTo('App\User');
@@ -75,5 +76,21 @@ class Skill extends Model
 
     public function products(){
         return $this->hasMany('App\Product');
+    }
+
+    public function corporations(){
+        return $this->hasMany('App\Corporation');
+    }
+
+    /**
+     * Created By Dara on 9/12/2015
+     * rate - skill relationship
+     */
+    public function rate(){
+        return $this->morphOne('App\Rate','parentable');
+    }
+
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
     }
 }
