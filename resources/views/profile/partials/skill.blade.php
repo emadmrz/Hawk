@@ -316,6 +316,26 @@
                                                     <p>{{ $history->phone }}</p>
                                                     <p>{{ $history->address }}</p>
                                                 </div>
+
+                                                <div class="history_like">
+                                                    <div class="like ">
+                                                        {!! Form::open(['route'=>['api.like.history'], 'data-remote-multiple', 'id'=>'like_history_form']) !!}
+                                                        <span id="num">{{ $history->num_like }}</span>
+                                                        <input type="hidden" name="id" value="{{ $history->id }}">
+                                                        <input type="hidden" name="type" value="1">
+                                                        <button class="glass-input" type="submit" ><i class="fa  @if($history->liked(Auth::user()->id)) fa-thumbs-up @else fa-thumbs-o-up @endif "></i></button>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                    <div class="dislike">
+                                                        {!! Form::open(['route'=>['api.like.history'], 'data-remote-multiple', 'id'=>'dislike_history_form']) !!}
+                                                        <input type="hidden" name="id" value="{{ $history->id }}">
+                                                        <input type="hidden" name="type" value="-1">
+                                                        <button class="glass-input" type="submit" ><i class="fa @if($history->disliked(Auth::user()->id)) fa-thumbs-down @else fa-thumbs-o-down @endif "></i></button>
+                                                        <span id="num">{{ $history->num_dislike }}</span>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </li>
                                         <?php if($alignment == '') $alignment = 'timeline-inverted'; else $alignment = ''; ?>
@@ -329,13 +349,15 @@
                         @endif
 
                         <div role="tabpanel" class="tab-pane" id="papers{{ $skill->id }}">
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="40%" class="text-right" >عنوان</th>
-                                        <th width="20%" class="text-right">نوع</th>
-                                        <th width="20%" class="text-right" >سال نشر</th>
-                                        <th width="30%" class="text-right">ناشر</th>
+                                        <th width="30%" class="text-right" >عنوان</th>
+                                        <th width="10%" class="text-right">نوع</th>
+                                        <th width="10%" class="text-right" >سال نشر</th>
+                                        <th width="20%" class="text-right">ناشر</th>
+                                        <th width="15%" class="text-right">لینک مقاله</th>
+                                        <th width="20%" class="text-right">&ensp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -345,6 +367,33 @@
                                             <td>{{ $paper->type_name }}</td>
                                             <td>{{ $paper->publish_year }}</td>
                                             <td>{{ $paper->publisher }}</td>
+                                            <td>
+                                                @if($paper->file)
+                                                    <a href="{{ asset('img/files/'.$paper->file->name) }}" target="_blank" class="btn btn-default btn-sm"> دریافت </a>
+                                                @else
+                                                    <span>بدون لینک </span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="history_like paper_like" style="padding-top: 0">
+                                                    <div class="like ">
+                                                        {!! Form::open(['route'=>['api.like.paper'], 'data-remote-multiple', 'id'=>'like_paper_form']) !!}
+                                                        <span id="num">{{ $paper->num_like }}</span>
+                                                        <input type="hidden" name="id" value="{{ $paper->id }}">
+                                                        <input type="hidden" name="type" value="1">
+                                                        <button class="glass-input" type="submit" ><i class="fa  @if($paper->liked(Auth::user()->id)) fa-thumbs-up @else fa-thumbs-o-up @endif "></i></button>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                    <div class="dislike">
+                                                        {!! Form::open(['route'=>['api.like.paper'], 'data-remote-multiple', 'id'=>'dislike_paper_form']) !!}
+                                                        <input type="hidden" name="id" value="{{ $paper->id }}">
+                                                        <input type="hidden" name="type" value="-1">
+                                                        <button class="glass-input" type="submit" ><i class="fa @if($paper->disliked(Auth::user()->id)) fa-thumbs-down @else fa-thumbs-o-down @endif "></i></button>
+                                                        <span id="num">{{ $paper->num_dislike }}</span>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

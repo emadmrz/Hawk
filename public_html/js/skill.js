@@ -582,12 +582,18 @@ function skill_schedules(info){
 function skill_papers(info){
     $('#paper_table_list').find('tbody').html('');
     var tr;
+    console.log(info)
     for (var i = 0; i < info.length; i++) {
         tr = $('<tr />');
         tr.append('<td width="40%" ><a href="#" data-editable id="title" data-type="text" data-pk="'+info[i].id+'">' + info[i].title + '</a></td>');
         tr.append('<td width="15%" >' + info[i].type_name + '</td>');
         tr.append('<td width="15%" ><a href="#" data-editable id="publish_year" data-type="number" data-pk="'+info[i].id+'">' + info[i].publish_year + '</a></td>');
         tr.append('<td width="25%" ><a href="#" data-editable id="publisher" data-type="text" data-pk="'+info[i].id+'">' + info[i].publisher + '</a></td>');
+        if(info[i].file){
+            tr.append("<td width='15%' ><a href='/img/files/"+info[i].file.name+"' target='_blank' ><button class='btn btn-default btn-sm'><i class='fa fa-file-image-o fa-lg' ></i> مشاهده تصویر </button></a></td>");
+        }else{
+            tr.append("<td width='15%' ></td>");
+        }
         tr.append('<td width="5%" ><button id="delete_paper" data-value="'+info[i].id+'" type="button" class="btn btn-danger btn-xs " ><p class="fa fa-trash-o fa-lg" ></p></button></td>');
         $('#paper_table_list').find('tbody').append(tr);
     }

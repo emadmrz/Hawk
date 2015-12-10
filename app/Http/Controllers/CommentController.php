@@ -33,7 +33,12 @@ class CommentController extends Controller
 
     public function post(Request $request, Post $post){
         $user = Auth::user();
-        $comment = $post->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $comment = $post->comments()->create([
+            'user_id'=>$user->id,
+            'body'=>$request->input('body'),
+            'num_like'=>0,
+            'num_dislike'=>0
+        ]);
         $num_comments = $post->comments()->count();
         $post->update(['num_comment'=>$num_comments]);
         $this->stream($comment);
@@ -238,7 +243,12 @@ class CommentController extends Controller
             ];
         }
         $user = Auth::user();
-        $comment = $problem->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $comment = $problem->comments()->create([
+            'user_id'=>$user->id,
+            'body'=>$request->input('body'),
+            'num_like'=>0,
+            'num_dislike'=>0
+        ]);
         $num_comments = $problem->comments()->count();
         $problem->update(['num_comment'=>$num_comments]);
         $this->groupStream($comment);
@@ -337,5 +347,6 @@ class CommentController extends Controller
             ]);
         }
     }
+
 
 }

@@ -15,7 +15,7 @@
 //Route::get('/', function () {
 //    return view('welcome');
 //});
-Route::get('/','IndexController@index');
+Route::get('/','IndexController@invitation');
 Route::get('/coupon', function(){
     return view('store.offer.coupon');
 });
@@ -675,6 +675,12 @@ Route::group(['prefix' => 'api', 'as'=>'api.'], function () {
         Route::post('/online', ['as'=>'online', 'uses'=>'Api\friendsController@online']);
     });
 
+    Route::group(['prefix' => 'like', 'as'=>'like.'], function () {
+        Route::post('comment',['as'=>'comment', 'uses'=>'Api\LikeController@comment']);
+        Route::post('history',['as'=>'history', 'uses'=>'Api\LikeController@history']);
+        Route::post('paper',['as'=>'paper', 'uses'=>'Api\LikeController@paper']);
+    });
+
 
 });
 
@@ -714,4 +720,6 @@ Route::group(['prefix' => 'chat', 'as'=>'chat.'], function () {
     Route::post('/latest',['as'=>'latest', 'uses'=>'ChatController@latest']);
 });
 
-Route::get('test','RateController@rate');
+Route::group(['prefix' => 'share', 'as'=>'share.'], function () {
+    Route::get('article/{article}',['as'=>'article', 'uses'=>'ShareController@article']);
+});

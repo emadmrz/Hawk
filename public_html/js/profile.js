@@ -765,7 +765,7 @@ $(document).ready(function(){
         });
     });
 
-    $('form[data-remote-multiple]').submit(function(e){
+    $('body').on('submit', 'form[data-remote-multiple]',function(e){
         e.preventDefault();
         var $this = $(this);
         var data = $this.serialize();
@@ -774,7 +774,7 @@ $(document).ready(function(){
         if($this.find('input[name="_method"]').length>0){
             method = $this.find('input[name="_method"]').val();
         }
-        console.log(method);
+        //console.log(method);
         var current_text = $this.find('button[type=submit]').html();
         $.ajax({
             url : action,
@@ -805,7 +805,7 @@ $(document).ready(function(){
                 alert("An error occured: " + xhr.status + " " + xhr.statusText);
             }
         });
-    });
+    }); //support jquery created elemets
 
     $('div[data-nicescroll]').niceScroll({
         railalign : 'left',
@@ -1854,6 +1854,7 @@ function product_attribute_add(info){
     $('#attribute_table_list').siblings('form').find('input[name="add_price"]').val('');
     $('#attribute_table_list').siblings('form').find('input[name="value"]').val('');
 }
+
 function skill_endorsed(data, container){
     var ul = $('<ul />')
     $.each(data, function(key, value){
@@ -1862,6 +1863,7 @@ function skill_endorsed(data, container){
     container.closest('.timeline-block').find('#endorse_persons').html(ul);
     $('[data-toggle="tooltip"]').tooltip()
 }
+
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -1923,5 +1925,54 @@ function deleteProblemAttachment($this){
     $this.closest('li').remove();
 }
 
+function comment_liked(data, form){
+    var like_container;
+    var dislike_container;
+    like_container = form.closest('.comment_like').find('.like').find("#num").html(' '+data.num_like+' ');
+    dislike_container = form.closest('.comment_like').find('.dislike').find("#num").html(' '+data.num_dislike+' ');
+    if(data.is_liked == 1){
+        like_container = form.closest('.comment_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-up');
+        dislike_container = form.closest('.comment_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-down');
+    }else if(data.is_liked == -1){
+        like_container = form.closest('.comment_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-up');
+        dislike_container = form.closest('.comment_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-down');
+    }else if(data.is_liked == 0){
+        like_container = form.closest('.comment_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-up');
+        dislike_container = form.closest('.comment_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-down');
+    }
+}
 
+function paper_liked(data, form){
+    var like_container;
+    var dislike_container;
+    like_container = form.closest('.paper_like').find('.like').find("#num").html(' '+data.num_like+' ');
+    dislike_container = form.closest('.paper_like').find('.dislike').find("#num").html(' '+data.num_dislike+' ');
+    if(data.is_liked == 1){
+        like_container = form.closest('.paper_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-up');
+        dislike_container = form.closest('.paper_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-down');
+    }else if(data.is_liked == -1){
+        like_container = form.closest('.paper_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-up');
+        dislike_container = form.closest('.paper_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-down');
+    }else if(data.is_liked == 0){
+        like_container = form.closest('.paper_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-up');
+        dislike_container = form.closest('.paper_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-down');
+    }
+}
+
+function history_liked(data, form){
+    var like_container;
+    var dislike_container;
+    like_container = form.closest('.history_like').find('.like').find("#num").html(' '+data.num_like+' ');
+    dislike_container = form.closest('.history_like').find('.dislike').find("#num").html(' '+data.num_dislike+' ');
+    if(data.is_liked == 1){
+        like_container = form.closest('.history_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-up');
+        dislike_container = form.closest('.history_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-down');
+    }else if(data.is_liked == -1){
+        like_container = form.closest('.history_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-up');
+        dislike_container = form.closest('.history_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-down');
+    }else if(data.is_liked == 0){
+        like_container = form.closest('.history_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-up');
+        dislike_container = form.closest('.history_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-down');
+    }
+}
 

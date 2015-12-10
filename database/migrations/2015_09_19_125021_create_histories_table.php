@@ -19,6 +19,7 @@ class CreateHistoriesTable extends Migration
             $table->string('email');
             $table->string('phone', 50);
             $table->string('address');
+            $table->tinyInteger('penetration')->default(1);
             $table->integer('start_year');
             $table->integer('end_year');
             $table->text('description');

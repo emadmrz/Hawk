@@ -17,8 +17,8 @@ class ProfileProgressRepository {
 
     public function calculate($user){
 
-        //dd(array_sum($this->userTotalWeight));
-        //dd(array_sum($this->legalTotalWeight));
+//        dd(array_sum($this->userTotalWeight));
+//        dd(array_sum($this->legalTotalWeight));
         $role = $user->roles->first();
 
         if($role->slug == 'user'){

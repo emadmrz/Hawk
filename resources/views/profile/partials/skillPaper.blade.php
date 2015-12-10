@@ -41,6 +41,13 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    {!! Form::label('sample_file', 'فایل مقاله یا کتاب :', ['class'=>'col-md-2 pull-right form-control-static']) !!}
+                    <div class="col-md-8 pull-right">
+                        {!! Form::file('sample_file', ['class'=>'form-control-static']) !!}
+                    </div>
+                </div>
+
                 <p>
                     <button type="submit" class="btn btn-success"><i class="fa fa-save" ></i> افزودن مقاله یا کتاب </button>
                 </p><hr>
@@ -64,6 +71,11 @@
                             <td width="15%">{{ $paper->type_name }}</td>
                             <td width="15%"><a href="#" id="publish_year" data-editable data-type="text" data-pk="{{ $paper->id }}">{{ $paper->publish_year }}</a></td>
                             <td width="25%"><a href="#" id="publisher" data-editable data-type="text" data-pk="{{ $paper->id }}">{{ $paper->publisher }}</a></td>
+                            @if(count($paper->file)>0)
+                                <td width="15%" ><a target="_blank" href="{{ asset('img/files/'.$paper->file->name) }}"><button class="btn btn-default btn-sm"><i class="fa fa-file-image-o fa-lg" ></i> مشاهده تصویر </button></a></td>
+                            @else
+                                <td width="15%" ></td>
+                            @endif
                             <td width="5%" ><button id="delete_paper" data-value="{{ $paper->id }}" type="button" class="btn btn-danger btn-xs " ><p class="fa fa-trash-o fa-lg" ></p></button></td>
                         </tr>
                     @endforeach

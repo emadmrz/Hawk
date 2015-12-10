@@ -2801,6 +2801,37 @@ table.editable-table a.editable-click:hover:after{
     overflow-x: hidden;
     overflow-y: scroll;
 }
+.comments#post_comments_list .list li{
+    position: relative;
+}
+.comments#post_comments_list .list li .comment_like{
+    position: absolute;
+    right: 40%;
+    top: 5px;
+}
+.comments#post_comments_list .list li .comment_like #num, .comments#post_comments_list .list li .comment_like button{
+    color: #8456A7;
+}
+.comments#post_comments_list .list li .comment_like .like{
+
+    display: inline-block;
+}
+.comments#post_comments_list .list li .comment_like .like:hover{
+    color: green;
+}
+.comments#post_comments_list .list li .comment_like .like button:hover{
+    color: green;
+}
+.comments#post_comments_list .list li .comment_like .dislike{
+    /*color: #DDD;*/
+    display: inline-block;
+}
+.comments#post_comments_list .list li .comment_like .dislike:hover{
+    color: #c40000;
+}
+.comments#post_comments_list .list li .comment_like .dislike:hover button{
+    color: #c40000;
+}
 .comments#post_comments_list .list textarea{
     height: auto;
     width: 100%;
@@ -3346,4 +3377,30 @@ sup {
 .table.search-result-table img{
     width: 50px;
     height: 50px;
+}
+.history_like{
+    padding: 10px 0 0 0;
+}
+.history_like #num, .history_like button{
+    color: #8456A7 !important;
+}
+.history_like .like{
+
+    display: inline-block;
+}
+.history_like .like:hover{
+    color: green;
+}
+.history_like .like button:hover{
+    color: green;
+}
+.history_like .dislike{
+    /*color: #DDD;*/
+    display: inline-block;
+}
+.history_like .dislike:hover{
+    color: #c40000;
+}
+.history_like .dislike:hover button{
+    color: #c40000;
 }

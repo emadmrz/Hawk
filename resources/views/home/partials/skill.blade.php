@@ -297,6 +297,26 @@
                                                     <p>{{ $history->phone }}</p>
                                                     <p>{{ $history->address }}</p>
                                                 </div>
+
+                                                <div class="history_like">
+                                                    <div class="like ">
+                                                        {!! Form::open(['route'=>['api.like.history'], 'data-remote-multiple', 'id'=>'like_history_form']) !!}
+                                                        <span id="num">{{ $history->num_like }}</span>
+                                                        <input type="hidden" name="id" value="{{ $history->id }}">
+                                                        <input type="hidden" name="type" value="1">
+                                                        <button class="glass-input" type="submit" ><i class="fa  @if($history->liked(Auth::user()->id)) fa-thumbs-up @else fa-thumbs-o-up @endif "></i></button>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                    <div class="dislike">
+                                                        {!! Form::open(['route'=>['api.like.history'], 'data-remote-multiple', 'id'=>'dislike_history_form']) !!}
+                                                        <input type="hidden" name="id" value="{{ $history->id }}">
+                                                        <input type="hidden" name="type" value="-1">
+                                                        <button class="glass-input" type="submit" ><i class="fa @if($history->disliked(Auth::user()->id)) fa-thumbs-down @else fa-thumbs-o-down @endif "></i></button>
+                                                        <span id="num">{{ $history->num_dislike }}</span>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </li>
                                         <?php if($alignment == '') $alignment = 'timeline-inverted'; else $alignment = ''; ?>

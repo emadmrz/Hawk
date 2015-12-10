@@ -175,4 +175,8 @@ class IndexController extends Controller
 //        dd($output);
     }
 
+    public function invitation(){
+        return view('invitation.index');
+    }
+
 }

@@ -1,0 +1,139 @@
+@font-face{
+    font-family:'Yekan';src:url(../fonts/invitation/Yekan.ttf);
+    src:url(../fonts/invitation/Yekan.eot);
+    src:url(../fonts/invitation/Yekan.eot?#iefix) format("embedded-opentype"),url(../fonts/invitation/Yekan.woff) format("woff"),url(../fonts/invitation/Yekan.ttf) format("truetype"),url(../fonts/Yekan#web_symbols_ligaregular) format("svg");
+}
+body{
+    font-family: "Yekan",Consolas,Monaco,"Andale Mono",monospace;
+}
+main{
+    overflow: hidden;
+}
+main .container{
+    padding:0 50px;
+
+}
+#header{
+    background-color: #82358b;
+    padding-top: 60px;
+}
+#header:before {
+    content: '';
+    background: url(../img/cover/diamond-pattern.png) repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+}
+.main_title{
+    margin-bottom: 25px;
+    line-height: 50px;
+}
+.text-white {
+    color: #ffffff;
+}
+.lead{
+    line-height: 30px;
+}
+.rtl{
+    direction: rtl;
+}
+.timer{
+    text-align: center;
+}
+ul.countdown {
+    list-style: none;
+    margin: 50px 0;
+    padding: 0;
+    display: block;
+    text-align: center;
+}
+ul.countdown li {
+    display: inline-block;
+}
+ul.countdown li span {
+    font-size: 80px;
+    font-weight: 300;
+    line-height: 80px;
+}
+ul.countdown li.seperator {
+    font-size: 80px;
+    line-height: 70px;
+    vertical-align: top;
+}
+ul.countdown li p {
+    color: #a7abb1;
+    font-size: 14px;
+}
+.btn-lead {
+    color: #ffffff;
+    background-color: #a164a5;
+    border-color: #a164a5;
+    transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    -webkit-transition: all 0.25s ease-in-out;
+}
+.btn-lead:hover, .btn-lead:focus, .btn-lead:active, .btn-lead.active {
+    color: #ffffff;
+    background-color: #62246f;
+    border-color: #62246f;
+}
+#invitation_form {
+    width: 90%;
+}
+
+.invitation-email{
+    border: none;
+    outline: none;
+    color: #ffffff;
+    padding: 23px 15px;
+    text-align: right;
+    background-color: #a164a5;
+    transition: all 0.25s ease-in-out;
+    border-left: 3px solid #82358b;
+    direction: rtl;
+    line-height: 30px;
+}
+.invitation-email:hover, .invitation-email:focus, .invitation-email:active, .invitation-email.active {
+    outline: none;
+    border: none;
+    box-shadow: none;
+    border-left: 3px solid #82358b;
+}
+.invitation-email::-webkit-input-placeholder {
+    color: #FFFFFF;
+}
+
+.invitation-email:-moz-placeholder { /* Firefox 18- */
+    color: #FFFFFF;
+}
+
+.invitation-email::-moz-placeholder {  /* Firefox 19+ */
+    color: #FFFFFF;
+}
+
+.invitation-email:-ms-input-placeholder {
+    color: #FFFFFF;
+}
+.overview{
+    margin: 30px 0;
+}
+.overview .text{
+    color: #333;
+    font-size: 18px;
+    margin-top: 15px;
+    text-align: justify;
+}
+.text-violet{
+    color: #62246f;
+}
+footer{
+    margin-top: 30px;
+    background-color: #DDD;
+    height: 60px;
+}
+footer h4{
+    padding-top: 22px;
+}

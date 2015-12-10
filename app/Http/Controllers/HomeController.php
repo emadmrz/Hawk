@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Advantage;
+use App\ProfileVisitor;
 use App\Repositories\StreamRepository;
 use App\User;
 use Carbon\Carbon;
@@ -24,6 +25,7 @@ class HomeController extends Controller
 
     public function profile(User $user)
     {
+        $this->profile_visit($user);
         $role = $user->roles->first()->slug;
         $advantages = Advantage::get();
         $relatedUsers = $this->relatedUsersM($user);
@@ -234,6 +236,17 @@ class HomeController extends Controller
         }
 
         return $pp;
+    }
+
+    private function profile_visit($profile){
+        $user = Auth::user();
+        if($profile->id != $user->id){
+            if(ProfileVisitor::where('user_id', $user->id)->where('profile_id', $profile->id)->lastHour()->exists()){
+                //the profile has been visited during last hour
+            }else{
+                ProfileVisitor::create(['user_id'=>$user->id, 'profile_id'=>$profile->id]);
+            }
+        }
     }
 
 }

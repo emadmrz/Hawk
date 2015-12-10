@@ -37,7 +37,7 @@ class File extends Model
             return 'accdb';
         }elseif(in_array($extension, ['avi'])){
             return 'avi';
-        }elseif(in_array($extension, ['mov'])){
+        }elseif(in_array($extension, ['mov', 'mp4'])){
             return 'mov';
         }elseif(in_array($extension, ['wav'])){
             return 'wav';

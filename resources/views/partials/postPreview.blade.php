@@ -46,30 +46,7 @@
         <ul class="comments" id="post_comments_list">
             <div class="list" data-nicescroll>
                 @foreach($post->comments->reverse() as $comment)
-                    <li class="media">
-                        @can('delete-post-comment', [$post, $comment])
-                            <div class="pull-left">
-                                {!! Form::open(['route'=>['profile.post.comment.delete', $post->id, $comment->id], 'data-remote-multiple', 'id'=>'delete_post_comment_form']) !!}
-                                    <button class="glass-input" type="submit" ><i class="fa fa-trash-o"></i></button>
-                                {!! Form::close() !!}
-                            </div>
-                        @endcan
-                        <div class="media-right">
-                            <a href="">
-                                <img src="{{ asset('/img/persons/'.$comment->user->avatar) }}" class="media-object img-circle">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <a href="{{ route('home.profile', $comment->user_id) }}" class="comment-author pull-right flip">{{ $comment->user->username }}</a>
-                            <span class="comment-date">{{ $comment->shamsi_human_created_at }}</span>
-                            @can('update-post-comment', $comment)
-                                <p><a data-post-inline-editable  id="body" data-type="textarea" data-rows="5" data-mode="inline" data-showbuttons="bottom" data-url="{{ route('profile.post.comment.update', [$post->id, $comment->id]) }}" data-pk="{{ $comment->id }}">{{ $comment->body }}</a></p>
-                            @else
-                                <p>{{ $comment->body }}</p>
-                            @endcan
-
-                        </div>
-                    </li>
+                    @include('partials.postComment',[$post,$comment])
                 @endforeach
             </div>
             <li class="comment-form">

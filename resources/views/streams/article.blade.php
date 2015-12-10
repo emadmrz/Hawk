@@ -31,10 +31,10 @@
                 </div>
                 <div class="social-icons icon-rounded">
                     <ul>
-                        <li><a href="#" ><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#" ><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#" ><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#" ><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="{{ route('share.article',['article'=>$article->id, 'social'=>'facebook']) }}" ><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="{{ route('share.article',['article'=>$article->id, 'social'=>'twitter']) }}" ><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="{{ route('share.article',['article'=>$article->id, 'social'=>'gmail']) }}" ><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="{{ route('share.article',['article'=>$article->id, 'social'=>'linkedin']) }}" ><i class="fa fa-linkedin"></i></a></li>
                     </ul>
                 </div>
                 <div class="actions">

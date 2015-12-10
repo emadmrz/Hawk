@@ -33,6 +33,13 @@
                 </div>
 
                 <div class="form-group">
+                    {!! Form::label('penetration', 'میزان اشتغال : ', ['class'=>'col-md-2 pull-right form-control-static']) !!}
+                    <div class="col-md-2 pull-right panel-form">
+                        {!! Form::select('penetration', $history_penetration, null, ['class'=>'form-control']) !!}
+                    </div>
+                </div>
+
+                <div class="form-group">
                     {!! Form::label('email', 'ایمیل محل کار :', ['class'=>'col-md-2 pull-right form-control-static']) !!}
                     <div class="col-md-4 pull-right panel-form">
                         {!! Form::text('email', null, ['class'=>'form-control']) !!}

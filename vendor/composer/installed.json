@@ -3916,5 +3916,53 @@
             "predis",
             "redis"
         ]
+    },
+    {
+        "name": "chencha/share",
+        "version": "5.0.1",
+        "version_normalized": "5.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/prodeveloper/social-share.git",
+            "reference": "ee7621a96b581e8ff68476be6541f287cb374db3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/prodeveloper/social-share/zipball/ee7621a96b581e8ff68476be6541f287cb374db3",
+            "reference": "ee7621a96b581e8ff68476be6541f287cb374db3",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "5.x",
+            "php": ">=5.3.0"
+        },
+        "time": "2015-02-22 19:41:25",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Chencha\\Share": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "thujohn",
+                "email": "jonathan.thuau@gmail.com"
+            },
+            {
+                "name": "chencha",
+                "email": "jacob@chenchatech.com"
+            }
+        ],
+        "description": "Share links with Laravel 5",
+        "keywords": [
+            "laravel",
+            "laravel5",
+            "share"
+        ]
     }
 ]

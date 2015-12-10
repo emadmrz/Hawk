@@ -23,6 +23,7 @@ return array(
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
     'Detection' => array($vendorDir . '/mobiledetect/mobiledetectlib/namespaced'),
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
+    'Chencha\\Share' => array($vendorDir . '/chencha/share/src'),
     'Carbon' => array($vendorDir . '/nesbot/carbon/src'),
     'Bican\\Roles' => array($vendorDir . '/bican/roles/src'),
     'Baum' => array($vendorDir . '/baum/baum/src'),

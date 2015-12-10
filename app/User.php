@@ -372,4 +372,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasOne('App\Activity');
     }
 
+    public function shares(){
+        return $this->hasMany('App\Share');
+    }
+
 }

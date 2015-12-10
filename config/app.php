@@ -155,6 +155,7 @@ return [
         Artisaninweb\SoapWrapper\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         TomLingham\Searchy\SearchyServiceProvider::class,
+        Chencha\Share\ShareServiceProvider::class
 
     ],
 
@@ -210,10 +211,11 @@ return [
         'jDateTime' => Morilog\Jalali\Facades\jDateTime::class,
         'Agent'     => Jenssegers\Agent\Facades\Agent::class,
         'Image'     => Intervention\Image\Facades\Image::class,
-        'Gate' => Illuminate\Support\Facades\Gate::class,
+        'Gate'      => Illuminate\Support\Facades\Gate::class,
         'SoapWrapper' => Artisaninweb\SoapWrapper\Facades\SoapWrapper::class,
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Searchy' => TomLingham\Searchy\Facades\Searchy::class,
+        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
+        'Searchy'   => TomLingham\Searchy\Facades\Searchy::class,
+        'Share'     => Chencha\Share\ShareFacade::class
 
     ],
 

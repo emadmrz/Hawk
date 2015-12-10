@@ -32,11 +32,14 @@ class ProblemController extends Controller
                 'parentable_id' => $group->id,
                 'parentable_type' => 'App\Group',
             ]);
-            $attachments = $request->input('attachment');
-            foreach($attachments as $attachment){
-                $file=explode('::',$attachment);
-                $problem->files()->create(['user_id'=>$user->id, 'name'=>$file[0], 'real_name'=>$file[1], 'size'=>$file[2] ]);
+            if($request->has('attachment')){
+                $attachments = $request->input('attachment');
+                foreach($attachments as $attachment){
+                    $file=explode('::',$attachment);
+                    $problem->files()->create(['user_id'=>$user->id, 'name'=>$file[0], 'real_name'=>$file[1], 'size'=>$file[2] ]);
+                }
             }
+
             $this->groupStream($problem,$group);
         }
         return redirect(route('group.index',[$group->id]));

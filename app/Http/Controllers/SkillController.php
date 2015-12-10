@@ -13,6 +13,7 @@ use App\Honor;
 use App\Paper;
 use App\Province;
 use App\Repositories\AmountRepository;
+use App\Repositories\HistoryRepository;
 use App\Repositories\PaperRepository;
 use App\Repositories\ScheduleRepository;
 use App\Repositories\ServiceRepository;
@@ -111,18 +112,19 @@ class SkillController extends Controller
         return redirect(route('profile.skill.edit.step2',$skill->id));
     }
 
-    public function skillTables(Skill $skill, PaperRepository $paperRepository){
+    public function skillTables(Skill $skill, PaperRepository $paperRepository, HistoryRepository $historyRepository){
         $experiences = $skill->experiences()->get();
         $degrees = $skill->degrees()->get();
         $honors = $skill->honors()->get();
         $histories = $skill->histories()->get();
         $papers = $skill->papers()->get();
         $papers_type = $paperRepository->type_name();
+        $history_penetration = $historyRepository->penetration_name();
         $years_list =[];
         for($i = jDate::forge('now')->format('%Y') ; $i >= jDate::forge('now - 40 years')->format('%Y')  ; $i-- ){
             $years_list[$i] = $i;
         }
-        return view('profile.newSkill', compact('skill', 'experiences', 'degrees', 'honors', 'histories','papers', 'papers_type', 'years_list'))->with(['title'=>'ثبت مهارت جدید', 'new_skill'=>0, 'edit_skill'=>1, 'step'=>2, 'hasEdit'=>1]);
+        return view('profile.newSkill', compact('skill', 'experiences', 'degrees', 'honors', 'histories','papers', 'papers_type', 'years_list', 'history_penetration'))->with(['title'=>'ثبت مهارت جدید', 'new_skill'=>0, 'edit_skill'=>1, 'step'=>2, 'hasEdit'=>1]);
     }
 
     public function addExperience(Request $request, Skill $skill){
@@ -389,6 +391,7 @@ class SkillController extends Controller
             'title' => 'required' ,
             'start_year' => 'required | integer',
             'end_year' => 'required | integer | min:'.$request->input('start_year'),
+            'penetration' => 'required | in:1,2,3,4'
         ]);
 
         if ($validator->fails()) {
@@ -439,14 +442,32 @@ class SkillController extends Controller
     }
 
     public function addPaper(Request $request, Skill $skill){
-        $input = $request->all();
-        $skill->papers()->create($input);
+        $user = Auth::user();
+        $input = $request->except('sample_file');
+        if($request->hasFile('sample_file')){
+            $file = $request->file('sample_file');
+            $imageName = $user->id.str_random(20) . '.' .$file->getClientOriginalExtension();
+            $file->move(public_path() . '/img/files/'.$user->id.'/', $imageName);
+            $user->usage->add(filesize(public_path() . '/img/files/'.$user->id.'/'.$imageName)/(1024*1024));// storage add
+            $real_name = $file->getClientOriginalName();
+            $size = $file->getClientSize()/(1024*1024); //calculate the file size in MB
+            $paper = $skill->papers()->create($input);
+            $paper->file()->create([
+                'user_id' => $user->id,
+                'real_name' => $real_name,
+                'name' => $user->id.'/'.$imageName,
+                'size' => $size,
+            ]);
+
+        }else{
+            $paper = $skill->papers()->create($input);
+        }
         return [
             'hasCallback'=>'1',
             'callback'=>'skill_papers',
             'hasMsg'=>0,
             'msg'=>'',
-            'returns'=>$skill->papers()->get()
+            'returns'=>$skill->papers()->with('file')->get()
         ];
     }
 

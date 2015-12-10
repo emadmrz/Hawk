@@ -47,43 +47,7 @@
         <ul class="comments" id="post_comments_list">
             <div class="list" data-nicescroll>
                 @foreach($problem->comments->reverse() as $comment)
-                    <li class="media">
-
-                        <div class="pull-left">
-                            @can('delete-problem-comment',[$problem,$comment])
-                            {!! Form::open(['route'=>['group.problem.comment.delete', $problem->id, $comment->id], 'data-remote-multiple', 'id'=>'delete_post_comment_form']) !!}
-                            <button class="glass-input" type="submit" ><i class="fa fa-trash-o"></i></button>
-                            {!! Form::close() !!}
-                            @endcan
-                        </div>
-                        <div class="pull-left">
-                            @can('confirm-problem-answer',$problem)
-                            {!! Form::open(['route'=>['group.problem.answer',$problem->id,$comment->id],'data-remote-multiple','id'=>'confirm_problem_answer_form']) !!}
-                            <button class="btn btn-sm confirm-answer @if($problem->comment_id==$comment->id) btn-success @endif" type="submit"><i class="fa fa-check"></i></button>
-                            {!! Form::close() !!}
-                            @else
-                                @if($problem->comment_id==$comment->id)
-                                <span class="btn btn-success disabled">جواب صحیح</span>
-                                @endif
-                            @endcan
-                        </div>
-                        <div class="media-right">
-                            <a href="">
-                                <img src="{{ asset('/img/persons/'.$comment->user->avatar) }}" class="media-object img-circle">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <a href="{{ route('home.profile', $comment->user_id) }}" class="comment-author pull-right flip">{{ $comment->user->username }}</a>
-                            <span class="comment-date">{{ $comment->shamsi_human_created_at }}</span>
-                            @can('update-problem-comment',[$comment])
-                            <p><a data-post-inline-editable  id="body" data-type="textarea" data-rows="5" data-mode="inline" data-showbuttons="bottom" data-url="{{ route('group.problem.comment.update', [$problem->id, $comment->id]) }}" data-pk="{{ $comment->id }}">{{ $comment->body }}</a></p>
-                            @else
-                                <p>{{$comment->body}}</p>
-                            @endcan
-
-
-                        </div>
-                    </li>
+                    @include('partials.problemComment')
                 @endforeach
             </div>
             <li class="comment-form">
