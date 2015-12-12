@@ -14,4 +14,12 @@ class ProfileVisitor extends Model
         $query->where('created_at', '>=', Carbon::now()->subHour());
     }
 
+    /**
+     * Created By Dara on 12/12/2015
+     * scope for calculating profile visit point (ratings)
+     */
+    public function scopeLastMonth($query){
+        $query->where('created_at','>=',Carbon::now()->subMonth());
+    }
+
 }

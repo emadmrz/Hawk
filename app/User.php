@@ -352,6 +352,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->morphOne('App\Rate','parentable');
     }
 
+    /**
+     * Created By Dara on 12/12/2015
+     * comments-user relationships
+     */
+    public function comments(){
+        return $this->hasMany('App\Comment','user_id','id');
+    }
+
+    /**
+     * Created By Dara on 12/12/2015
+     * get the visits for the specific user profile
+     */
+    public function profileVisits(){
+        return $this->hasMany('App\ProfileVisitor','profile_id','id');
+    }
+
 
     /**
      * Created by Emad Mirzaie on 06/10/2015.

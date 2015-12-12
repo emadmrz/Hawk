@@ -38,7 +38,9 @@
                     </table>
                     <a class="btn btn-primary" href="{{route('admin.staration.start')}}">Calculate</a>
                     <h5>Last Update :</h5>
+                    @if(!empty($latestRatings))
                     <p>{{$latestRatings->shamsi_created_at}}</p>
+                    @endif
                     <div class="text-center">{{$users->render()}}</div>
                 </div>
                 <!-- /.table-responsive -->

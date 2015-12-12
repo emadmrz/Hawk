@@ -46,10 +46,19 @@ class RateController extends Controller
             //calculate the profile progress point
             $finalProfilePoint=$this->profile($user,$profileProgressRepository);
 
+            //calculate the answers point
+            $finalAnswerPoint=$this->answer($user);
+
+            //calculate the profile visits
+            $finalProfileVisitPoint=$this->profileVisit($user);
+
+            //calculate the share point foreach user
+            $finalSharePoint=$this->share($user);
+
             //calculate the total each user parameters point
-            $totalUserPoint=$finalProfilePoint;
+            $totalUserPoint=$finalProfilePoint+$finalAnswerPoint+$finalProfileVisitPoint+$finalSharePoint;
             $finalUserPoint=0;
-            $calculatedUserPoint=$totalUserPoint/Config::get('rate')['profile']['weight'];
+            $calculatedUserPoint=$totalUserPoint/(Config::get('rate')['profile']['weight']+Config::get('rate')['answer']['weight']+Config::get('rate')['profileVisit']['weight']+Config::get('rate')['share']['weight']);
             if($calculatedUserPoint>Config::get('rate')['skill']['result'][5]){ //5 star skill
                 $finalUserPoint=Config::get('rate')['skill']['result'][5]['output'];
             }elseif($calculatedUserPoint>Config::get('rate')['user']['result'][4] && $calculatedUserPoint<=Config::get('rate')['user']['result'][5]){
@@ -481,11 +490,15 @@ class RateController extends Controller
      */
     private function history($skill){
         $count=[];
+        $likePoint=[];
         $calculatedHistoryPoint=0;
         foreach($skill->histories as $key=>$history){ //get all the histories for the specified skill
-            $count[$key]=Config::get('rate')['history']['attributes']['history'];
+            $countLike=$history->num_like;
+            $countDisLike=$history->num_dislike;
+            $likePoint[$key]=$countLike*Config::get('rate')['history']['attributes']['like']-($countDisLike*Config::get('rate')['history']['attributes']['dislike']);
+            $count[$key]=Config::get('rate')['history']['attributes'][$history->penetration]['value'];
         }
-        $historyPoint=array_sum($count);
+        $historyPoint=array_sum($count)+array_sum($likePoint);
         if($historyPoint>Config::get('rate')['history']['result'][5]){ //5 star history
             $calculatedHistoryPoint=5;
         }elseif($historyPoint>Config::get('rate')['history']['result'][4] && $historyPoint<=Config::get('rate')['history']['result'][5]){
@@ -521,5 +534,87 @@ class RateController extends Controller
         }
         $finalProfilePoint=$calculatedProfilePoint*Config::get('rate')['profile']['weight'];
         return $finalProfilePoint;
+    }
+
+    /**
+     * created By Dara on 12/12/2015
+     * check for problem answers (group)
+     */
+    private function answer($user){
+        $answers=$user->comments()->where('commentable_type','App\Problem')->get();
+        $count=[];
+        $calculatedAnswerPoint=0;
+        foreach($answers as $key=>$answer){
+            $countLike=$answer->num_like;
+            $countDisLike=$answer->num_dislike;
+            $count[$key]=$countLike*Config::get('rate')['answer']['attributes']['like']-($countDisLike*Config::get('rate')['answer']['attributes']['dislike']);
+            // check if the answer is true or not
+            if($answer->commentable->comment_id==$answer->id){ //the answer is correct
+                $count[$key]+=Config::get('rate')['answer']['attributes']['correct'];
+            }else{
+                $count[$key]+=Config::get('rate')['answer']['attributes']['normal'];
+            }
+        }
+        $answerPoint=array_sum($count);
+        if($answerPoint>Config::get('rate')['answer']['result'][5]){ //5 star paper
+            $calculatedAnswerPoint=5;
+        }elseif($answerPoint>Config::get('rate')['answer']['result'][4] && $answerPoint<=Config::get('rate')['answer']['result'][5]){
+            $calculatedAnswerPoint=4;
+        }elseif($answerPoint>Config::get('rate')['answer']['result'][3] && $answerPoint<=Config::get('rate')['answer']['result'][4]){
+            $calculatedAnswerPoint=3;
+        }elseif($answerPoint>Config::get('rate')['answer']['result'][2] && $answerPoint<=Config::get('rate')['answer']['result'][3]){
+            $calculatedAnswerPoint=2;
+        }elseif($answerPoint>=Config::get('rate')['answer']['result'][1] && $answerPoint<=Config::get('rate')['answer']['result'][2]){
+            $calculatedAnswerPoint=1;
+        }
+        $finalAnswerPoint=$calculatedAnswerPoint*Config::get('rate')['answer']['weight'];
+        return $finalAnswerPoint;
+    }
+
+    /**
+     * Created By Dara on 12/12/2015
+     * checking for profile visitors foreach user
+     */
+    private function profileVisit($user){
+        $calculatedVisitPoint=0;
+        $profileVisits=$user->profileVisits($user)->lastMonth()->count();
+        $profileVisitPoint=$profileVisits;
+        if($profileVisitPoint>Config::get('rate')['profileVisit']['result'][5]){ //5 star paper
+            $calculatedVisitPoint=5;
+        }elseif($profileVisitPoint>Config::get('rate')['profileVisit']['result'][4] && $profileVisitPoint<=Config::get('rate')['profileVisit']['result'][5]){
+            $calculatedVisitPoint=4;
+        }elseif($profileVisitPoint>Config::get('rate')['profileVisit']['result'][3] && $profileVisitPoint<=Config::get('rate')['profileVisit']['result'][4]){
+            $calculatedVisitPoint=3;
+        }elseif($profileVisitPoint>Config::get('rate')['profileVisit']['result'][2] && $profileVisitPoint<=Config::get('rate')['profileVisit']['result'][3]){
+            $calculatedVisitPoint=2;
+        }elseif($profileVisitPoint>=Config::get('rate')['profileVisit']['result'][1] && $profileVisitPoint<=Config::get('rate')['profileVisit']['result'][2]){
+            $calculatedVisitPoint=1;
+        }
+        $finalVisitPoint=$calculatedVisitPoint*Config::get('rate')['profileVisit']['weight'];
+        return $finalVisitPoint;
+    }
+
+    private function share($user){
+        $count=[];
+        $calculatedSharePoint=0;
+        $shares=$user->shares()->get();
+        foreach($shares as $key=>$share){
+            $count[$key]=Config::get('rate')['share']['attributes']['share'];
+            $count[$key]+=($share->num_visit)*(Config::get('rate')['share']['attributes']['visit']);
+        }
+        $sharePoint=array_sum($count);
+        if($sharePoint>Config::get('rate')['share']['result'][5]){ //5 star paper
+            $calculatedSharePoint=5;
+        }elseif($sharePoint>Config::get('rate')['share']['result'][4] && $sharePoint<=Config::get('rate')['share']['result'][5]){
+            $calculatedSharePoint=4;
+        }elseif($sharePoint>Config::get('rate')['share']['result'][3] && $sharePoint<=Config::get('rate')['share']['result'][4]){
+            $calculatedSharePoint=3;
+        }elseif($sharePoint>Config::get('rate')['share']['result'][2] && $sharePoint<=Config::get('rate')['share']['result'][3]){
+            $calculatedSharePoint=2;
+        }elseif($sharePoint>=Config::get('rate')['share']['result'][1] && $sharePoint<=Config::get('rate')['share']['result'][2]){
+            $calculatedSharePoint=1;
+        }
+        $finalSharePoint=$calculatedSharePoint*Config::get('rate')['share']['weight'];
+        return $finalSharePoint;
     }
 }

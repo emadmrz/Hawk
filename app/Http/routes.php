@@ -723,3 +723,5 @@ Route::group(['prefix' => 'chat', 'as'=>'chat.'], function () {
 Route::group(['prefix' => 'share', 'as'=>'share.'], function () {
     Route::get('article/{article}',['as'=>'article', 'uses'=>'ShareController@article']);
 });
+
+Route::get('top',['as'=>'top','uses'=>'TopController@index']);

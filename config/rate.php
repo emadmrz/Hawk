@@ -131,6 +131,23 @@ return [
             'dislike'=>4 //value of dislike
         ]
     ],
+    'answer'=>[
+        'name'=>'answer',
+        'weight'=>70,
+        'result'=>[
+            5=>180,
+            4=>140,
+            3=>100,
+            2=>70,
+            1=>40
+        ],
+        'attributes'=>[
+            'correct'=>40, //value of each correct answer
+            'normal'=>15, //value foreach answer
+            'like'=>5,
+            'dislike'=>2
+        ]
+    ],
     'corporation'=>[
         'name'=>'corporation',
         'weight'=>80,
@@ -197,7 +214,12 @@ return [
             1=>15
         ],
         'attributes'=>[
-            'history'=>40,
+            1=>['name'=>'همیشه','value'=>5],
+            2=>['name'=>'بیشتر اوقات','value'=>3],
+            3=>['name'=>'برخی اوقات','value'=>2],
+            4=>['name'=>'به ندرت','value'=>1],
+            'like'=>10,
+            'dislike'=>4
         ]
     ],
     'user'=>[
@@ -220,5 +242,31 @@ return [
             2=>50,
             1=>30
         ],
+    ],
+    'profileVisit'=>[
+        'name'=>'profileVisit',
+        'weight'=>40,
+        'result'=>[
+            5=>20,
+            4=>15,
+            3=>10,
+            2=>5,
+            1=>1
+        ]
+    ],
+    'share'=>[
+        'name'=>'share',
+        'weight'=>25,
+        'result'=>[
+            5=>70,
+            4=>40,
+            3=>20,
+            2=>10,
+            1=>1
+        ],
+        'attributes'=>[
+            'share'=>20,
+            'visit'=>0.5 //visit our website through his/her share
+        ]
     ]
 ];
