@@ -146,4 +146,6 @@
 
 @yield('script')
 
+@yield('socket.io')
+
 </body>

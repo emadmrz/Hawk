@@ -947,3 +947,26 @@ footer.footer .social-media li.whatsapp a{
 /*.btn.btn-violet{*/
     /*border-bottom: 5px solid #322D7D;*/
 /*}*/
+
+.notify-alert.alert-notification{
+    color: #31708f;
+    background-color: rgba(217, 237, 247, 0.97);
+    border-color: #bce8f1;
+}
+.notify-alert.alert-notification li{
+    list-style: none;
+}
+.notify-alert.alert-notification button.close{
+    float: left;
+}
+.notify-alert.alert-notification .media-right .media-object{
+    height: 65px;
+    width: 65px;
+}
+.notify-alert.alert-notification .media-body{
+    font-size: 13px;
+}
+.notify-alert.alert-notification .media-body .date{
+    content: 'aaa';
+    font-size: 12px;
+}

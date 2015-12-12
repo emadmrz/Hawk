@@ -32,11 +32,7 @@
 
     <div class="container">
         <div class="row">
-
-            <div class="col-sm-3 pull-right">
-                @yield('side')
-            </div>
-            <div class="col-sm-9 pull-right">
+            <div class="col-sm-12 pull-right">
 
                 @if($errors->any())
                     <ul class="alert alert-danger">
@@ -49,12 +45,6 @@
                 @include('flash::message')
 
                 @yield('content')
-
-            </div>
-
-            <div class="col-sm-12">
-
-                @yield('full')
 
             </div>
 
@@ -130,6 +120,23 @@
 
     });
 
+    function rateAlert(id, rating)
+    {
+        alert( 'Rating for '+id+' is '+rating+' stars!' );
+    }
+
+    /* Here we initialize raterater on our rating boxes
+     */
+    $(function() {
+        $( '.user-rate' ).raterater( {
+            submitFunction: 'rateAlert',
+            allowChange: true,
+            starWidth: 18,
+            spaceWidth: 1,
+            numStars: 5
+        } );
+    });
+
 
     $('#circle_progress').circleProgress({
         size: 190 ,
@@ -143,6 +150,7 @@
 
     });
 </script>
+
 
 @yield('script')
 

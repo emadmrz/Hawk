@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Advertise;
+use App\Opening;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Laracasts\Flash\Flash;
 
 class IndexController extends Controller
 {
@@ -177,6 +179,17 @@ class IndexController extends Controller
 
     public function invitation(){
         return view('invitation.index');
+    }
+
+    public function invitationRegister(Request $request){
+        $this->validate($request, [
+            'first_name' => 'required|max:50',
+            'last_name' => 'required|max:50',
+            'email' => 'required|unique:openings|max:100',
+        ]);
+        Opening::create($request->all());
+        Flash::success('از عضویت شما در خبرنامه Skillema سپاسگزاریم. ما شما را از آخرین رویدادهای Skillema با خبر می کنیم.');
+        return redirect()->back();
     }
 
 }

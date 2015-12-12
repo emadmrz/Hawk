@@ -1,5 +1,85 @@
 @if(Auth::check())
-<nav class="navbar navbar-inverse navbar-static-top">
+    @section('socket.io')
+        <script src="{{ asset('js/socket.io.js') }}"></script>
+        <script>
+            var socket = io('http://127.0.0.1:6001', { query: "user={{ $authUser->id }}" });
+
+            socket.on("user.{{ Auth::user()->id }}:App\\Events\\Notification", function(data){
+                if($("nav").find("#new_notifications_num").find('.notification_num').length > 0){
+                    var current_notifications_num = parseInt($("nav").find("#new_notifications_num").find('.notification_num').html());
+                    $("nav").find("#new_notifications_num").html('<i class="notification_num">'+parseInt(current_notifications_num+1)+'</i>');
+                }else{
+                    $("nav").find("#new_notifications_num").html('<i class="notification_num">1</i>');
+                }
+
+                if(!$('.notify-alert').length){
+                    $.notify(data.notification, {type:'notification', delay: 10000});
+                }
+            });
+
+            socket.on("user.{{ $authUser->id }}:App\\Events\\friendRequest", function(data){
+                if($("nav").find("#new_friend_request_num").find('.notification_num').length > 0){
+                    var current_notifications_num = parseInt($("nav").find("#new_friend_request_num").find('.notification_num').html());
+                    $("nav").find("#new_friend_request_num").html('<i class="notification_num">'+parseInt(current_notifications_num+1)+'</i>');
+                }else{
+                    $("nav").find("#new_friend_request_num").html('<i class="notification_num">1</i>');
+                }
+
+                if(!$('.notify-alert').length){
+                    $.notify(data.notification, {type:'notification', delay: 10000});
+                }
+            });
+
+            @if(!strpos(URL::current(),route('chat.index')))
+                socket.on("user.{{ $authUser->id }}:App\\Events\\sendMessage", function(data){
+                    if($("nav").find("#new_messages_num").find('.notification_num').length > 0){
+                        var current_notifications_num = parseInt($("nav").find("#new_messages_num").find('.notification_num').html());
+                        $("nav").find("#new_messages_num").html('<i class="notification_num">'+parseInt(current_notifications_num+1)+'</i>');
+                    }else{
+                        $("nav").find("#new_messages_num").html('<i class="notification_num">1</i>');
+                    }
+
+                    if(!$('.notify-alert').length){
+                        $.notify(messageCreate(data.data), {type:'notification', delay: 10000});
+                    }
+                });
+
+                function messageCreate(data){
+                    return '<div class="media">'+
+                            '<div class="media-right">'+
+                            '<a href="#">'+
+                            '<img class="media-object img-rounded" src="{{ asset('img/persons')  }}/'+data.avatar+'" alt="" >'+
+                            '</a>'+
+                            '</div>'+
+                            '<div class="media-body">'+
+                            '<h5 class="media-heading"><a href="#">'+data.username+'</a><span class="info">'+data.created_at+'</span></h5>'+
+                            '<p>'+data.message+'</p>'+
+                            '</div>'+
+                            '</div>';
+                }
+            @endif
+
+
+            $.notifyDefaults({
+                delay: 5000,
+                timer: 100,
+                offset: {
+                    x: 10,
+                    y:60
+                },
+                placement: {
+                    from: "bottom",
+                    align: "right"
+                },
+                animate: {
+                    enter: 'animated fadeInRight',
+                    exit: 'animated fadeOutRight'
+                }
+            });
+
+        </script>
+    @endsection
+    <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -16,7 +96,7 @@
             <!--</ul>-->
             <ul class="nav navbar-nav navbar-right tools-nav">
                 <li class="avatar">
-                    <a id="my_account_nav_dropdown" href="#" data-target="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('img/persons/'.Auth::user()->avatar) }}" class="img-circle" ></a>
+                    <a id="my_account_nav_dropdown" href="#" data-target="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('img/persons/'.$authUser->avatar) }}" class="img-circle" ></a>
                     <ul class="dropdown-menu my-profile-account" aria-labelledby="my_account_nav_dropdown">
                         <li><a href="{{ route('home.home') }}"><i class="fa fa-home fa-lg"></i> خانه </a></li>
                         <li><a href="{{ route('profile.me') }}"><i class="fa fa-briefcase fa-lg"></i> پروفایل </a></li>
@@ -47,7 +127,7 @@
                     <ul class="dropdown-menu" aria-labelledby="new_notifications_nav_dropdown">
 
                     </ul>
-                    <span id="new_notifications_num"></span>
+                    <span id="new_messages_num"></span>
 
                 </li>
                 <li><a href="#"><i class="fa fa-th fa-2x"></i></a></li>
@@ -108,7 +188,7 @@
         </div>
     </div>
 
-<nav class="navbar navbar-inverse navbar-static-top">
+    <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">

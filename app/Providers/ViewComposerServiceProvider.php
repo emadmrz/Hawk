@@ -44,6 +44,12 @@ class ViewComposerServiceProvider extends ServiceProvider
             $view->with(['advantages_list'=>$advantages_list, 'advantages'=>$advantages, 'categories'=>$categories]);
         });
 
+        view()->composer('partials.navbar', function($view){
+            if(Auth::check()){
+                $view->with(['authUser'=>Auth::user()]);
+            }
+        });
+
         /**
          * Created By Dara on 7/11/2015
          * settlement side view compose
