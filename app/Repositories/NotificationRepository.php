@@ -80,27 +80,27 @@ class NotificationRepository {
         return $this->notification;
     }
 
-    private function post(Post $post){
+    public function post(Post $post){
         return view('notifications.post', compact('post'))->render();
     }
 
-    private function postComment(Post $post, Comment $comment){
+    public function postComment(Post $post, Comment $comment){
         return view('notifications.postComment', compact('post','comment'))->render();
     }
 
-    private function article(Article $article){
+    public function article(Article $article){
         return view('notifications.article', compact('article'))->render();
     }
 
-    private function articleComment(Article $article, Comment $comment){
+    public function articleComment(Article $article, Comment $comment){
         return view('notifications.articleComment', compact('article','comment'))->render();
     }
 
-    private function endorse(Endorse $endorse, User $user){
+    public function endorse(Endorse $endorse, User $user){
         return view('notifications.endorse', compact('endorse', 'user'))->render();
     }
 
-    private function recommendation(Recommendation $recommendation, User $user){
+    public function recommendation(Recommendation $recommendation, User $user){
         return view('notifications.recommendation', compact('recommendation', 'user'))->render();
     }
 
@@ -108,19 +108,19 @@ class NotificationRepository {
      * Created By Dara on 4/11/2015
      * handling the group notifications
      */
-    private function problem(Problem $problem){
+    public function problem(Problem $problem){
         return view('notifications.problem', compact('problem'))->render();
     }
 
-    private function problemComment(Problem $problem,Comment $comment){
+    public function problemComment(Problem $problem,Comment $comment){
         return view('notifications.problemComment',compact('problem','comment'))->render();
     }
 
-    private function postGroup(Post $post){
+    public function postGroup(Post $post){
         return view('notifications.postGroup',compact('post'))->render();
     }
 
-    private function postGroupComment(Post $post, Comment $comment){
+    public function postGroupComment(Post $post, Comment $comment){
         return view('notifications.postGroupComment', compact('post','comment'))->render();
     }
 
@@ -128,7 +128,7 @@ class NotificationRepository {
      * Created By Dara on 1/12/2015
      * handling the corporation notification
      */
-    private function corporation(Corporation $corporation){
+    public function corporation(Corporation $corporation){
         $user=Auth::user();
         if($user->id==$corporation->sender_id){ //the current user is the one who made the request
             if($corporation->status==1){ //his/her request has been approved

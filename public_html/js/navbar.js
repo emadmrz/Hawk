@@ -17,6 +17,7 @@ $('#friends_request_nav').on('show.bs.dropdown', function () {
         data : {},
         success: function(data){
             content.html(data);
+            $("nav").find("#new_friend_request_num").html('');
         },
         error: function(xhr){
             //alert("An error occured: " + xhr.status + " " + xhr.statusText);
@@ -35,6 +36,7 @@ $('#new_notifications_nav').on('show.bs.dropdown', function () {
         data : {},
         success: function(data){
             content.html(data);
+            $("nav").find("#new_notifications_num").html('');
         },
         error: function(xhr){
             //alert("An error occured: " + xhr.status + " " + xhr.statusText);
@@ -53,6 +55,7 @@ $('#new_messages_nav').on('show.bs.dropdown', function () {
         data : {},
         success: function(data){
             content.html(data);
+            //$("nav").find("#new_messages_num").html('');
         },
         error: function(xhr){
             //alert("An error occured: " + xhr.status + " " + xhr.statusText);
@@ -85,9 +88,9 @@ $(function notifications_refresh(){
             error: function(xhr){
                 //alert("An error occured: " + xhr.status + " " + xhr.statusText);
             },
-            complete: notifications_refresh
+            //complete: notifications_refresh
         });
-    }, 10000);
+    }, 5000);
 });
 
 

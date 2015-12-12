@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\friendRequest;
 use App\Friend;
 use App\Repositories\FriendRepository;
 use App\Stream;
@@ -12,6 +13,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class FriendController extends Controller
 {
@@ -20,6 +22,7 @@ class FriendController extends Controller
         $exist = $friendRepository->isFriend($friend->id);
         if(!$exist){
             $friendRepository->makeFriend($friend);
+            Event::fire(new friendRequest($friend->id, 0, $friend));
             return [
                 'hasCallback'=>'1',
                 'callback'=>'friendRequest',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Events\Notification;
 use App\Repositories\FriendRepository;
 use App\Stream;
 use App\User;
@@ -14,6 +15,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Laracasts\Flash\Flash;
 use Morilog\Jalali\jDate;
 
@@ -184,6 +186,8 @@ class ArticleController extends Controller
                 'parentable_type'=>'App\User',
                 'is_see'=>0
             ]);
+            Event::fire(new Notification($friend->friend_info->id, 'App\Article', $article));
+
         }
         Stream::create([
             'user_id'=>$user->id,

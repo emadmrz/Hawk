@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Notification;
 use App\Group;
 use App\Post;
 use App\Repositories\FriendRepository;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Intervention\Image\Facades\Image;
 use Laracasts\Flash\Flash;
 
@@ -80,6 +82,8 @@ class PostController extends Controller
                 'parentable_type'=>'App\User',
                 'is_see'=>0
             ]);
+            Event::fire(new Notification($friend->friend_info->id, 'App\Post', $post));
+
         }
         Stream::create([
             'user_id'=>$user->id,

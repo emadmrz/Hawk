@@ -16,9 +16,14 @@
 //    return view('welcome');
 //});
 Route::get('/','IndexController@invitation');
+Route::post('/',['as'=>'invitation.register','uses'=>'IndexController@invitationRegister']);
 Route::get('/coupon', function(){
     return view('store.offer.coupon');
 });
+Route::get('/top', function(){
+    return view('top.index')->with(['title'=>'برترین ها']);
+});
+
 
 Route::get('/sock', function(){
     Event::fire(new \App\Events\sendMessage());

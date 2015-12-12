@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AdvantageTableSeeder::class);
         $this->call(AddonTableSeeder::class);
         $this->call(CorporationQuestionnaireTableSeeder::class);
+        $this->call(RateTableSeeder::class);
 
         Model::reguard();
     }

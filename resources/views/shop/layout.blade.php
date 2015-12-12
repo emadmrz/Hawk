@@ -113,5 +113,7 @@
 
 @endsection
 
+@yield('socket.io')
+
 </body>
 </html>
