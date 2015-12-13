@@ -664,6 +664,13 @@ Route::group(['prefix' => 'api', 'as'=>'api.'], function () {
         Route::get('cities',['as'=>'cities', 'uses'=>'Api\LocationController@cities']);
     });
 
+    /**
+     * Created By Dara on 13/12/2015
+     */
+    Route::group(['prefix'=>'top','as'=>'top.'],function(){
+        Route::get('sort',['as'=>'sort','uses'=>'Api\TopSortController@sort']);
+    });
+
     Route::group(['prefix' => 'category', 'as'=>'category.'], function () {
         Route::get('sub',['as'=>'sub', 'uses'=>'Api\CategoryController@sub']);
         Route::get('tags',['as'=>'tags', 'uses'=>'Api\CategoryController@tags']);
@@ -727,4 +734,8 @@ Route::group(['prefix' => 'share', 'as'=>'share.'], function () {
     Route::get('article/{article}',['as'=>'article', 'uses'=>'ShareController@article']);
 });
 
-Route::get('top',['as'=>'top','uses'=>'TopController@index']);
+Route::group(['prefix'=>'top','as'=>'top.'],function(){
+    Route::get('/user',['as'=>'user','uses'=>'TopController@user']);
+    Route::get('/product',['as'=>'user','uses'=>'TopController@product']);
+    Route::get('/result',['as'=>'result','uses'=>'TopController@searchProcess']);
+});

@@ -165,6 +165,31 @@ $(document).ready(function(){
     });
 
     /**
+     * Created By Dara on 13/12/2015
+     * top users and products search select box
+     */
+    $('select#top_type_id').change(function(){
+            $.ajax({
+                type: 'get',
+                url: "/api/top/sort/",
+                data: {type_id: $(this).val()},
+                dataType: 'json',
+                success: function(data){
+                    var $select = $("select#top_sort_id");
+                    $select.html('');
+                    $(data).each(function (key, value) {
+                        var $option = $("<option/>").attr("value", value.id).text(value.name);
+                        $select.append($option);
+                    });
+                },
+                error: function(xhr){
+                    alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+
+    });
+
+    /**
      * Created By Dara on 19/11/2015
      * handling the skill week day select-box in search
      */
