@@ -20,9 +20,7 @@ Route::post('/',['as'=>'invitation.register','uses'=>'IndexController@invitation
 Route::get('/coupon', function(){
     return view('store.offer.coupon');
 });
-Route::get('/top', function(){
-    return view('top.index')->with(['title'=>'برترین ها']);
-});
+
 
 
 Route::get('/sock', function(){
