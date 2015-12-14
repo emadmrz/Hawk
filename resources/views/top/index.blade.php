@@ -9,327 +9,100 @@
     <div class="top-list-search">
         <div class="row">
 
-            <form class="">
+            {!! Form::model($bind,['method'=>'GET','route'=>'top.result']) !!}
 
                 <div class="col-sm-1 pull-right">
-                    <select class="form-control input-sm">
-                        <option>کاربران</option>
-                        <option>کالاها</option>
-                    </select>
+                    {!! Form::select('type',[1=>'کاربران',2=>'کالا ها'],null,['id'=>'top_type_id','class'=>'form-control input-sm']) !!}
                 </div>
 
                 <div class="col-sm-2 pull-right">
-                    <select class="form-control input-sm">
-                        <option>پر ستاره ترین ها</option>
-                        <option>پر بازدید ترین ها</option>
-                        <option>محبوب ترین ها</option>
-                        <option>پر مشتری ترین ها</option>
-                    </select>
+                    {!! Form::select('sort',$sortSelect,null,['id'=>'top_sort_id','class'=>'form-control input-sm']) !!}
                 </div>
 
                 <div class="col-sm-2 pull-right">
-                    <select class="form-control input-sm">
-                        <option>تمامی دسته بندی ها</option>
-                        <option>فرهنگی و علمی</option>
-                        <option>فنی و مهندسی </option>
-                        <option>مدیریت و مشاوره</option>
-                        <option>رفاهی</option>
-                        <option>غذایی و خوراکی</option>
-                    </select>
+                    {!! Form::select('category',$categorySelect,null,['class'=>'form-control input-sm']) !!}
                 </div>
 
 
-                <button class="btn btn-violet btn-sm">جستجوی برترین ها</button>
+                <button type="submit" class="btn btn-violet btn-sm">جستجوی برترین ها</button>
 
                 <button class="btn btn-success pull-left btn-sm">چگونه جزء برترین ها شوم ؟</button>
 
-            </form>
+            {!! Form::close() !!}
 
         </div>
     </div>
-
-    <div class="col-sm-12">
-        <div class="part-title">
-            <h3> <button class="btn btn-violet btn-sm pull-left">لیست کامل</button> فرهنگی و علمی </h3>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
+@if(!empty($results))
+    @foreach($results as $key=>$result)
+        <div class="col-sm-12">
+            <div class="part-title">
+                @if($type=='user')
+                    <h3> <a href="{{route('top.result',['type'=>1,'sort'=>1,'category'=>intval($key)])}}" class="btn btn-violet btn-sm pull-left">لیست کامل</a>{{preg_replace('/\d/', '', $key )}}</h3>
+                @endif
+                    @if($type=='product')
+                        @if(isset($bind->sort))
+                            <?php $sort=$bind->sort; ?>
+                        @else
+                            <?php $sort=2; ?>
+                        @endif
+                        <h3> <a href="{{route('top.result',['type'=>2,'sort'=>$sort,'category'=>intval($key)])}}" class="btn btn-violet btn-sm pull-left">لیست کامل</a>{{preg_replace('/\d/', '', $key )}}</h3>
+                    @endif
             </div>
         </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
+        @if($type=='user')
+            @foreach($result as $user)
+                <div class="search-result">
+                    <div class="col-sm-3">
+                        <div class="search-card">
+                            <div class="avatar">
+                                <img src="{{ asset('img/persons') }}/{{$user->avatar}}">
+                            </div>
+                            <div class="name">
+                                {{$user->username}}
+                            </div>
+                            <div class="rate">
+                                <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
+                            </div>
+                            <div class="about-me">
+                                {{$user->description}}
+                            </div>
+                            <div class="action text-center">
+                                <a href="{{route('home.profile',$user->id)}}" type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="name">
-                    مائوریا آنتونیولی
+            @endforeach
+        @elseif($type=='product')
+            @foreach($result as $product)
+                <div class="search-result">
+                    <div class="col-sm-3">
+                        <div class="search-card">
+                            <div class="avatar">
+                                @if(count($product->files))
+                                    <img src="{{asset('img/files/shop/'.$product->files->first()->name)}}">
+                                @else
+                                    <img src="aaa">
+                                @endif
+                            </div>
+                            <div class="name">
+                                {{$product->name}}
+                            </div>
+                            <div class="rate">
+                                <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
+                            </div>
+                            <div class="about-me">
+                                {{$product->description}}
+                            </div>
+                            <div class="action text-center">
+                                <a href="{{route('home.shop.product',[$product->shop->id,$product->id])}}" type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i>مشاهده </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-12">
-        <div class="part-title">
-            <h3> <button class="btn btn-violet btn-sm pull-left">لیست کامل</button> فنی و مهندسی </h3>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="col-sm-12">
-        <div class="part-title">
-            <h3> <button class="btn btn-violet btn-sm pull-left">لیست کامل</button>مدیریت و مشاوره</h3>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="search-result">
-        <div class="col-sm-3">
-            <div class="search-card">
-                <div class="avatar">
-                    <img src="{{ asset('img/persons/1.jpg') }}">
-                </div>
-                <div class="name">
-                    مائوریا آنتونیولی
-                </div>
-                <div class="rate">
-                    <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
-                </div>
-                <div class="about-me">
-                    سلام ، من مائوریا هستم تخصص من در زمینه بازاریابی استارت آپ های اینترنتی است. راز موفقیت شما در دست من است.
-                </div>
-                <div class="action text-center">
-                    <button type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+            @endforeach
+        @endif
+    @endforeach
+@endif
 @endsection
 
