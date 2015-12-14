@@ -130,7 +130,75 @@
                     <span id="new_messages_num"></span>
 
                 </li>
-                <li><a href="#"><i class="fa fa-th fa-2x"></i></a></li>
+                <li class="dropdown">
+                    <a  id="top_nav_dropdown" href="#" data-target="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-th fa-2x"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="top_nav_dropdown">
+                        <li class="top-user-nav">
+                            <a href="#" class="star">
+                                <img src="{{ asset('img/icons/users.png') }}">
+                                <i class="fa fa-star fa-2x"></i>
+                            </a>
+                            <span>پر ستاره ترین</span>
+                        </li>
+                        <li class="top-user-nav">
+                            <a href="#">
+                                <img src="{{ asset('img/icons/users.png') }}">
+                                <i class="fa fa-area-chart fa-2x  text-primary"></i>
+                            </a>
+                            <span>پربازدیدترین</span>
+                        </li>
+                        <li class="top-user-nav">
+                            <a href="#" class="star">
+                                <img src="{{ asset('img/icons/users.png') }}">
+                                <i class="fa fa-trophy fa-2x"></i>
+                            </a>
+                            <span>پر مشتری ترین</span>
+                        </li>
+                        <li class="top-user-nav">
+                            <a href="#" class="star">
+                                <img src="{{ asset('img/icons/users.png') }}">
+                                <i class="fa fa-diamond fa-2x"></i>
+                            </a>
+                            <span>پیشنهاد ویژه</span>
+                        </li>
+                        <li class="top-user-nav">
+                            <a href="#" class="star">
+                                <img src="{{ asset('img/icons/users.png') }}">
+                                <i class="fa fa-user fa-2x"></i>
+                            </a>
+                            <span>جدید ترین ها</span>
+                        </li>
+                        <li class="top-user-nav">
+                            <a href="#">
+                                <img src="{{ asset('img/icons/products.png') }}">
+                                <i class="fa fa-heart fa-2x text-danger"></i>
+                            </a>
+                            <span>محبوب ترین ها</span>
+                        </li>
+                        <li class="top-user-nav">
+                            <a href="#">
+                                <img src="{{ asset('img/icons/products.png') }}">
+                                <i class="fa fa-credit-card fa-2x text-primary"></i>
+                            </a>
+                            <span>پرفروش ترین ها</span>
+                        </li>
+                        <li class="top-user-nav">
+                            <a href="#">
+                                <img src="{{ asset('img/icons/products.png') }}">
+                                <i class="fa fa-area-chart fa-2x text-primary"></i>
+                            </a>
+                            <span>پر بازدیدترین ها</span>
+                        </li>
+                        <li class="top-user-nav">
+                            <a href="#">
+                                <img src="{{ asset('img/icons/products.png') }}">
+                                <i class="fa fa-truck fa-2x text-danger"></i>
+                            </a>
+                            <span>پر بازدیدترین ها</span>
+                        </li>
+                        <a href="#" class="btn btn-violet btn-block">مشاهده برترین های skillema</a>
+                    </ul>
+                </li>
             </ul>
 
             {!! Form::open(['method'=>'get','route'=>'search.index','class'=>'navbar-form navbar-left search-navbar hidden-sm','role'=>'search']) !!}

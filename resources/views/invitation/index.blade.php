@@ -111,6 +111,12 @@
                     </ul>
                 </div>
             </div>
+            <div class="newsletter-container clearfix">
+                {!! Form::open(['route'=>'invitation.register']) !!}
+                    <input type="email" name="email" class="form-control" placeholder="آدرس ایمیل...">
+                <button type="submit" class="btn btn-violet">عضویت در خبرنامه</button>
+                {!! Form::close() !!}
+            </div>
         </div>
     </section>
 
@@ -125,7 +131,7 @@
                     <i class="fa fa-users fa-3x"></i>
                 </div>
                 <p>
-                    اگر می خواهی با ماهرهات همه رو انگشت به دهن کنی . اگر مشکل خیلی ها که دنبال مهارت شما هستند اینه که نمی شناسنت. یا اگر مثل خیلی ها معتقدی برای رشد و شکوفا شدن مهارت هات نیاز به فضایی با ارتباطات گسترده داری نه کنج عزلت.
+                    اگر می خواهی با مهارت هات همه رو انگشت به دهن کنی . اگر مشکل خیلی ها که دنبال مهارت شما هستند اینه که نمی شناسنت. یا اگر مثل خیلی ها معتقدی برای رشد و شکوفا شدن مهارت هات نیاز به فضایی با ارتباطات گسترده داری نه کنج عزلت.
                 </p>
                 <p>پس همین حالا شروع کن . چون ما به معنای واقعی</p>
                 <h3 class="text-center" >یک شبکه اجتماعی هستیم</h3>
@@ -156,7 +162,7 @@
         <h1>چطور مهارت هام را توسعه بدم؟</h1>
         <div class="container">
             <div class="row">
-                <div class="col-md-3 pull-right">
+                <div class="col-sm-3 pull-right">
                     <div class="step">
                         <div class="icon">
                             <img src="{{ asset('../img/invitation/icons/groups.png') }}">
@@ -164,7 +170,7 @@
                         <h4>تو گروه های تخصصی فعالیت کن</h4>
                     </div>
                 </div>
-                <div class="col-md-3 pull-right">
+                <div class="col-sm-3 pull-right">
                     <div class="step">
                         <div class="icon">
                             <img src="{{ asset('../img/invitation/icons/learn.png') }}">
@@ -172,7 +178,7 @@
                         <h4>در دوره های مهارت آموزی مجموعه شرکت کن</h4>
                     </div>
                 </div>
-                <div class="col-md-3 pull-right">
+                <div class="col-sm-3 pull-right">
                     <div class="step">
                         <div class="icon">
                             <img src="{{ asset('../img/invitation/icons/handshake.png') }}">
@@ -180,7 +186,7 @@
                         <h4>با کاربران ماهر در مهارتت در ارتباط باش</h4>
                     </div>
                 </div>
-                <div class="col-md-3 pull-right">
+                <div class="col-sm-3 pull-right">
                     <div class="step">
                         <div class="icon">
                             <img src="{{ asset('../img/invitation/icons/statistics.png') }}">
@@ -206,7 +212,7 @@
                     پس همین حالا شروع کن . چون اینجا می تونی صاحب یک
                 </p>
                 <h4 class="text-center" >فروشگاه شخصی حرفه ای</h4>
-                <p> باشی و درآمد کسب کنی. یعنی خودت باشی و کلی مشتری که به فروشگاهت سر می زنند. چون ما تو معرفی شما به مشتری هات کمک ات می کنیم تا روزه به روز مشتری های بیشتر داشته باشی. البته امکانات حرفه ای فروشگاه را هم بهتری خودت تجربه کنی.  </p>
+                <p> باشی و درآمد کسب کنی. یعنی خودت باشی و کلی مشتری که به فروشگاهت سر می زنند. چون ما تو معرفی شما به مشتری هات کمک ات می کنیم. البته امکانات حرفه ای فروشگاه را هم بهتر خودت تجربه کنی. </p>
             </div>
         </div>
     </section>
@@ -221,7 +227,7 @@
                 <div class="text-center">
                     <i class="fa fa-bullhorn fa-3x"></i>
                 </div>
-                <p>شاید جزء اون دسته از آدم هایی باشی که با وجود توانمندی و مهارت خیلی زیادت هیچ وقت نتونستی خودت را بدرستی معرفی کنی واسه همین دیگران کمتر با توانمندی هات آشنایی دارند. این روز ها آدم های توانمندی که نمی توانند خودشان را معرفی کنند زیاد می بینیم و از طرفی آدم های ضعیفی که چقدر خوب خودشان را پرزنت می کنند موفق واقعی اونهایی هستند که علاوه داشتن توانمندی بالاخره تونستند راه ارائه و معرفی اون را کشف کنند. اگه میخواهی موفق واقعی باشی پس همین حالا شروع کن . چون در اینجا ما   </p>
+                <p>شاید جزء اون دسته از آدم هایی باشی که با وجود توانمندی و مهارت خیلی زیادت هیچ وقت نتونستی خودت را بدرستی معرفی کنی واسه همین دیگران کمتر با توانمندی هات آشنایی دارند. این روز ها آدم های توانمندی که نمی توانند خودشان را معرفی کنند زیاد می بینیم و از طرفی آدم های ضعیفی که چقدر خوب خودشان را پرزنت می کنند اما موفق واقعی اونهایی هستند که علاوه داشتن توانمندی بالاخره تونستند راه ارائه و معرفی اون را کشف کنند. اگه میخواهی موفق واقعی باشی پس همین حالا شروع کن . چون در اینجا ما   </p>
                 <h4 class="text-center" >راه های متعددی برای معرفی بهتر شما</h4>
                 <p>برنامه ریزی کردیم و پیش رویت می گذاریم.</p>
             </div>
@@ -238,18 +244,18 @@
                 <div class="text-center">
                     <i class="fa fa-suitcase fa-3x"></i>
                 </div>
-                <p>برای ما مهم نیست که چقدر سواد داری، مهم نیست مدرک تحصیلی ات چیه، دیپلم، فوق دیپلم، لیسانس یا دکتری، مهم نیست کدوم دانشگاه درس خوندی ام آی تی، استفورد، شریف، تهران یا یک دانشگاه کوچک تو یک شهر کوچک . پس اگر دنبال این القاب هستی احتمالاً اینجا جای مناسب برای شما نیست. اینجا یک چیز حرف اول و آخر رو میزنه و اون اینه که شما با همه اسم و رسمت چی بلدی؟ پس اگر از مدرک و مدرک گرایی خسته شدی و دنبال مهارت واقعی می گردی همین حالا شروع کن. چون ما</p>
+                <p>برای ما مهم نیست که چقدر سواد داری، مهم نیست مدرک تحصیلی ات چیه، دیپلم، فوق دیپلم، لیسانس یا دکتری، مهم نیست کدوم دانشگاه درس خوندی ام آی تی، استفورد، شریف، تهران یا یک دانشگاه کوچک تو یک شهر کوچک.اینجا یک چیز حرف اول و آخر رو میزنه و اون اینه که شما با همه اسم و رسمت چی بلدی؟ پس اگر از مدرک و مدرک گرایی خسته شدی و دنبال مهارت واقعی می گردی همین حالا شروع کن. چون ما</p>
                 <h4 class="text-center" >راه های متعددی برای توسعه مهارت های شما</h4>
                 <p>برنامه ریزی کردیم.</p>
             </div>
         </div>
     </section>
 
-    <section class="how-to blue">
+    <section class="how-to blue container-fluid">
         <h1>چطور درآمد کسب کنم؟</h1>
         <div class="container">
             <div class="row">
-                <div class="col-md-3 pull-right">
+                <div class="col-sm-3 pull-right">
                     <div class="step">
                         <div class="icon">
                             <img src="{{ asset('../img/invitation/icons/bullhorn.png') }}">
@@ -257,7 +263,7 @@
                         <h4>از ابزارهای بازار یابی مجموعه استفاده کن</h4>
                     </div>
                 </div>
-                <div class="col-md-3 pull-right">
+                <div class="col-sm-3 pull-right">
                     <div class="step">
                         <div class="icon">
                             <img src="{{ asset('../img/invitation/icons/light_bulb.png') }}">
@@ -265,7 +271,7 @@
                         <h4>مهارت ها تو به مشتری هات ارائه کن</h4>
                     </div>
                 </div>
-                <div class="col-md-3 pull-right">
+                <div class="col-sm-3 pull-right">
                     <div class="step">
                         <div class="icon">
                             <img src="{{ asset('../img/invitation/icons/shop.png') }}">
@@ -273,7 +279,7 @@
                         <h4>فروشگاه شخصی تو بساز و محصولات تو ارائه بده</h4>
                     </div>
                 </div>
-                <div class="col-md-3 pull-right">
+                <div class="col-sm-3 pull-right">
                     <div class="step">
                         <div class="icon">
                             <img src="{{ asset('../img/invitation/icons/link.png') }}">
@@ -290,7 +296,7 @@
             <h1>یک سفر هزار مایلی با اولین قدم آغاز می شود</h1>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 pull-right">
+                    <div class="col-sm-3 pull-right">
                         <div class="step">
                             <div class="icon">
                                 <img src="{{ asset('../img/invitation/icons/check_status.png') }}">
@@ -298,7 +304,7 @@
                             <h4>ثبت نام کن و پروفایل تو ایجاد کن</h4>
                         </div>
                     </div>
-                    <div class="col-md-3 pull-right">
+                    <div class="col-sm-3 pull-right">
                         <div class="step">
                             <div class="icon">
                                 <img src="{{ asset('../img/invitation/icons/light_bulb.png') }}">
@@ -306,7 +312,7 @@
                             <h4>مهارت ها تو ثبت کن و در گروه ها عضو شو</h4>
                         </div>
                     </div>
-                    <div class="col-md-3 pull-right">
+                    <div class="col-sm-3 pull-right">
                         <div class="step">
                             <div class="icon">
                                 <img src="{{ asset('../img/invitation/icons/location.png') }}">
@@ -314,7 +320,7 @@
                             <h4>دوستان و مشتری ها تو شناسایی کن</h4>
                         </div>
                     </div>
-                    <div class="col-md-3 pull-right">
+                    <div class="col-sm-3 pull-right">
                         <div class="step">
                             <div class="icon">
                                 <img src="{{ asset('../img/invitation/icons/share.png') }}">
@@ -358,7 +364,7 @@
 <script src="{{ asset('js/jquery.downCount.js') }}"></script>
 <script class="source" type="text/javascript">
     $('.countdown').downCount({
-            date: '12/30/2015 12:00:00',
+            date: '01/19/2016 12:00:00',
             offset: +10
     });
 

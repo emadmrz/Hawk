@@ -38,7 +38,10 @@ class StreamRepository {
             if($stream->contentable_type == 'App\Post'){
                 $this->feed[] = $this->post($stream->contentable);
             }elseif($stream->contentable_type == 'App\Friend'){
-                $this->feed[] = $this->friend($stream->contentable);
+                $contentable = $stream->contentable;
+                if($contentable){
+                    $this->feed[] = $this->friend($contentable);
+                }
             }elseif($stream->contentable_type == 'App\Endorse'){
                 $this->feed[] = $this->endorse($stream->contentable);
             }elseif($stream->contentable_type == 'App\Article'){

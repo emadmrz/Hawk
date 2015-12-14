@@ -183,8 +183,6 @@ class IndexController extends Controller
 
     public function invitationRegister(Request $request){
         $this->validate($request, [
-            'first_name' => 'required|max:50',
-            'last_name' => 'required|max:50',
             'email' => 'required|unique:openings|max:100',
         ]);
         Opening::create($request->all());

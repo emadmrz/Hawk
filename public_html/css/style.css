@@ -970,3 +970,31 @@ footer.footer .social-media li.whatsapp a{
     content: 'aaa';
     font-size: 12px;
 }
+
+.top-user-nav {
+    list-style: none;
+    display: inline-block;
+    width: 32%;
+    border: none !important;
+    text-align: center;
+}
+.top-user-nav a{
+    border-radius:5px ;
+    padding: 15px;
+    position: relative;
+}
+.top-user-nav a img{
+    width: 100%;
+}
+.top-user-nav a i{
+    position: absolute;
+    right: 5px;
+    top: 60% !important;
+    font-size: 30px !important;
+}
+.top-user-nav a.star{
+    color: gold !important;
+}
+.top-user-nav span{
+    font-size: 12px;
+}
