@@ -65,6 +65,7 @@
                     <ul class="dropdown-menu" aria-labelledby="management_accountant_menu">
                         <li><a href="{{ route('profile.management.credit') }}" ><i class="fa fa-credit-card fa-1x"></i> حساب مالی من </a></li>
                         <li><a href="{{ route('profile.management.accountant') }}" ><i class="fa fa-bank fa-1x"></i> مدیریت پرداخت ها </a></li>
+                        <li><a href="{{ route('profile.management.addon.showcase.myRequest') }}" ><i class="fa fa-bullhorn fa-1x"></i>مدیریت تبلیغات پروفایل</a></li>
                         @if(count($user->coupons))
                             <li><a href="{{ route('profile.coupons.bought') }}" ><i class="fa fa-money fa-1x"></i> کوپن های من </a></li>
                         @endif

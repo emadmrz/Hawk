@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Advantage;
 use App\Info;
 use App\Province;
+use App\Skill;
 use App\University;
 use App\User;
 use Illuminate\Http\Request;
@@ -73,8 +74,14 @@ class ProfileController extends Controller
         dd($categories);
     }
 
-    public function test(){
-        session(['tracker' => 'emad emad']);
-//        echo session('tracker');
+    public function compare(Request $request){
+        if($request->session()->has('compare')){
+            $compare = $request->session()->get('compare');
+            $skills = Skill::whereIn('id', $compare['cases'])->get();
+            return view('profile.compare', compact('skills'))->with(['title'=>'مقایسه مهارت ها']);
+        }else{
+            return redirect(route('profile.me'));
+        }
+
     }
 }

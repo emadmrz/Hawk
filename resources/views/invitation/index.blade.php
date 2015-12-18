@@ -2,8 +2,10 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="description" content="Skillema یک شبکه اجتماعی تخصصی برای کاربران فارسی زبان، خصوصاً ایرانیان است. حضور در فضای مجازی و دارا بودن صفحات مجازی برای رونق کسب و کار کسانی که دارای مهارت های مشخصی بوده امری مهم است. از طرفی صاحبان مهارت و کسب و کار علاقه دارند تا در قالب یک سیستم یکپارچه وضعیت خود را ارزیابی نموده و جایگاه خود را نسبت به سایرین ارتقاء دهند. لذا بستری مناسب که پاسخگوی نیاز های فوق برای صاحبان فن و مهارت های کسب و کار باشد را در قالب شبکه اجتماعی تحت عنوان Skillema ایجاد شد.">
+    <meta name="keywords" content="skillema,skilema,skill,ability,social network,social media,شبکه اجتماعی,مهارت,توانایی,اسکیل ما,اسکلیما,مهارت ورزی,فروشگاه,فنی,مهندسی,شلوغش کن,استخدام,مهندس,تکنولوژی,گروه,چت,رضایت مشتری,فرهنگی و هنری,مدیریت و مشاوره,هوش مصنوعی,برنامه نویسی,لاراول,laravel,افزونه,کسب درآمد,کسب و کار,استارت آپ">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>به skillema خوش آمدید</title>
+    <title>شبکه اجتماعی مهارت های ایرانی</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/invitation.css') }}">
@@ -25,7 +27,7 @@
         </div>
         <div class="nav navbar navbar-right rtl">
             <div class="links">
-                <a class="text-muted" href="#">چرا به Skillema اعتماد کنم ؟</a>
+                {{--<a class="text-muted" href="#">چرا به Skillema اعتماد کنم ؟</a>--}}
             </div>
         </div>
     </div>
@@ -89,7 +91,7 @@
             <div class="big-logo">
                 <img src="{{ asset('img/logo/skillema.png') }}">
             </div>
-            <h1 class="site-name" >شبکه اجتماعی مهارت ایرانیان</h1>
+            <h1 class="site-name" >شبکه اجتماعی مهارت های ایرانی</h1>
             <div class="timer-container">
                 <div class="timer">
                     <ul class="countdown">
@@ -124,7 +126,7 @@
         <div class="container">
             <div class="in-info pull-right right">
                 <h1>یک شبکه اجتماعی هستیم</h1>
-                <a href="#" class="btn btn-violet btn-lg">بیشتر بدانید</a>
+                <a data-toggle="modal" data-target="#myModal" class="btn btn-violet btn-lg">بیشتر بدانید</a>
             </div>
             <div class="info">
                 <div class="text-center">
@@ -144,7 +146,7 @@
         <div class="container">
             <div class="in-info pull-left left">
                 <h1>بانک اطلاعاتی از مهارت های ارزشمند</h1>
-                <a href="#" class="btn btn-violet btn-lg">بیشتر بدانید</a>
+                <a data-toggle="modal" data-target="#myModal" class="btn btn-violet btn-lg">بیشتر بدانید</a>
             </div>
             <div class="info pull-right">
                 <div class="text-center">
@@ -202,7 +204,7 @@
         <div class="container">
             <div class="in-info pull-right right">
                 <h1>فروشگاه شخصی حرفه ایم</h1>
-                <a href="#" class="btn btn-violet btn-lg">بیشتر بدانید</a>
+                <a data-toggle="modal" data-target="#myModal" class="btn btn-violet btn-lg">بیشتر بدانید</a>
             </div>
             <div class="info">
                 <div class="text-center">
@@ -221,7 +223,7 @@
         <div class="container">
             <div class="in-info pull-left left">
                 <h1>راه های متعددی برای معرفی بهتر شما</h1>
-                <a href="#" class="btn btn-violet btn-lg">بیشتر بدانید</a>
+                <a data-toggle="modal" data-target="#myModal" class="btn btn-violet btn-lg">بیشتر بدانید</a>
             </div>
             <div class="info pull-right">
                 <div class="text-center">

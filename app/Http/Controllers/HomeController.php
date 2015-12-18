@@ -28,14 +28,17 @@ class HomeController extends Controller
         $this->profile_visit($user);
         $role = $user->roles->first()->slug;
         $advantages = Advantage::get();
-        $relatedUsers = $this->relatedUsersM($user);
+//        $relatedUsers = $this->relatedUsersM($user);
+        $relatedUsers = $this->showcase($user);
         $shop = $user->shop;
         if (count($shop)) {
             $advantage_shop = $user->shop->advantages()->lists('advantage_id')->toArray();
         } else {
             $advantage_shop = [];
         }
-        return view('home.profile', compact('user', 'role', 'advantages', 'advantage_shop', 'shop', 'relatedUsers'))->with(['title' => $user->first_name]);
+        $showcase_reserve = ($user->showcases()->where('approved', 0)->count())-(count($relatedUsers));
+        $stickies = Auth::user()->stickies()->where('profile_id', $user->id)->get();
+        return view('home.profile', compact('user', 'role', 'advantages', 'advantage_shop', 'shop', 'relatedUsers', 'showcase_reserve', 'stickies'))->with(['title' => $user->first_name]);
     }
 
     public function relatedUsers(User $user)
@@ -245,8 +248,13 @@ class HomeController extends Controller
                 //the profile has been visited during last hour
             }else{
                 ProfileVisitor::create(['user_id'=>$user->id, 'profile_id'=>$profile->id]);
+                $profile->info()->increment('num_visit');
             }
         }
+    }
+
+    public function showcase(User $user){
+        return $user->profileShowcases()->active()->get();
     }
 
 }

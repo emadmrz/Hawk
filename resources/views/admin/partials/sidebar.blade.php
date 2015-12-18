@@ -12,93 +12,138 @@
                 </div>
                 <!-- /input-group -->
             </li>
+
             <li>
-                <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                <a href="{{ route('admin.index') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
+
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                <a href="{{ route('admin.users.list') }}"><i class="fa fa-user fa-fw"></i> Users Managment</a>
+            </li>
+
+            @if(isset($user))
+            <li>
+                <a href="#"><img class="img-rounded" style="height: 20px; width: 20px" src="{{ asset('img/persons/'.$user->avatar) }}"> {{ $user->username }}<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="flot.html">Flot Charts</a>
+                        <a href="#">Info</a>
                     </li>
                     <li>
-                        <a href="morris.html">Morris.js Charts</a>
+                        <a href="#">Skills</a>
+                    </li>
+                    <li>
+                        <a href="#">Posts</a>
+                    </li>
+                    <li>
+                        <a href="#">Articles</a>
+                    </li>
+                    <li>
+                        <a href="#">Problems</a>
+                    </li>
+                    <li>
+                        <a href="#">Comments & Answers</a>
+                    </li>
+                    <li>
+                        <a href="#">Addons</a>
+                    </li>
+                    <li>
+                        <a href="#">Payment</a>
+                    </li>
+                    <li>
+                        <a href="#">Credit Managment</a>
+                    </li>
+                    @if(count($user->shop))
+                        <li>
+                            <a href="#">Shop</a>
+                        </li>
+                    @endif
+                    <li>
+                        <a href="#">Friends</a>
+                    </li>
+                    <li>
+                        <a href="#">Shares</a>
+                    </li>
+                    <li>
+                        <a href="#">Showcases</a>
+                    </li>
+                    <li>
+                        <a href="#">Files</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            @endif
+
             <li>
-                <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-            </li>
-            <li>
-                <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-cogs fa-fw"></i> Setting<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="panels-wells.html">Panels and Wells</a>
+                        <a href="{{ route('admin.setting.categories') }}">Categories</a>
                     </li>
                     <li>
-                        <a href="buttons.html">Buttons</a>
+                        <a href="{{ route('admin.setting.provinces') }}">Provinces & Cities</a>
                     </li>
                     <li>
-                        <a href="notifications.html">Notifications</a>
-                    </li>
-                    <li>
-                        <a href="typography.html">Typography</a>
-                    </li>
-                    <li>
-                        <a href="icons.html"> Icons</a>
-                    </li>
-                    <li>
-                        <a href="grid.html">Grid</a>
+                        <a href="{{ route('admin.setting.universities') }}">Universities</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+
             <li>
-                <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                <a href="{{ route('admin.report.show') }}"><i class="fa fa-bug fa-fw"></i> Reports</a>
+            </li>
+
+            <li>
+                <a href="{{ route('admin.feedback.show') }}"><i class="fa fa-feed fa-fw"></i> Feedback</a>
+            </li>
+
+            <li>
+                <a href="#"><i class="fa fa-bar-chart fa-fw"></i> Visitors<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">Second Level Item</a>
+                        <a href="{{ route('admin.visitors.list') }}"> Visitors List</a>
                     </li>
                     <li>
-                        <a href="#">Second Level Item</a>
-                    </li>
-                    <li>
-                        <a href="#">Third Level <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li>
-                                <a href="#">Third Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level Item</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-third-level -->
+                        <a href="{{ route('admin.visitors.diagram') }}"> Visitors Diagram</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+
             <li>
-                <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-money fa-fw"></i> Accountant<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="blank.html">Blank Page</a>
+                        <a href="{{ route('admin.settle.requests') }}"> Settlement Requests</a>
                     </li>
                     <li>
-                        <a href="login.html">Login Page</a>
+                        <a href="{{ route('admin.settle.index') }}"> Settlement Events List</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settle.create') }}"> New Settlement Event</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+
+            <li>
+                <a href="#"><i class="fa fa-user-secret fa-fw"></i> Admins Management<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ route('admin.admins.list') }}">Admins List</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.admins.create') }}">Create New Admin</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
+            <li>
+                <a href="#"><i class="fa fa-envelope-o fa-fw"></i> Invitations</a>
+            </li>
+
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

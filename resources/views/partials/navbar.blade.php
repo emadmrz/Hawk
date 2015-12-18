@@ -227,6 +227,21 @@
     </div>
 </nav>
 
+<div class="compare">
+    <div class="container">
+        @if(isset($compares))
+                <div class="title text-muted">مقایسه مهارت کاربران :</div>
+            @foreach($compares as $compare)
+                <div class="case" > <span><img class="img-rounded" src="{{ asset('img/persons/'.$compare->user->avatar) }}" ></span> {{ $compare->user->username }}({{ $compare->title }}) </div>
+            @endforeach
+            <div class="action pull-left">
+                <a href="{{ route('profile.compare') }}" class="btn btn-xs btn-violet">مقایسه کن</a>
+                <a href="{{ route('home.compare.cancel') }}" class="btn btn-xs btn-default">انصراف</a>
+            </div>
+        @endif
+    </div>
+</div>
+
 @else
 
     <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">

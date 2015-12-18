@@ -38,4 +38,8 @@ class UserController extends Controller
         return redirect(route('admin.users.list'));
     }
 
+    public function select(User $user){
+        return view('admin.users.management', compact('user'))->with(['title'=>$user->username]);
+    }
+
 }

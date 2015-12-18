@@ -40,6 +40,7 @@ Route::get('/socket', function(){
 Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
     Route::get('', ['middleware'=>['auth'], 'as'=>'home', 'uses'=>'HomeController@index']);
     Route::get('/profile/{profile}', ['as'=>'profile', 'uses'=>'HomeController@profile']);
+    Route::get('/profile/{profile}/showcase', ['as'=>'profile.showcase', 'uses'=>'ShowcaseController@create']);
     Route::get('/profile/{profile}/article', ['as'=>'articles', 'uses'=>'ArticleController@otherList']);
     Route::get('/profile/{profile}/article/{article}/preview', ['as'=>'article.preview', 'uses'=>'ArticleController@otherPreview']);
     Route::get('/profile/{profile}/post/{post}/preview',['as'=>'post.preview', 'uses'=>'PostController@otherPreview']);
@@ -82,6 +83,12 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
     });
 
     Route::get('/profile/{profile}/skill',['as'=>'skill.list', 'uses'=>'SkillController@index']);
+    Route::get('/profile/{profile}/skill/{skill}/compare',['as'=>'profile.skill.compare', 'uses'=>'SkillController@compare']);
+    Route::get('/compare/cancel',['as'=>'compare.cancel', 'uses'=>'SkillController@compareCancel']);
+
+    Route::post('/profile/{profile}/sticky/store',['as'=>'profile.sticky.store', 'uses'=>'StickyController@store']);
+    Route::post('/profile/sticky/{sticky}/update',['as'=>'profile.sticky.update', 'uses'=>'StickyController@update']);
+    Route::delete('/profile/sticky/{sticky}/delete',['as'=>'profile.sticky.delete', 'uses'=>'StickyController@delete']);
 
 });
 
@@ -157,7 +164,7 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
     Route::post('/post/{post}/comment/{comment}/delete',['as'=>'post.comment.delete', 'uses'=>'CommentController@postDelete']);
     Route::post('/post/{post}/comment/{comment}/update',['as'=>'post.comment.update', 'uses'=>'CommentController@postUpdate']);
 
-    Route::get('/test','ProfileController@test');
+    Route::get('/compare',['as'=>'compare', 'uses'=>'ProfileController@compare']);
 
     Route::group(['prefix' => 'skill', 'as'=>'skill.'], function () {
         Route::get('/',['as'=>'list', 'uses'=>'SkillController@index']);
@@ -373,6 +380,11 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('settle/create',['as'=>'settle.create','uses'=>'SettleController@create']);
         Route::post('settle/create',['as'=>'settle.store','uses'=>'SettleController@store']);
 
+        Route::get('/addon/showcase/myRequest',['as'=>'addon.showcase.myRequest', 'uses'=>'ShowcaseController@myRequest']);
+        Route::get('/addon/showcase/requestToMe',['as'=>'addon.showcase.requestToMe', 'uses'=>'ShowcaseController@requestToMe']);
+        Route::get('/addon/showcase/active',['as'=>'addon.showcase.active', 'uses'=>'ShowcaseController@activeRequest']);
+        Route::get('/addon/showcase/{showcase}/approve',['as'=>'addon.showcase.approve', 'uses'=>'ShowcaseController@approved']);
+
     });
 
     /**
@@ -449,7 +461,8 @@ Route::controllers([
  * Created by Emad Mirzaie on 31/08/2015.
  * Admin panel route group with admin prefix
  */
-Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
+//Route::group(['middleware'=>['auth', 'role:admin'], 'prefix' => 'admin', 'as'=>'admin.'], function () {
+Route::group(['middleware'=>['auth'], 'prefix' => 'admin', 'as'=>'admin.'], function () {
     /*
      * Create By Dara on 11/9/2015
      * visitor route group
@@ -510,7 +523,7 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::put('/{admin}',['as'=>'update','uses'=>'Admin\AdminController@update']);
     });
 
-    Route::get('/','Admin\DashboardController@index');
+    Route::get('/',['as'=>'index', 'uses'=>'Admin\DashboardController@index']);
     Route::get('test','Admin\DashboardController@test');
 
     /**
@@ -522,6 +535,7 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
         Route::put('/{user}',['as'=>'update', 'uses'=>'Admin\UserController@update']);
         Route::get('/{user}/delete',['as'=>'delete', 'uses'=>'Admin\UserController@delete']);
         Route::get('/{user}/edit',['as'=>'edit', 'uses'=>'Admin\UserController@edit']);
+        Route::get('/{user}/select',['as'=>'select', 'uses'=>'Admin\UserController@select']);
     });
 
     Route::group(['prefix' => 'setting', 'as'=>'setting.'], function () {
@@ -580,7 +594,6 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
     Route::group(['prefix'=>'post','as'=>'post.'],function(){
         Route::get('/{profile?}',['as'=>'show','uses'=>'Admin\PostManagementController@index']);
         Route::get('/change/{post}',['as'=>'change','uses'=>'Admin\PostManagementController@changeStatus']);
-
     });
 
     /**
@@ -590,7 +603,6 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.'], function () {
     Route::group(['prefix'=>'article','as'=>'article.'],function(){
         Route::get('/{profile?}',['as'=>'show','uses'=>'Admin\ArticleManagementController@index']);
         Route::get('/change/{article}',['as'=>'change','uses'=>'Admin\ArticleManagementController@changeStatus']);
-
     });
 
 });
@@ -659,6 +671,11 @@ Route::group(['prefix' => 'store', 'as'=>'store.'], function () {
     Route::get('profit/buy',['as'=>'profit.buy','uses'=>'StoreController@profitBuy']);
     Route::any('profit/buy/callback',['as'=>'profit.buy.callback', 'uses'=>'StoreController@profitCallback']);
     Route::any('profit/comment',['as'=>'profit.comment', 'uses'=>'CommentController@profit']);
+
+    Route::get('showcase/{showcase}',['as'=>'showcase','uses'=>'StoreController@showcase']);
+    Route::get('showcase/{showcase}/buy',['as'=>'showcase.buy','uses'=>'StoreController@showcaseBuy']);
+    Route::any('showcase/buy/callback',['as'=>'showcase.buy.callback', 'uses'=>'StoreController@showcaseCallback']);
+    Route::any('showcase/comment',['as'=>'showcase.comment', 'uses'=>'CommentController@showcase']);
 
 });
 

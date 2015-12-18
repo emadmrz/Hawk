@@ -392,4 +392,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Share');
     }
 
+    public function showcases(){
+        return $this->hasMany('App\Showcase','user_id','id');
+    }
+
+    public function profileShowcases(){
+        return $this->hasMany('App\Showcase','profile_id','id');
+    }
+
+    public function stickies(){
+        return $this->hasMany('App\Sticky');
+    }
+
 }

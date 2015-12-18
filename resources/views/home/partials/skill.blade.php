@@ -432,6 +432,7 @@
             @else
                 <span class="btn btn-success btn-xs pull-left skill-status">قابل ارائه</span>
             @endif
+            <a href="{{ route('home.profile.skill.compare', [$user->id, $skill->id]) }}" class="btn btn-primary btn-xs pull-left skill-status">مقایسه</a>
             {!! Form::open(['route'=>['profile.skill.recommendation.store', $skill->id], 'method'=>'post', 'id'=>'add_recommendation_form']) !!}
                 <div class="recommendation-form">
                     <div class="media">

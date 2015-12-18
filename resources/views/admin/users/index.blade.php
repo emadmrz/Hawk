@@ -37,6 +37,7 @@
                             <td>
                                 <a href="{{ route('admin.users.edit', ['user'=> $user->id ]) }}" class="btn btn-info btn-sm">edit</a>
                                 <a data-delete-confirm href="{{ route('admin.users.delete', ['user'=> $user->id ]) }}" class="btn btn-danger btn-sm">del</a>
+                                <a href="{{ route('admin.users.select', ['user'=> $user->id ]) }}" class="btn btn-default btn-sm">Select</a>
                             </td>
                         </tr>
                     @endforeach

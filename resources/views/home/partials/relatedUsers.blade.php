@@ -3,19 +3,19 @@
         <div class="col-sm-3">
             <div class="search-card">
                 <div class="avatar">
-                    <img src="{{asset('img/persons/')}}/{{$user->avatar}}">
+                    <img src="{{asset('img/persons/')}}/{{$user->user->avatar}}">
                 </div>
                 <div class="name">
-                    {{$user->username}}
+                    {{$user->user->username}}
                 </div>
                 <div class="rate">
                     <div class="user-rate ltr" data-id="1" data-rating="2.2"></div>
                 </div>
                 <div class="about-me">
-                    {{$user->description}}
+                    {{$user->user->description}}
                 </div>
                 <div class="action text-center">
-                    <a href="{{route('home.profile',$user->id)}}" type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </a>
+                    <a href="{{route('home.profile',$user->user_id)}}" type="button" class="btn btn-violet btn-sm "><i class="fa icon-user-1 fa-lg" ></i> پروفایل </a>
                 </div>
             </div>
         </div>
