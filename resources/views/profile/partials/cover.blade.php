@@ -42,7 +42,7 @@
                 <li><a href="{{ route('home.home') }}"><i class="fa fa-home"></i> خانه</a></li>
                 <li><a href="{{ route('profile.me') }}"><i class="fa fa-briefcase"></i> پروفایل</a></li>
                 <li><a href="{{ route('profile.skill.list') }}"><i class="fa fa-trophy"></i> مهارت ها</a></li>
-                <li><a href="{{route('profile.dashboard.index')}}"><i class="fa fa-pie-chart"></i> داشبورد</a></li>
+                <li><a href="#"><i class="fa fa-pie-chart"></i> داشبورد</a></li>
                 <li><a href="{{ route('profile.friends') }}"><i class="fa fa-users"></i> دوستان</a></li>
                 <li class="dropdown">
                     <a id="post_article" href="#" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa  fa-pencil-square-o"></i> نگاره ها </a>

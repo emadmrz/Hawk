@@ -349,7 +349,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * rate-user relationships
      */
     public function rate(){
-        return $this->morphMany('App\Rate','parentable');
+        return $this->morphOne('App\Rate','parentable');
     }
 
     /**
