@@ -113,6 +113,15 @@ Route::group(['prefix' => 'group', 'as' => 'group.'], function () {
  */
 Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','email'] ], function () {
     Route::get('/',['as'=>'me', 'uses'=>'ProfileController@index']);
+
+    /**
+     * Created By Dara on 16/12/2015
+     * dashboard route group
+     */
+    Route::group(['prefix'=>'dashboard','as'=>'dashboard.'],function(){
+        Route::get('/',['as'=>'index','uses'=>'DashboardController@index']);
+    });
+
     Route::post('/description','ProfileController@description');
     Route::delete('/deleteAvatar','CoverController@deleteAvatar');
     Route::delete('/deleteCover','CoverController@deleteCover');
