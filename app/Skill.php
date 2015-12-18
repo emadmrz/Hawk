@@ -87,7 +87,7 @@ class Skill extends Model
      * rate - skill relationship
      */
     public function rate(){
-        return $this->morphMany('App\Rate','parentable');
+        return $this->morphOne('App\Rate','parentable');
     }
 
     public function getShamsiCreatedAtAttribute(){

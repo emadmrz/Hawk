@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap-editable.css') }}">
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
-    <link href="{{ asset('css/admin/morris.css') }}" rel="stylesheet">
 
 
 </head>
