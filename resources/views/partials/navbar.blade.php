@@ -134,67 +134,67 @@
                     <a  id="top_nav_dropdown" href="#" data-target="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-th fa-2x"></i></a>
                     <ul class="dropdown-menu" aria-labelledby="top_nav_dropdown">
                         <li class="top-user-nav">
-                            <a href="#" class="star">
+                            <a href="{{route('top.result',['type'=>1,'sort'=>1,'category'=>1])}}" class="star">
                                 <img src="{{ asset('img/icons/users.png') }}">
                                 <i class="fa fa-star fa-2x"></i>
                             </a>
                             <span>پر ستاره ترین</span>
                         </li>
                         <li class="top-user-nav">
-                            <a href="#">
+                            <a href="{{route('top.result',['type'=>1,'sort'=>2,'category'=>1])}}">
                                 <img src="{{ asset('img/icons/users.png') }}">
                                 <i class="fa fa-area-chart fa-2x  text-primary"></i>
                             </a>
                             <span>پربازدیدترین</span>
                         </li>
                         <li class="top-user-nav">
-                            <a href="#" class="star">
+                            <a href="{{route('top.result',['type'=>1,'sort'=>3,'category'=>1])}}" class="star">
                                 <img src="{{ asset('img/icons/users.png') }}">
                                 <i class="fa fa-trophy fa-2x"></i>
                             </a>
                             <span>پر مشتری ترین</span>
                         </li>
                         <li class="top-user-nav">
-                            <a href="#" class="star">
+                            <a href="{{route('top.result',['type'=>1,'sort'=>5,'category'=>1])}}" class="star">
                                 <img src="{{ asset('img/icons/users.png') }}">
                                 <i class="fa fa-diamond fa-2x"></i>
                             </a>
                             <span>پیشنهاد ویژه</span>
                         </li>
                         <li class="top-user-nav">
-                            <a href="#" class="star">
+                            <a href="{{route('top.result',['type'=>1,'sort'=>4,'category'=>1])}}" class="star">
                                 <img src="{{ asset('img/icons/users.png') }}">
                                 <i class="fa fa-user fa-2x"></i>
                             </a>
                             <span>جدید ترین ها</span>
                         </li>
                         <li class="top-user-nav">
-                            <a href="#">
+                            <a href="{{route('top.result',['type'=>2,'sort'=>6,'category'=>1])}}">
                                 <img src="{{ asset('img/icons/products.png') }}">
                                 <i class="fa fa-heart fa-2x text-danger"></i>
                             </a>
                             <span>محبوب ترین ها</span>
                         </li>
                         <li class="top-user-nav">
-                            <a href="#">
+                            <a href="{{route('top.result',['type'=>2,'sort'=>7,'category'=>1])}}">
                                 <img src="{{ asset('img/icons/products.png') }}">
                                 <i class="fa fa-credit-card fa-2x text-primary"></i>
                             </a>
                             <span>پرفروش ترین ها</span>
                         </li>
                         <li class="top-user-nav">
-                            <a href="#">
+                            <a href="{{route('top.result',['type'=>2,'sort'=>8,'category'=>1])}}">
                                 <img src="{{ asset('img/icons/products.png') }}">
                                 <i class="fa fa-area-chart fa-2x text-primary"></i>
                             </a>
                             <span>پر بازدیدترین ها</span>
                         </li>
                         <li class="top-user-nav">
-                            <a href="#">
+                            <a href="{{route('top.result',['type'=>2,'sort'=>9,'category'=>1])}}">
                                 <img src="{{ asset('img/icons/products.png') }}">
                                 <i class="fa fa-truck fa-2x text-danger"></i>
                             </a>
-                            <span>پر بازدیدترین ها</span>
+                            <span>جدید ترین ها</span>
                         </li>
                         <a href="#" class="btn btn-violet btn-block">مشاهده برترین های skillema</a>
                     </ul>
