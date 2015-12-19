@@ -1,5 +1,9 @@
 @extends('home.layout')
 
+@section('sticky')
+    @include('home.partials.sticky')
+@endsection
+
 @section('header')
     @include('partials.navbar')
     @include('home.partials.cover')
@@ -24,6 +28,7 @@
     @include('home.partials.latestArticles')
     @include('home.partials.latestPosts')
     @include('home.partials.friends')
+    @include('home.partials.showcase')
 @endsection
 
 @section('full')
@@ -32,6 +37,7 @@
 
 @section('script')
     <script src="{{ asset('js/raterater.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=fa"></script>
     @if($role == 'legal')
     <script>
@@ -103,6 +109,11 @@
                 numStars: 5
             } );
         });
+
+        $(function() {
+            $( 'div.sticky-note' ).draggable();
+        });
+
 
     </script>
 

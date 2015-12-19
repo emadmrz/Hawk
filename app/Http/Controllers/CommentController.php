@@ -348,5 +348,14 @@ class CommentController extends Controller
         }
     }
 
+    public function showcase(Request $request){
+        $user = Auth::user();
+        $showcase = Addon::showcase()->first();
+        $showcase->comments()->create(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $showcase->update(['num_comment'=>$showcase->comments()->count()]);
+        Flash::success('comment sent');
+        return redirect()->back();
+    }
+
 
 }

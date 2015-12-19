@@ -4,6 +4,11 @@
         <div class="wrapper" id="coverContainer">
             <div  class="image">
                 <img id="cover-image" src="{{ asset('img/cover/'.$user->banner) }}" alt="people">
+                <div class="avatar-operations">
+                    {!! Form::open(['route'=>['home.profile.sticky.store', $user->id], 'data-remote']) !!}
+                        <button type="submit"><i class='fa fa-paperclip'></i><span style="font-size: 12px; margin-right: 3px">پرچسب گذاری</span></button>
+                    {!! Form::close() !!}
+                </div>
                 <div class="description">
                     @if(!empty($user->description))
                         {!! Form::text('description', $user->description) !!}

@@ -12,12 +12,15 @@ use App\Events\profitPurchased;
 use App\Events\questionnairePurchased;
 use App\Events\relaterPurchased;
 use App\Events\shopPurchased;
+use App\Events\showcasePurchased;
 use App\Events\storagePurchased;
 use App\Payment;
 use App\Profit;
 use App\Repositories\FriendRepository;
+use App\Showcase;
 use App\Storage;
 use App\Stream;
+use App\User;
 use Artisaninweb\SoapWrapper\Facades\SoapWrapper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -563,6 +566,56 @@ class StoreController extends Controller
 
 
 //    CONFLICTS SOLVE
+
+    public function showcase(Showcase $vitrin){
+        $user = $vitrin->user;
+        $profile = $vitrin->profile;
+        $visit_rate = $profile->info->num_visit/(Carbon::parse($profile->created_at)->month+1);
+        $showcase = Addon::showcase()->first();
+        $price = $this->showcasePrice($profile);
+        return view('store.showcase',compact('user','profile', 'showcase', 'visit_rate', 'price', 'vitrin'))->with(['title'=>'تبلیغات در پروفایل']);
+    }
+
+    public function showcasePrice(User $profile){
+        $visit_rate = $profile->info->num_visit/(Carbon::parse($profile->created_at)->month+1);
+        return $visit_rate*Config::get('addonShowcase.per_visit_rate')+Config::get('addonShowcase.base_price');
+    }
+
+    public function showcaseBuy(Request $request, Showcase $showcase){
+        $this->validate($request,[
+            'payment_gate'=>'required|in:pasargad,mellat'
+        ]);
+        $user=$showcase->user;
+        $profile = $showcase->profile;
+        $price=$this->showcasePrice($profile);
+        $price = round($price - $price*Config::get('addonShowcase.discount'));
+        $callback = route('store.showcase.buy.callback');
+        $description = 'تبلیغات در 7روفایل';
+        $order=$showcase->payment()->create([
+            'user_id'=>$user->id,
+            'amount'=>$price,
+            'description'=>$description,
+            'gateway'=>$request->input('payment_gate'),
+            'status'=>0
+        ]);
+        $orderId=$order->id;
+        $this->pay($price, $callback,$orderId,$description,$request->input('payment_gate'));
+    }
+
+    public function showcaseCallback(Request $request){
+        $payment = Payment::findOrFail($request->input('order_id'));
+        $this->verify($request->input('au'), $payment->amount, $payment->gateway);
+        if(true){ //!empty($this->verify) and $this->verify == 1
+            $payment->update(['au'=>$request->input('au')]); // tracking code
+            Event::fire(new showcasePurchased($payment));
+            $this->stream($payment);
+            Flash::success('showcase added successfully');
+            return redirect(route('store.index'));
+        }else{
+            Flash::error($this->errorCode($this->verify));
+            return redirect(route('store.showcase', $payment->itemable_id));
+        }
+    }
 
     public function pay($amount,$callback,$orderId,$description,$gate){
         SoapWrapper::add(function ($service) {

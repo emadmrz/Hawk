@@ -22,6 +22,8 @@
 </head>
 <body>
 
+@yield('sticky')
+
 <header id="profile-header" class="profile-header">
 
     @yield('header')

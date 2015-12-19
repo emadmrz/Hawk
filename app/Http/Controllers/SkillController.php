@@ -703,4 +703,36 @@ class SkillController extends Controller
         $user->usage->add(filesize(public_path().'/img/files/'.$user->id.'/'.$base_name.'.'.$extension)/(1024*1024));// storage add
 
     }
+
+    public function compare(User $user ,Skill $skill, Request $request){
+        if($request->session()->has('compare')){
+            $compare = $request->session()->get('compare');
+            $request->session()->forget('compare');
+            if(count($compare['cases']) == 1){
+                $cases = $compare['cases'];
+                if(!in_array($skill->id, $cases)){
+                    array_push($cases, $skill->id);
+                    $request->session()->put(['compare'=>[ 'cases'=>$cases ]]);
+                }
+            }
+        }else{
+            $request->session()->put(['compare'=>['cases'=>[$skill->id] ]]);
+        }
+        return redirect()->back();
+    }
+
+    public function compareCancel(Request $request){
+        if($request->has('item')){
+            $item = $request->has('item');
+            $compare = $request->session()->get('compare');
+            $request->session()->forget('compare');
+            $cases = $compare['cases'];
+            if (($key = array_search($item, $cases)) !== false) {
+                unset($cases[$key]);
+            }
+            return redirect()->back();
+        }
+        $request->session()->forget('compare');
+        return redirect()->back();
+    }
 }
