@@ -8,7 +8,7 @@ use Morilog\Jalali\Facades\jDate;
 class Skill extends Model
 {
     protected $table = 'skills';
-    protected $fillable = ['user_id', 'title', 'description', 'requirements', 'sub_category_id', 'my_rate', 'status','rate'];
+    protected $fillable = ['user_id', 'title', 'description', 'requirements', 'sub_category_id', 'my_rate', 'status','rate','active'];
 
     public function user(){
         return $this->belongsTo('App\User');

@@ -200,6 +200,31 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+     * Created By Dara on 20/12/2015
+     * user-article admin control
+     */
+    public function adminIndex(User $user){
+        $articles=$user->articles()->paginate(20);
+        return view('admin.article.index',compact('articles','user'))->with(['title'=>'User Article Management']);
+    }
+
+    public function adminChange(User $user,Article $article){
+        if($article->active==0){ //the article is already disabled
+            $article->update(['active'=>1]);
+            Flash::success(trans('admin/messages.articleActivate'));
+        }elseif($article->active==1){ //the article is already enabled
+            $article->update(['active'=>0]);
+            Flash::success(trans('admin/messages.articleBan'));
+        }
+        return redirect()->back();
+    }
+
+    public function adminDelete(User $user,Article $article){
+        $article->delete();
+        return redirect()->back();
+    }
+
 
 
 

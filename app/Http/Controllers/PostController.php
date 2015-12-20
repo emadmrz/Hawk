@@ -153,4 +153,29 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * Created By Dara on 20/12/2015
+     * admin-post management
+     */
+    public function adminIndex(User $user){
+        $posts=$user->posts()->paginate(20);
+        return view('admin.post.index',compact('posts','user'))->with(['title'=>'User Post Management']);
+    }
+
+    public function adminChange(User $user,Post $post){
+        if($post->active==0){ //the post is already disabled
+            $post->update(['active'=>1]);
+            Flash::success(trans('admin/messages.postActivate'));
+        }elseif($post->active==1){ //the post is already enabled
+            $post->update(['active'=>0]);
+            Flash::success(trans('admin/messages.postBan'));
+        }
+        return redirect()->back();
+    }
+
+    public function adminDelete(User $user,Post $post){
+        $post->delete();
+        return redirect()->back();
+    }
+
 }

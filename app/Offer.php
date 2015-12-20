@@ -9,7 +9,7 @@ use Morilog\Jalali\Facades\jDate;
 class Offer extends Model
 {
     protected $table = 'offers';
-    protected $fillable = ['status', 'paid', 'user_id'];
+    protected $fillable = ['status', 'paid', 'user_id','active'];
 
     public function user()
     {

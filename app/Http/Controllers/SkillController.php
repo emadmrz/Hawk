@@ -735,4 +735,13 @@ class SkillController extends Controller
         $request->session()->forget('compare');
         return redirect()->back();
     }
+
+    /**
+     * Created By Dara on 20/12/2015
+     * user-skill admin control
+     */
+    public function adminIndex(User $user){
+        $skills=$user->skills()->paginate(20);
+        return view('admin.skill.index',compact('skills','user'))->with(['title'=>'User Skill Management']);
+    }
 }
