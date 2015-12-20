@@ -84,16 +84,9 @@ class RateController extends Controller
 
             //insert the user star in rates table
             $userRate=$user->rate();
-            if($userRate->exists()){
-                $user->update([
-                    'rate'=>$userStar
-                ]);
-            }else{
                 $userRate->create([
                     'rate'=>$userStar
                 ]);
-            }
-            
         } //end of users foreach
         return redirect()->back();
     }
@@ -165,20 +158,19 @@ class RateController extends Controller
 
             //insert the skill rate in rates table
             $skillRate=$skill->rate();
-            if($skillRate->exists()){
-                $skillRate->update([
-                    'rate'=>$finalSkillPoint
-                ]);
-            }else{
                 $skillRate->create([
                     'rate'=>$finalSkillPoint
                 ]);
-            }
 
         }//end of skills foreach
 
         //get max skill rate for the specified user
-        $maxSkillStar[$user->id]=max($skillStar);
+        if(is_array($maxSkillStar) && !empty($maxSkillStar)){
+            $maxSkillStar[$user->id]=max($skillStar);
+        }else{
+            $maxSkillStar=1;
+        }
+
         return $maxSkillStar;
     }
 

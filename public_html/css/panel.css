@@ -96,6 +96,18 @@ main{
 .cover.profile .wrapper .image  .avatar-operations:hover{
     background-color: rgba(0, 0, 0, 0.4);
 }
+.cover.profile .wrapper .image  .note{
+    position: absolute;
+    z-index: 100;
+    top: 5%;
+    left: 10px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    text-align: center;
+    padding: 2px 10px;
+    border-radius: 5px;
+}
 .cover.profile .wrapper .image img {
     width: 100%;
 }
@@ -3403,4 +3415,90 @@ sup {
 }
 .history_like .dislike:hover button{
     color: #c40000;
+}
+
+.sticky-note{
+    position: absolute;
+    left: 20%;
+    top: 15%;
+    z-index: 300;
+    padding: 0px;
+    padding-top: 30px;
+    background-color: #d8ca78;
+
+    border:0;
+    border-radius:3px;
+
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+    overflow:hidden;
+    transition:box-shadow 0.5s ease;
+
+    -webkit-transform:rotate(-6deg);
+    -o-transform:rotate(-6deg);
+    -moz-transform:rotate(-6deg);
+    -moz-transition:-moz-transform .15s linear;
+    -o-transition:-o-transform .15s linear;
+    -webkit-transition:-webkit-transform .15s linear;
+    cursor: pointer;
+}
+textarea.sticky  {
+    display: block;
+    padding:25px 25px 40px;
+    margin:0 auto 0 auto;
+    width:250px;
+    height:250px;
+    /*font:20px 'Gloria Hallelujah', cursive;*/
+    line-height:1.5;
+    background: -webkit-linear-gradient(#F9EFAF, #F7E98D);
+    background: -moz-linear-gradient(#F9EFAF, #F7E98D);
+    background: -o-linear-gradient(#F9EFAF, #F7E98D);
+    background: -ms-linear-gradient(#F9EFAF, #F7E98D);
+    background: linear-gradient(#F9EFAF, #F7E98D);
+    border: 0;
+    font-smoothing:subpixel-antialiased;
+    max-width:520px;
+    max-height:250px;
+    cursor: text;
+}
+
+.sticky-note:hover {
+    box-shadow:0 5px 8px rgba(0,0,0,0.15);
+    -webkit-transform:rotate(0deg);
+    -o-transform:rotate(0deg);
+    -moz-transform:rotate(0deg);
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -o-transform: scale(1.05);
+}
+.sticky-note:focus {
+    box-shadow:0 5px 12px rgba(0,0,0,0.2); outline:none;
+    -webkit-transform:rotate(0deg);
+    -o-transform:rotate(0deg);
+    -moz-transform:rotate(0deg);
+}
+
+textarea.sticky:hover, textarea.sticky:focus{
+    border: 0;
+    outline: 0;
+}
+
+.sticky-note button.save{
+    position: absolute;
+    bottom: 5px;
+    left: 25px;
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+    z-index: 1;
+}
+.sticky-note button.delete{
+    position: absolute;
+    bottom: 5px;
+    left: 2px;
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+    z-index: 1;
 }

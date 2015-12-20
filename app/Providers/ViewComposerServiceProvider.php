@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Advantage;
 use App\Repositories\EducationRepository;
 use App\Repositories\ProfileProgressRepository;
+use App\Skill;
 use App\University;
 use App\User;
 use Illuminate\Http\Request;
@@ -46,6 +47,11 @@ class ViewComposerServiceProvider extends ServiceProvider
 
         view()->composer('partials.navbar', function($view){
             if(Auth::check()){
+                if(session()->has('compare')){
+                    $compare = session()->get('compare');
+                    $skills = Skill::whereIn('id', $compare['cases'])->get();
+                    $view->with(['compares'=>$skills]);
+                }
                 $view->with(['authUser'=>Auth::user()]);
             }
         });

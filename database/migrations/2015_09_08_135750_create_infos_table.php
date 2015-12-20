@@ -22,6 +22,7 @@ class CreateInfosTable extends Migration
             $table->string('address')->nullable();
             $table->integer('province_id')->unsigned()->nullable();
             $table->integer('city_id')->unsigned()->nullable();
+            $table->integer('num_visit')->unsigned()->default(0);
             $table->timestamps();
 
 

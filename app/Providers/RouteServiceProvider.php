@@ -68,6 +68,8 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('poll' , 'App\Poll');
         $router->model('questionnaire' , 'App\Questionnaire');
         $router->model('coupon_user' , 'App\CouponUser');
+        $router->model('showcase' , 'App\Showcase');
+        $router->model('sticky' , 'App\Sticky');
         /**
          * Created By Dara on 22/10/2015
          */

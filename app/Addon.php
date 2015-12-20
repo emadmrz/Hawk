@@ -54,4 +54,8 @@ class Addon extends Model
         $query->where('name','profit');
     }
 
+    public function scopeShowcase($query){
+        $query->where('name','showcase');
+    }
+
 }
