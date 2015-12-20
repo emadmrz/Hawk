@@ -16,6 +16,8 @@ use App\Endorse;
 use App\Post;
 use App\Problem;
 use App\Recommendation;
+use App\Showcase;
+use App\Stream;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,6 +54,8 @@ class NotificationRepository {
                 $this->notification[] = $this->recommendation($stream->contentable, $user);
             }elseif($stream->contentable_type=='App\Corporation'){
                 $this->notification[]=$this->corporation($stream->contentable);
+            }elseif($stream->contentable_type=='App\Showcase'){
+                $this->notification[]=$this->showcaseProccess($stream->contentable, $stream);
             }
             elseif($stream->contentable_type == 'App\Comment'){
                 $comment = $stream->contentable;
@@ -59,8 +63,8 @@ class NotificationRepository {
                     $this->notification[] = $this->postComment($comment->commentable, $comment);
                 }elseif($comment->commentable_type == 'App\Article'){
                 $this->notification[] = $this->articleComment($comment->commentable, $comment);
-                    }
                 }
+            }
             }elseif($stream->parentable_type=='App\Group'){
                 if($stream->contentable_type=='App\Problem'){
                     $this->notification[]=$this->problem($stream->contentable);
@@ -138,6 +142,14 @@ class NotificationRepository {
             }
         }elseif($user->id==$corporation->receiver_id){ //the current user is the one who receives the request
             return view('notifications.corporation',compact('corporation'))->render();
+        }
+    }
+
+    public function showcaseProccess(Showcase $showcase, Stream $stream){
+        if($stream->parentable_id == $showcase->user_id){
+            return view('notifications.showcaseRequest', compact('showcase'))->render();
+        }elseif($stream->parentable_id == $showcase->profile_id){
+            return view('notifications.showcaseApproved', compact('showcase'))->render();
         }
     }
 

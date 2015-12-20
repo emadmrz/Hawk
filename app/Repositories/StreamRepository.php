@@ -23,6 +23,7 @@ use App\Questionnaire;
 use App\Recommendation;
 use App\Relater;
 use App\Shop;
+use App\Showcase;
 use App\Storage;
 use App\Stream;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +57,11 @@ class StreamRepository {
                 $this->feed[] = $this->questionnairePreview($stream->contentable);
             }elseif($stream->contentable_type=='App\Corporation'){
                 $this->feed[]=$this->corporation($stream->contentable);
+            }elseif($stream->contentable_type=='App\Showcase'){
+                $contentable = $stream->contentable;
+                if($contentable){
+                    $this->feed[]=$this->showcaseProccess($stream->contentable, $stream);
+                }
             }elseif($stream->contentable_type == 'App\Payment') {
                 $payment = $stream->contentable;
                 if ($payment->itemable_type == 'App\Storage') {
@@ -72,6 +78,11 @@ class StreamRepository {
                     $this->feed[] = $this->relater($payment->itemable);
                 } elseif ($payment->itemable_type == 'App\Profit') {
                     $this->feed[] = $this->profit($payment->itemable);
+                } elseif ($payment->itemable_type == 'App\Showcase') {
+                    $itemable = $payment->itemable;
+                    if($itemable){
+                        $this->feed[] = $this->showcase($payment->itemable);
+                    }
                 }
             }
         }
@@ -194,5 +205,17 @@ class StreamRepository {
 
     private function questionnairePreview(Questionnaire$questionnaire){
         return view('partials.questionnairePreview', compact('questionnaire'));
+    }
+
+    public function showcase(Showcase $showcase){
+        return view('streams.showcase', compact('showcase'));
+    }
+
+    public function showcaseProccess(Showcase $showcase, Stream $stream){
+        if($stream->parentable_id == $showcase->user_id){
+            return view('streams.showcaseRequest', compact('showcase'));
+        }elseif($stream->parentable_id == $showcase->profile_id){
+            return view('streams.showcaseApproved', compact('showcase'));
+        }
     }
 }

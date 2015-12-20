@@ -20,7 +20,7 @@ class TopController extends Controller
     public function user(){
         $firstCategoryQuery = Category::where('parent_id', null);
         $categorySelect = $firstCategoryQuery->lists('name', 'id');
-        $sortSelect=[1=>'پر ستاره ترین ها'];
+        $sortSelect=[1=>'پر ستاره ترین ها',2=>'پر بازدید ترین ها',3=>'پر مشتری ترین ها',4=>'جدید ترین ها',5=>'پیشنهاد ویژه'];
 
         $results=[];
         $limit=1;
@@ -101,10 +101,10 @@ class TopController extends Controller
         $limit = 20;
         if ($input['type'] == 1) { //search for user is selected
             $type = 'user';
-            $sortSelect = [1 => 'پر ستاره ترین ها'];
+            $sortSelect=[1=>'پر ستاره ترین ها',2=>'پر بازدید ترین ها',3=>'پر مشتری ترین ها',4=>'جدید ترین ها',5=>'پیشنهاد ویژه'];
             $results[$firstCategory->id . $firstCategory->name] = $this->userSqlQuery($firstCategory, $limit, $input['sort']);
         } elseif ($input['type'] == 2) { //search for product selected
-            $sortSelect = [2 => 'محبوب ترین ها', 3 => 'پر فروش ترین ها', 4 => 'پر بازدید ترین ها'];
+            $sortSelect = [6 => 'محبوب ترین ها', 7 => 'پر فروش ترین ها', 8 => 'پر بازدید ترین ها',9=>'جدید ترین ها'];
             $results[$firstCategory->id . $firstCategory->name] = $this->productSqlQuery($firstCategory, $limit, $request->input('sort'));
             $type = 'product';
         }
@@ -120,12 +120,27 @@ class TopController extends Controller
     private function userSqlQuery($firstCategory, $limit, $sort = 1)
     {
         $q = "SELECT users.*";
+        if($sort==2){ //sort by profile_visit
+            $q=$q." ,COUNT(*) AS visit";
+        }elseif($sort==3){ //sort by corporation num
+            $q=$q." ,COUNT(*) AS corporation";
+        }elseif($sort==5){ //sort by special offer
+            $q=$q." ,COUNT(*) AS offer";
+        }
         $q = $q . " From `users` LEFT JOIN `skills` ON `users`.`id`=`skills`.`user_id`";
         $q = $q . " LEFT JOIN `categories` ON `categories`.`id`=`skills`.`sub_category_id`";
+        if($sort==2){ //sort by profile_visit
+            $q=$q." LEFT JOIN `profile_visitor` ON `users`.`id`=`profile_visitor`.`profile_id`";
+        }elseif($sort==3){ //sort by corporation num
+            $q=$q." LEFT JOIN `corporations` ON `users`.`id`=`corporations`.`receiver_id`";
+        }elseif($sort==5){ //sort by special offers
+            $q=$q." LEFT JOIN `offers` ON `users`.`id`=`offers`.`user_id`";
+        }
         $secondCategories = $firstCategory->children()->lists('id')->toArray();
         $c = implode(',', $secondCategories);
         $q = $q . " WHERE `categories`.`id` IN (" . $c . ")";
         $q = $this->userSort($sort, $q, $limit);
+        //dd($q);
         //its time to make the results
         $profile = $this->userResult($q);
         return $profile;
@@ -159,7 +174,15 @@ class TopController extends Controller
     {
         if ($sort == 1) { //the sort by rate has been selected
             $q = $q . " GROUP BY `users`.`id` ORDER BY `users`.`rate` DESC LIMIT $limit";
-        } else {
+        } elseif($sort==2) { //the sort by profile_visitor for the user
+            $q = $q . " GROUP BY `users`.`id` ORDER BY visit DESC LIMIT $limit";
+        }elseif($sort==3){ //sort by the most corporation num
+            $q = $q . " GROUP BY `users`.`id` ORDER BY corporation DESC LIMIT $limit";
+        }elseif($sort==4){ //sort by the newest users
+            $q = $q . " GROUP BY `users`.`id` ORDER BY `users`.`created_at` DESC LIMIT $limit";
+        }elseif($sort==5){ //sort by special offers
+            $q = $q . " GROUP BY `users`.`id` ORDER BY `users`.`created_at` DESC LIMIT $limit";
+        }else{
             $q = $q . " GROUP BY `users`.`id` ORDER BY `users`.`rate` DESC LIMIT $limit";
         }
         return $q;
@@ -180,13 +203,15 @@ class TopController extends Controller
 
     private function productSort($sort, $query, $limit)
     {
-        if ($sort == 2) { //the sort by rate has been selected
+        if ($sort == 6) { //the sort by rate has been selected
             $query = $query->groupBy('products.id')->orderBy('products.rate', 'DESC')->take($limit);
-        } elseif ($sort == 3) { //sort by buy_num
+        } elseif ($sort == 7) { //sort by buy_num
             $query = $query->groupBy('products.id')->orderBy('products.num_buy', 'DESC')->take($limit);
-        } elseif ($sort == 4) { //sort by num_visit
+        } elseif ($sort == 8) { //sort by num_visit
             $query = $query->groupBy('products.id')->orderBy('products.num_visit', 'DESC')->take($limit);
-        } else {
+        } elseif($sort==9){ //sort by the newest products
+            $query = $query->groupBy('products.id')->orderBy('products.created_at', 'DESC')->take($limit);
+        }else{
             $query = $query->groupBy('products.id')->orderBy('products.rate', 'DESC')->take($limit);
         }
         return $query;

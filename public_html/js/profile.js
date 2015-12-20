@@ -1297,6 +1297,62 @@ $(document).ready(function(){
 
     });
 
+    $('#Sticky_container').on('click', 'div.sticky-note .save', function(){
+        var $this = $(this);
+        var container = $this.closest('.sticky-note');
+        var textarea = container.find('textarea');
+        $.ajax({
+            data: {
+                id: textarea.attr('data-id'),
+                body: textarea.val(),
+                position_left: 100 * container.offset().left/$(window).width(),
+                position_top: 100 * container.offset().top/$(window).height()
+            },
+            type: "post",
+            url: '/home/profile/sticky/'+textarea.attr('data-id')+'/update',
+            beforeSend: function () {
+                container.find('.save').find('i').removeClass('fa-save').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                container.find('.save').find('i').removeClass('fa-spinner fa-spin').addClass('fa-save');
+            },
+            //success: function (data) {
+            //
+            //},
+            error: function (xhr) {
+                //alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    })
+
+    $('#Sticky_container').on('click', 'div.sticky-note .delete', function(){
+        var $this = $(this);
+        var container = $this.closest('.sticky-note');
+        var textarea = container.find('textarea');
+        $.ajax({
+            data: {
+                id: textarea.attr('data-id'),
+                _method: 'delete'
+            },
+            type: "post",
+            url: '/home/profile/sticky/'+textarea.attr('data-id')+'/delete',
+            beforeSend: function () {
+                container.find('.delete').find('i').removeClass('fa-trash-o').addClass('fa-spinner fa-spin');
+            },
+            complete: function () {
+                container.find('.delete').find('i').removeClass('fa-spinner fa-spin').addClass('fa-trash-o');
+            },
+            success: function (data) {
+                container.fadeOut(300, function(){
+                    container.remove();
+                })
+            },
+            error: function (xhr) {
+                //alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        })
+    })
+
 
 });
 
@@ -1999,5 +2055,15 @@ function history_liked(data, form){
         like_container = form.closest('.history_like').find('.like').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-up');
         dislike_container = form.closest('.history_like').find('.dislike').find("button").find('i').attr('class', '').addClass('fa fa-thumbs-o-down');
     }
+}
+
+function sticky_note_created(data){
+    var sticky = '<div class="sticky-note">'+
+        '<textarea name="body" data-id="'+data.id+'" class="sticky"></textarea>'+
+        '<button class="save"><i class="fa fa-save fa-lg"></i> </button>'+
+        '<button class="delete"><i class="fa fa-trash-o fa-lg"></i> </button>'+
+        '</div>';
+    $("#Sticky_container").append(sticky);
+    $( 'div.sticky-note' ).draggable();
 }
 

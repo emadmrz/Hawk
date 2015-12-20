@@ -998,3 +998,26 @@ footer.footer .social-media li.whatsapp a{
 .top-user-nav span{
     font-size: 12px;
 }
+
+.compare{
+    width: 100%;
+    background: #CCC;
+    margin-top: -20px;
+}
+.compare .title{
+    padding: 10px 10px;
+    display: inline-block;
+}
+.compare .case{
+    padding: 10px 10px;
+    display: inline-block;
+    font-size: 12px;
+}
+.compare .case img{
+    height: 20px;
+    width: 20px;
+    margin-left: 3px;
+}
+.compare .action{
+    padding: 10px 10px;
+}
