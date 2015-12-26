@@ -43,6 +43,13 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
     Route::get('/profile/{profile}/showcase', ['as'=>'profile.showcase', 'uses'=>'ShowcaseController@create']);
     Route::get('/profile/{profile}/article', ['as'=>'articles', 'uses'=>'ArticleController@otherList']);
     Route::get('/profile/{profile}/article/{article}/preview', ['as'=>'article.preview', 'uses'=>'ArticleController@otherPreview']);
+
+    /**
+     * Created By Dara on 21/12/2015
+     * skill preview
+     */
+    Route::get('/profile/{profile}/skill/{skill}/preview',['as'=>'skill.preview','uses'=>'SkillController@skillPreview']);
+
     Route::get('/profile/{profile}/post/{post}/preview',['as'=>'post.preview', 'uses'=>'PostController@otherPreview']);
     Route::post('/friend/request', ['as'=>'friend.request', 'uses'=>'FriendController@request']);
     Route::post('/friend/suggestRequest', ['as'=>'friend.suggestRequest', 'uses'=>'FriendController@suggestRequest']);
@@ -558,7 +565,138 @@ Route::group(['middleware'=>['auth'], 'prefix' => 'admin', 'as'=>'admin.'], func
          * user-skills admin control
          */
         Route::get('{user}/skill',['as'=>'skill.index','uses'=>'SkillController@adminIndex']);
+        Route::get('{user}/skill/{skill}/change',['as'=>'skill.change','uses'=>'SkillController@adminChange']);
+        Route::get('{user}/skill/{skill}/delete',['as'=>'skill.delete','uses'=>'SkillController@adminDelete']);
+        Route::get('{user}/skill/{skill}/corporation/',['as'=>'skill.corporation.index','uses'=>'CorporationController@adminIndex']);
+        Route::get('{user}/skill/{skill}/corporation/{corporation}/question',['as'=>'skill.corporation.question.index','uses'=>'CorporationController@adminQuestionPreview']);
+
+        /**
+         * Created By Dara on 21/12/2015
+         * user-comments admin control
+         */
+        Route::get('{user}/comment',['as'=>'comment.index','uses'=>'CommentController@adminIndex']);
+        Route::get('{user}/comment/{comment}/delete',['as'=>'comment.delete','uses'=>'SkillController@adminCommentDelete']);
+
+        /**
+         * Created By Dara on 21/12/2015
+         * user-problems admin control
+         */
+        Route::get('{user}/problem',['as'=>'problem.index','uses'=>'ProblemController@adminIndex']);
+        Route::get('{user}/problem/{problem}/change',['as'=>'problem.change','uses'=>'ProblemController@adminChange']);
+        Route::get('{user}/problem/{problem}/delete',['as'=>'problem.delete','uses'=>'ProblemController@adminDelete']);
+
+        /**
+         * Created By Dara on 21/12/2015
+         * user-answers admin control
+         */
+        Route::get('{user}/answer',['as'=>'answer.index','uses'=>'CommentController@adminAnswerIndex']);
+        Route::get('{user}/answer/{comment}/delete',['as'=>'answer.delete','uses'=>'SkillController@adminAnswerDelete']);
+
+        /**
+         * Created By Dara on 21/12/2015
+         * user-groups admin control
+         */
+        Route::get('{user}/group',['as'=>'group.index','uses'=>'GroupController@adminIndex']);
+        Route::get('{user}/group/{group}/change',['as'=>'group.change','uses'=>'GroupController@adminChange']);
+        Route::get('{user}/group/{group}/delete',['as'=>'group.delete','uses'=>'GroupController@adminDelete']);
+
+        /**
+         * Created By Dara on 22/12/2015
+         * user-addon(offer) admin control
+         */
+        Route::get('{user}/offer',['as'=>'offer.index','uses'=>'OfferController@adminIndex']);
+        Route::get('{user}/offer/{offer}/change',['as'=>'offer.change','uses'=>'OfferController@adminChange']);
+        Route::get('{user}/offer/{offer}/service',['as'=>'offer.service.index','uses'=>'OfferController@adminServiceIndex']);
+        Route::get('{user}/offer/{offer}/service/{service}/coupon',['as'=>'offer.service.coupon.index','uses'=>'OfferController@adminCouponIndex']);
+        Route::get('{user}/offer/{offer}/service/{service}/coupon/{coupon}/buyer',['as'=>'offer.service.coupon.buyer.index','uses'=>'OfferController@adminBuyerIndex']);
+
+        /**
+         * Created By Dara on 22/12/2015
+         * accountant admin control
+         */
+        Route::get('{user}/accountant',['as'=>'accountant.index','uses'=>'PaymentController@adminIndex']);
+
+        /**
+         * Created By Dara on 22/12/2015
+         * user-friends management
+         */
+        Route::get('{user}/friend',['as'=>'friend.index','uses'=>'FriendController@adminFriendIndex']);
+
+        /**
+         * Created By Dara on 23/12/2015
+         * user-addon (questionnaire) management
+         */
+        Route::get('{user}/questionnaire',['as'=>'questionnaire.index','uses'=>'QuestionnaireController@adminIndex']);
+        Route::get('{user}/questionnaire/{questionnaire}/change',['as'=>'questionnaire.change','uses'=>'QuestionnaireController@adminChange']);
+
+        /**
+         * Created By Dara on 25/12/2015
+         * user-addon (poll) management
+         */
+        Route::get('{user}/poll',['as'=>'poll.index','uses'=>'PollController@adminIndex']);
+        Route::get('{user}/poll/{poll}/change',['as'=>'poll.change','uses'=>'PollController@adminChange']);
+
+        /**
+         * Created By Dara on 25/12/2015
+         * user-addon (relater) management
+         */
+        Route::get('{user}/relater',['as'=>'relater.index','uses'=>'RelaterController@adminIndex']);
+        Route::get('{user}/relater/{relater}/change',['as'=>'relater.change','uses'=>'RelaterController@adminChange']);
+
+        /**
+         * Created By Dara on 25/12/2015
+         * storage management routes
+         */
+        Route::get('{user}/storage',['as'=>'storage.index','uses'=>'StorageController@adminIndex']);
+        Route::get('{user}/storage/{storage}/change',['as'=>'storage.change','uses'=>'StorageController@adminChange']);
+
+        /**
+         * Created By Dara on 26/12/2015
+         * share management routes
+         */
+        Route::get('{user}/share',['as'=>'share.index','uses'=>'ShareController@adminIndex']);
+
+        /**
+         * Created By Dara on 26/12/2015
+         * shop management routes
+         */
+        Route::get('{user}/shop',['as'=>'shop.index','uses'=>'ShopController@adminIndex']);
+        Route::get('{user}/shop/{shop}/change',['as'=>'shop.change','uses'=>'ShopController@change']);
+        Route::get('{user}/shop/{shop}/product',['as'=>'shop.product.index','uses'=>'ProductController@adminIndex']);
+        Route::get('{user}/shop/{shop}/product/{product}/change',['as'=>'shop.product.change','uses'=>'ProductController@change']);
+
     });
+    /**
+     * Created By Dara on 22/12/2015
+     * accountant admin control
+     */
+    Route::get('accountant',['as'=>'accountant.index','uses'=>'PaymentController@adminIndex']);
+
+    /**
+     * Created By Dara on 22/12/2015
+     * all-groups admin control
+     */
+    Route::get('group',['as'=>'group.index','uses'=>'GroupController@adminIndex']);
+    Route::get('group/{group}/change',['as'=>'group.change','uses'=>'GroupController@adminChange']);
+    Route::get('group/{group}/delete',['as'=>'group.delete','uses'=>'GroupController@adminDelete']);
+
+    /**
+     * Created By Dara on 23/12/2015
+     * announcement management routes
+     */
+    Route::group(['prefix'=>'announcement','as'=>'announcement.'],function(){
+        Route::get('/',['as'=>'index','uses'=>'AnnouncementController@index']);
+        Route::get('/create',['as'=>'create','uses'=>'AnnouncementController@create']);
+        Route::post('/create',['as'=>'store','uses'=>'AnnouncementController@store']);
+        Route::get('/{announcement}/edit',['as'=>'edit','uses'=>'AnnouncementController@edit']);
+        Route::post('/{announcement}/update',['as'=>'update','uses'=>'AnnouncementController@update']);
+        Route::get('/{announcement}/change',['as'=>'change','uses'=>'AnnouncementController@change']);
+
+
+
+    });
+
+
 
     Route::group(['prefix' => 'setting', 'as'=>'setting.'], function () {
 

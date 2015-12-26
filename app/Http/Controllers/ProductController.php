@@ -9,6 +9,7 @@ use App\File;
 use App\Product;
 use App\Shop;
 use App\Tag;
+use App\User;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
@@ -136,6 +137,26 @@ class ProductController extends Controller
             'final_amount' => (($product->price - $product->price*$product->discount/100) + array_sum($add_price)),
             'discount_amount' => $product->price*$product->discount/100
         ];
+    }
+
+    /**
+     * Created By Dara on 26/12/2015
+     * admin-product management
+     */
+    public function adminIndex(User $user,Shop $shop){
+        $products=$shop->products()->latest()->paginate(20);
+        return view('admin.shop.product.index',compact('shop','user','products'))->with(['title'=>'User Product Management']);
+    }
+
+    public function adminChange(User $user,Shop $shop,Product $product){
+        if($product->active==0){ //the product is already disabled
+            $product->update(['active'=>1]);
+            Flash::success(trans('admin/messages.productActivate'));
+        }elseif($product->active==1){ //the product is already enabled
+            $product->update(['active'=>0]);
+            Flash::success(trans('admin/messages.productBan'));
+        }
+        return redirect()->back();
     }
 
 

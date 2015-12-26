@@ -39,6 +39,7 @@ class CreateProductsTable extends Migration
             $table->integer('num_buy')->unsigned()->default(0);
             $table->integer('num_comment')->unsigned()->default(0);
             $table->boolean('available');
+            $table->integer('active')->default(1);
             $table->timestamps();
         });
 

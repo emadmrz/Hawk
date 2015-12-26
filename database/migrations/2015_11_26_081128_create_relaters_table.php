@@ -18,6 +18,7 @@ class CreateRelatersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('type')->unsigned();
             $table->integer('status')->default(0);
+            $table->integer('active')->default(1);
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddStatToArticlesTable' => $baseDir . '/database/migrations/2015_11_30_125933_add_stat_to_articles_table.php',
     'AddonTableSeeder' => $baseDir . '/database/seeds/AddonTableSeeder.php',
     'AdvantageTableSeeder' => $baseDir . '/database/seeds/AdvantageTableSeeder.php',
     'AttributeGroupsTableSeeder' => $baseDir . '/database/seeds/AttributeGroupsTableSeeder.php',
@@ -16,6 +17,7 @@ return array(
     'CreateAddressesTable' => $baseDir . '/database/migrations/2015_10_10_155901_create_addresses_table.php',
     'CreateAdvertisesTable' => $baseDir . '/database/migrations/2015_10_27_064343_create_advertises_table.php',
     'CreateAmountsTable' => $baseDir . '/database/migrations/2015_09_21_132808_create_amounts_table.php',
+    'CreateAnouncementsTable' => $baseDir . '/database/migrations/2015_12_23_080622_create_anouncements_table.php',
     'CreateAreasTable' => $baseDir . '/database/migrations/2015_09_22_134513_create_areas_table.php',
     'CreateArticlesTable' => $baseDir . '/database/migrations/2015_09_13_104513_create_articles_table.php',
     'CreateBiographiesTable' => $baseDir . '/database/migrations/2015_09_12_125845_create_biographies_table.php',
@@ -71,11 +73,14 @@ return array(
     'CreateSettlesTable' => $baseDir . '/database/migrations/2015_11_06_152624_create_settles_table.php',
     'CreateSharesTable' => $baseDir . '/database/migrations/2015_12_10_163640_create_shares_table.php',
     'CreateShopsTable' => $baseDir . '/database/migrations/2015_10_20_154951_create_shops_table.php',
+    'CreateShowcasesTable' => $baseDir . '/database/migrations/2015_12_15_140058_create_showcases_table.php',
     'CreateSkillsTable' => $baseDir . '/database/migrations/2015_09_16_154415_create_skills_table.php',
+    'CreateStickiesTable' => $baseDir . '/database/migrations/2015_12_18_060753_create_stickies_table.php',
     'CreateStoragesTable' => $baseDir . '/database/migrations/2015_10_13_204239_create_storages_table.php',
     'CreateStreamsTable' => $baseDir . '/database/migrations/2015_10_25_052142_create_streams_table.php',
     'CreateTagsTable' => $baseDir . '/database/migrations/2015_09_16_161420_create_tags_table.php',
     'CreateUniversitiesTable' => $baseDir . '/database/migrations/2015_09_09_140404_create_universities_table.php',
+    'CreateUniversitysTable' => $baseDir . '/database/migrations/2015_09_09_140021_create_universitys_table.php',
     'CreateUsagesTable' => $baseDir . '/database/migrations/2015_10_12_160038_create_usages_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CreateVisitorsTable' => $baseDir . '/database/migrations/2015_09_11_163613_create_visitors_table.php',

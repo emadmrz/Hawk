@@ -9,7 +9,7 @@ use Morilog\Jalali\Facades\jDate;
 class Advertise extends Model
 {
     protected $table = 'advertises';
-    protected $fillable = ['user_id', 'type', 'package', 'status', 'expired_at'];
+    protected $fillable = ['user_id', 'type', 'package', 'status', 'expired_at','active'];
 
     public function user(){
         return $this->belongsTo('App\User');

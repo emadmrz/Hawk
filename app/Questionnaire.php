@@ -8,7 +8,7 @@ use Morilog\Jalali\Facades\jDate;
 class Questionnaire extends Model
 {
     protected $table = 'questionnaires';
-    protected $fillable = ['user_id', 'title', 'count', 'category_id', 'scope', 'show_result', 'description', 'status'];
+    protected $fillable = ['user_id', 'title', 'count', 'category_id', 'scope', 'show_result', 'description', 'status','active'];
 
     public function user(){
         return $this->belongsTo('App\User');

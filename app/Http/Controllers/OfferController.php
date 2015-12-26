@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Coupon;
 use App\CouponGallery;
 use App\Offer;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -82,4 +84,46 @@ class OfferController extends Controller
         $user=Auth::user();
         return view('store.offer.editService',compact('user','service'))->with(['title'=>'ویرایش خدمت']);
     }
+
+    /**
+     * Created By Dara on 22/12/2015
+     * user-offer admin control
+     */
+    public function adminIndex(User $user){
+        $offers=$user->offers()->paginate(20);
+        return view('admin.offer.index',compact('user','offers'))->with(['title'=>'Offer Addon Management']);
+    }
+
+    public function adminChange(User $user,Offer $offer){
+        if($offer->active==0){ //the offer is already disabled
+            $offer->update(['active'=>1]);
+            Flash::success(trans('admin/messages.offerActivate'));
+        }elseif($offer->active==1){ //the offer is already enabled
+            $offer->update(['active'=>0]);
+            Flash::success(trans('admin/messages.offerBan'));
+        }
+        return redirect()->back();
+    }
+
+    public function adminServiceIndex(User $user,Offer $offer){
+        $services=$offer->coupon_gallery()->paginate(20);
+        return view('admin.offer.service.index',compact('user','offer','services'))->with([
+           'title'=>'Offer Service Management'
+        ]);
+    }
+
+    public function adminCouponIndex(User $user,Offer $offer,CouponGallery $service){
+        $coupons=$service->coupons()->paginate(20);
+        return view('admin.offer.service.coupon.index',compact('user','offer','service','coupons'))->with(([
+            'title'=>'Offer Service Coupon Management'
+        ]));
+    }
+
+    public function adminBuyerIndex(User $user,Offer $offer,CouponGallery $service,Coupon $coupon){
+        $buyers=$coupon->coupon_user()->paginate(20);
+        return view('admin.offer.service.coupon.buyer.index',compact('user','offer','service','coupon','buyers'))->with([
+            'title'=>'Coupon Buyers Management'
+        ]);
+    }
+
 }

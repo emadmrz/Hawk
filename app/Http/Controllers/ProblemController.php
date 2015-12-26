@@ -7,11 +7,13 @@ use App\Group;
 use App\Problem;
 use App\Repositories\GroupRepository;
 use App\Stream;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Laracasts\Flash\Flash;
 
 class ProblemController extends Controller
 {
@@ -132,5 +134,31 @@ class ProblemController extends Controller
                 'status'=>'done'
             ]
         ];
+    }
+
+    /**
+     * Created By Dara on 21/12/2015
+     * admin-problem management
+     */
+    public function adminIndex(User $user){
+        $problems=$user->problems()->paginate(20);
+        return view('admin.problem.index',compact('problems','user'))->with(['title'=>'User Problem Management']);
+    }
+
+    public function adminChange(User $user,Problem $problem){
+        if($problem->active==0){ //the post is already disabled
+            $problem->update(['active'=>1]);
+            Flash::success(trans('admin/messages.problemActivate'));
+        }elseif($problem->active==1){ //the post is already enabled
+            $problem->update(['active'=>0]);
+            Flash::success(trans('admin/messages.problemBan'));
+        }
+        return redirect()->back();
+    }
+
+    public function adminDelete(User $user,Problem $problem){
+        $problem->delete();
+        Flash::success(trans('admin/messages.problemDeleted'));
+        return redirect()->back();
     }
 }

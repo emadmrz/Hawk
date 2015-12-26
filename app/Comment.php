@@ -11,7 +11,7 @@ class Comment extends Model
     use LikeRepository;
 
     protected $table = 'comments';
-    protected $fillable = ['user_id', 'body', 'num_like', 'num_dislike', 'status', 'commentable_id', 'commentable_type'];
+    protected $fillable = ['user_id', 'body', 'num_like', 'num_dislike', 'status', 'commentable_id', 'commentable_type','active'];
 
     public function commentable()
     {
@@ -28,5 +28,9 @@ class Comment extends Model
 
     public function getShamsiHumanCreatedAtAttribute(){
         return jDate::forge($this->attributes['created_at'])->ago();
+    }
+
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('y/m/d');
     }
 }

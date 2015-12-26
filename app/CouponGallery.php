@@ -43,4 +43,8 @@ class CouponGallery extends Model
         return $time;
     }
 
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
+    }
+
 }

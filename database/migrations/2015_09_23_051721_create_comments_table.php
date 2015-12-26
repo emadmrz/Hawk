@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table->integer('num_like')->unsigned()->default(0);
             $table->integer('num_dislike')->unsigned()->default(0);
             $table->boolean('status')->default(1);
+            $table->integer('active')->default(1);
             $table->morphs('commentable');
             $table->timestamps();
 

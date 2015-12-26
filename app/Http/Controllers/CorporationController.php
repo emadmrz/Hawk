@@ -145,4 +145,19 @@ class CorporationController extends Controller
         $answers=$corporation->answers()->get();
         return view('profile.corporation.question.show',compact('answers'))->with(['title'=>'مشاهده پرسشنامه']);
     }
+
+    /**
+     * Created By Dara on 21/12/2015
+     * corporation skill admin-control
+     */
+    public function adminIndex(User $user,Skill $skill){
+        $corporations=$skill->corporations()->paginate(20);
+        return view('admin.skill.corporation.index',compact('corporations','user','skill'))->with(['title'=>$skill->title]);
+    }
+
+    public function adminQuestionPreview(User $user,Skill $skill,Corporation $corporation){
+        $answers=$corporation->answers()->get();
+        return view('admin.skill.corporation.question.index',compact('user','answers','corporation','skill'))
+            ->with(['title'=>'Question Preview']);
+    }
 }

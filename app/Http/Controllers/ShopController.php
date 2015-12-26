@@ -7,6 +7,7 @@ use App\Commercial;
 use App\File;
 use App\Product;
 use App\Shop;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -258,6 +259,26 @@ class ShopController extends Controller
             4 => ['field'=>'price', 'order'=>'asc']
         ];
         return $orders[$order_id];
+    }
+
+    /**
+     * Created By Dara on 26/12/2015
+     * admin-shop management
+     */
+    public function adminIndex(User $user){
+        $shops=$user->shop()->paginate(20);
+        return view('admin.shop.index',compact('shops','user'))->with(['title'=>'User Shop Management']);
+    }
+
+    public function adminChange(User $user,Shop $shop){
+        if($shop->active==0){ //the shop is already disabled
+            $shop->update(['active'=>1]);
+            Flash::success(trans('admin/messages.shopActivate'));
+        }elseif($shop->active==1){ //the shop is already enabled
+            $shop->update(['active'=>0]);
+            Flash::success(trans('admin/messages.shopBan'));
+        }
+        return redirect()->back();
     }
 
 }

@@ -19,6 +19,7 @@ class CreateAdvertisesTable extends Migration
             $table->string('package',20)->index();
             $table->integer('status');
             $table->dateTime('expired_at');
+            $table->integer('active')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

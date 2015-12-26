@@ -14,6 +14,10 @@ class Payment extends Model
         return $this->morphTo();
     }
 
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
     public function getShamsiCreatedAtAttribute(){
         return jDate::forge($this->attributes['created_at'])->format("Y/m/d H:i:s");
     }

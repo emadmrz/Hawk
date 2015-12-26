@@ -10,7 +10,7 @@ class Relater extends Model
 {
     protected $table='relaters';
 
-    protected $fillable=['type','status','user_id'];
+    protected $fillable=['type','status','user_id','active'];
 
     public function user(){
         return $this->belongsTo('App\User');
@@ -25,5 +25,9 @@ class Relater extends Model
         $expired_at=Carbon::parse($created_at)->addWeek(1);
         return jDate::forge($expired_at)->format("Y/m/d");
 
+    }
+
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
     }
 }

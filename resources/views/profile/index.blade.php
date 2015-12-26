@@ -55,6 +55,15 @@
                     {value: 1, text: 'فارغ التحصیل'},
                 ]
             });
+
+            /**
+             * Created By Dara on 25/12/2015
+             * select university
+             */
+            $('#university_list').select2({
+                placeholder:'دانشگاه',
+                tags:true
+            });
         });
     </script>
     @endrole
@@ -163,6 +172,8 @@
                     gmarkers[i].setMap(null);
                 }
             }
+
+
 
         });
     </script>

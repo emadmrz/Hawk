@@ -76,11 +76,11 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         {!! Form::label('university_id', 'دانشگاه : ', ['class'=>'control-label pull-right']) !!}
                                         <div class="col-sm-9">
-                                            {!! Form::select('university_id', $universities, null, ['class'=>'form-control']) !!}
+                                            {!! Form::select('university_id', $universities, null, ['id'=>'university_list','class'=>'form-control']) !!}
                                         </div>
                                     </div>
                                 </div>

@@ -737,11 +737,36 @@ class SkillController extends Controller
     }
 
     /**
+     * Created By Dara on 21/12/2015
+     * skill-preview
+     */
+    public function skillPreview(User $user,Skill $skill){
+        return view('home.skillPreview',compact('skill','user'))->with(['title'=>$skill->title]);
+    }
+
+    /**
      * Created By Dara on 20/12/2015
      * user-skill admin control
      */
     public function adminIndex(User $user){
         $skills=$user->skills()->paginate(20);
         return view('admin.skill.index',compact('skills','user'))->with(['title'=>'User Skill Management']);
+    }
+
+    public function adminChange(User $user,Skill $skill){
+        if($skill->active==0){ //the post is already disabled
+            $skill->update(['active'=>1]);
+            Flash::success(trans('admin/messages.skillActivate'));
+        }elseif($skill->active==1){ //the post is already enabled
+            $skill->update(['active'=>0]);
+            Flash::success(trans('admin/messages.skillBan'));
+        }
+        return redirect()->back();
+    }
+
+    public function adminDelete(User $user,Skill $skill){
+        $skill->delete();
+        Flash::success(trans('admin/messages.skillDeleted'));
+        return redirect()->back();
     }
 }

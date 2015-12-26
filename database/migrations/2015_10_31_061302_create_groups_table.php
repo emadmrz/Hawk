@@ -20,6 +20,7 @@ class CreateGroupsTable extends Migration
             $table->string('banner');
             $table->string('image');
             $table->integer('status')->default(1);
+            $table->integer('active')->default(1);
             $table->timestamps();
         });
         Schema::create('group_user',function(Blueprint $table){

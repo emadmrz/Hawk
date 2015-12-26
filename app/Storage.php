@@ -8,7 +8,7 @@ use Morilog\Jalali\jDate;
 class Storage extends Model
 {
     protected $table = 'storages';
-    protected $fillable = ['user_id', 'capacity', 'status'];
+    protected $fillable = ['user_id', 'capacity', 'status','active'];
 
     public function user(){
         return $this->belongsTo('App\User');
