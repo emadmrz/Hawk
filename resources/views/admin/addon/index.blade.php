@@ -3,7 +3,8 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Balances
+                <a href="{{route('home.profile',[$user->id])}}" class="pull-right">{{$user->username}}</a>
+                Addons
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -12,32 +13,29 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Balance</th>
-                            <th>Reg. Date</th>
-                            <th>Role</th>
+                            <th>Name</th>
                             <th>Actions</th>
 
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($users as $key=>$user)
+                        @foreach($payments as $key=>$payment)
                             <tr>
-                                <td>{{ $key+1 }}</td>
-                                <td>{{ $user->username }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->balance}}</td>
-                                <td>{{ $user->shamsi_created_at  }}</td>
-                                <td>{{$user->roles[0]->name}}</td>
-                                <td><a href="{{route('admin.credit.edit',$user->id)}}">Edit</a></td>
+                                <td>{{$key+1}}</td>
+                                <td>
+                                    <?php
+                                        $addonArray=explode('\\',$payment->itemable_type);
+                                        echo $addonArray[1];
+                                    ?>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info" href="{{route('store.'.lcfirst($addonArray[1]))}}">Preview</a>
+                                    <a class="btn btn-info" href="{{route('admin.users.'.lcfirst($addonArray[1]).'.index',[$user->id])}}">Select</a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-                    @if(sizeof($users)>1)
-                    <div class="text-center">{!! $users->render() !!}</div>
-                    @endif
                 </div>
                 <!-- /.table-responsive -->
             </div>

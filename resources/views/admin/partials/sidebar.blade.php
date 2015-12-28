@@ -26,48 +26,51 @@
                 <a href="#"><img class="img-rounded" style="height: 20px; width: 20px" src="{{ asset('img/persons/'.$user->avatar) }}"> {{ $user->username }}<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">Info</a>
+                        <a href="{{route('admin.users.select',[$user->id])}}">Info</a>
                     </li>
                     <li>
-                        <a href="#">Skills</a>
+                        <a href="{{route('admin.users.skill.index',[$user->id])}}">Skills</a>
                     </li>
                     <li>
-                        <a href="#">Posts</a>
+                        <a href="{{route('admin.users.post.index',[$user->id])}}">Posts</a>
                     </li>
                     <li>
-                        <a href="#">Articles</a>
+                        <a href="{{route('admin.users.article.index',[$user->id])}}">Articles</a>
                     </li>
                     <li>
-                        <a href="#">Problems</a>
+                        <a href="{{route('admin.users.problem.index',[$user->id])}}">Problems</a>
                     </li>
                     <li>
-                        <a href="#">Comments & Answers</a>
+                        <a href="{{route('admin.users.comment.index',[$user->id])}}">Comments</a>
                     </li>
                     <li>
-                        <a href="#">Addons</a>
+                        <a href="{{route('admin.users.answer.index',[$user->id])}}">Answers</a>
                     </li>
                     <li>
-                        <a href="#">Payment</a>
+                        <a href="{{route('admin.users.addon.index',[$user->id])}}">Addons</a>
                     </li>
                     <li>
-                        <a href="#">Credit Managment</a>
+                        <a href="{{route('admin.users.accountant.index',[$user->id])}}">Payment</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.credit.index',[$user->id])}}">Credit Managment</a>
                     </li>
                     @if(count($user->shop))
                         <li>
-                            <a href="#">Shop</a>
+                            <a href="{{route('admin.users.shop.index',[$user->id])}}">Shop</a>
                         </li>
                     @endif
                     <li>
-                        <a href="#">Friends</a>
+                        <a href="{{route('admin.users.friend.index',[$user->id])}}">Friends</a>
                     </li>
                     <li>
-                        <a href="#">Shares</a>
+                        <a href="{{route('admin.users.role.index',[$user->id])}}">Role</a>
                     </li>
                     <li>
-                        <a href="#">Showcases</a>
+                        <a href="{{route('admin.users.share.index',[$user->id])}}">Shares</a>
                     </li>
                     <li>
-                        <a href="#">Files</a>
+                        <a href="{{route('admin.users.file.index',[$user->id])}}">Files</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

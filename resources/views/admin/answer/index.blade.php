@@ -35,6 +35,8 @@
                                 <td>
                                     @if($answer->id===$answer->commentable->comment_id)
                                         <button class="btn btn-success disabled">Correct</button>
+                                    @else
+                                        <button class="btn btn-info disabled">inCorrect</button>
                                     @endif
                                 </td>
                                 <td>

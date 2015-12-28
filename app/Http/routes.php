@@ -484,7 +484,7 @@ Route::group(['middleware'=>['auth'], 'prefix' => 'admin', 'as'=>'admin.'], func
      * Created By Dara on 6/11/2015
      * credit management routes
      */
-    Route::get('credit',['as'=>'credit.index','uses'=>'CreditController@adminIndex']);
+    Route::get('credit/{user?}',['as'=>'credit.index','uses'=>'CreditController@adminIndex']);
     Route::get('credit/settle',['as'=>'settle.index','uses'=>'EventController@index']);
     Route::get('credit/settle/requests',['as'=>'settle.requests','uses'=>'SettleController@seeAllRequests']);
     Route::get('credit/settle/requests/{settle}/edit',['as'=>'settle.edit','uses'=>'SettleController@edit']);
@@ -664,6 +664,32 @@ Route::group(['middleware'=>['auth'], 'prefix' => 'admin', 'as'=>'admin.'], func
         Route::get('{user}/shop/{shop}/change',['as'=>'shop.change','uses'=>'ShopController@change']);
         Route::get('{user}/shop/{shop}/product',['as'=>'shop.product.index','uses'=>'ProductController@adminIndex']);
         Route::get('{user}/shop/{shop}/product/{product}/change',['as'=>'shop.product.change','uses'=>'ProductController@change']);
+
+        /**
+         * Created By Dara on 26/12/2015
+         * files management routes
+         */
+        Route::get('{user}/file',['as'=>'file.index','uses'=>'FilesController@adminIndex']);
+
+        /**
+         * Created By Dara on 27/12/2015
+         * roles management admin control
+         */
+        Route::get('{user}/role',['as'=>'role.index','uses'=>'RoleController@adminIndex']);
+        Route::post('{user}/role',['as'=>'role.submit','uses'=>'RoleController@adminSubmit']);
+        Route::get('{user}/role/{role}/detach',['as'=>'role.delete','uses'=>'RoleController@adminDelete']);
+
+        /**
+         * Created By Dara on 28/12/2015
+         * files management admin control
+         */
+        Route::get('{user}/file',['as'=>'file.index','uses'=>'FilesController@adminIndex']);
+
+        /**
+         * Created By Dara on 28/12/2015
+         * addon management admin control
+         */
+        Route::get('{user}/addon',['as'=>'addon.index','uses'=>'AddonsController@adminIndex']);
 
     });
     /**

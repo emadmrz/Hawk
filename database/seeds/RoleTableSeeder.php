@@ -31,6 +31,12 @@ class RoleTableSeeder extends Seeder
             'description' => 'The user who register and he/she is legal',
             'level' => 1,
         );
+        $roles[]=array(
+            'name' => 'Influencer',
+            'slug' => 'influencer',
+            'description' => 'The user who register and he/she is influencer',
+            'level' => 1,
+        );
         foreach($roles as $role){
             Role::create($role);
         }

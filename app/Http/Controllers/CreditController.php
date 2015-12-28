@@ -37,8 +37,14 @@ class CreditController extends Controller
      * Created By Dara on 6/11/2015
      * show list of credits for users in admin panel
      */
-    public function adminIndex(){
-        $users=User::latest()->with('roles')->paginate(20);
+    public function adminIndex($user=null){
+        $users=[];
+        if($user!=null){
+            $users[]=$user;
+        }else{
+            $users=User::latest()->with('roles')->paginate(20);
+        }
+
         return view('admin.credit.index',compact('users'))->with(['title'=>'Balance management']);
     }
 

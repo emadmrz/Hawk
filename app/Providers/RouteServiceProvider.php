@@ -14,6 +14,7 @@ use App\Report;
 use App\Settle;
 use App\Storage;
 use App\User;
+use Bican\Roles\Models\Role;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -117,6 +118,10 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->bind('storage',function($value){
             return Storage::findOrFail($value);
+        });
+
+        $router->bind('role',function($value){
+            return Role::findOrFail($value);
         });
 
     }

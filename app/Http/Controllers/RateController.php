@@ -252,6 +252,7 @@ class RateController extends Controller
      */
     private function recommendation($skill){
         $recommendationPoint=0;
+        $recommendationPointMaster=0;
         $recommendationPointFive=0;
         $recommendationPointFour=0;
         $recommendationPointThree=0;
@@ -261,7 +262,12 @@ class RateController extends Controller
         foreach($recommendations as $recommendation){
             $recommendator=$recommendation->user;
             $rate=$recommendator->rate;
-            if($rate==5){
+            if($recommendator->is('influencer')){
+                $recommendationPointMaster+=Config::get('rate')['recommendation']['attributes']['master']['value'];
+                if($recommendationPointMaster>=Config::get('rate')['recommendation']['attributes']['master']['max_value']){
+                    $recommendationPointMaster=Config::get('rate')['recommendation']['attributes']['master']['max_value'];
+                }
+            }elseif($rate==5){
                 $recommendationPointFive+=Config::get('rate')['recommendation']['attributes'][$rate]['value'];
                 if($recommendationPointFive>=Config::get('rate')['recommendation']['attributes'][$rate]['max_value']){
                     $recommendationPointFive=Config::get('rate')['recommendation']['attributes'][$rate]['max_value'];
@@ -287,7 +293,7 @@ class RateController extends Controller
                     $recommendationPointOne=Config::get('rate')['recommendation']['attributes'][$rate]['max_value'];
                 }
             }
-            $recommendationPoint=$recommendationPointFive+$recommendationPointFour+$recommendationPointThree+$recommendationPointTwo+$recommendationPointOne;
+            $recommendationPoint=$recommendationPointMaster+$recommendationPointFive+$recommendationPointFour+$recommendationPointThree+$recommendationPointTwo+$recommendationPointOne;
         }
         //finalize the recommendation calculation points
         if($recommendationPoint>Config::get('rate')['recommendation']['result'][5]){ //5 star

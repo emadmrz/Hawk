@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use League\Flysystem\Util\MimeType;
+use Morilog\Jalali\jDate;
 
 class File extends Model
 {
@@ -45,5 +46,9 @@ class File extends Model
             return 'mp3';
         }
 
+    }
+
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
     }
 }

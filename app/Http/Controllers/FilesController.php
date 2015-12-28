@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Biography;
 use App\File;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -105,5 +106,14 @@ class FilesController extends Controller
             'size'=>$size,
         ]);
         return asset('img/files/'.$imageName);
+    }
+
+    /**
+     * Created By Dara on 28/12/2015
+     * user-files management
+     */
+    public function adminIndex(User $user){
+        $files=$user->files()->latest()->paginate(20);
+        return view('admin.file.index',compact('user','files'))->with(['title'=>'User File Management']);
     }
 }

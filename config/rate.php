@@ -78,6 +78,7 @@ return [
             1=>10
         ],
         'attributes'=>[
+            'master'=>['name'=>'influencer','value'=>100,'max_value'=>200], //influencer user
             5=>['name'=>'fiveStar','value'=>70,'max_value'=>200], //5 star recommendator user
             4=>['name'=>'fourStar','value'=>50,'max_value'=>100], //4 star recommendator user
             3=>['name'=>'threeStar','value'=>30,'max_value'=>70], //3 star recommendator user
