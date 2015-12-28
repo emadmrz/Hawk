@@ -9,7 +9,7 @@ class Group extends Model
 {
     protected $table='groups';
 
-    protected $fillable=['user_id','name','banner','image'];
+    protected $fillable=['user_id','name','banner','image','active'];
 
     public function users(){
         return $this->belongsToMany('App\User')->withTimestamps();

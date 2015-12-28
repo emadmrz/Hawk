@@ -8,7 +8,7 @@ use Morilog\Jalali\jDate;
 class Shop extends Model
 {
     protected $table = 'shops';
-    protected $fillable = ['user_id', 'title', 'logo', 'phone', 'address', 'num_visit', 'num_buy', 'rate', 'description', 'status', 'about_us', 'contact_us', 'theme'];
+    protected $fillable = ['user_id', 'title', 'logo', 'phone', 'address', 'num_visit', 'num_buy', 'rate', 'description', 'status', 'about_us', 'contact_us', 'theme','active'];
 
     public function user(){
         return $this->belongsTo('App\User');

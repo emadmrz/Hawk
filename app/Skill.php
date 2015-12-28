@@ -8,7 +8,7 @@ use Morilog\Jalali\Facades\jDate;
 class Skill extends Model
 {
     protected $table = 'skills';
-    protected $fillable = ['user_id', 'title', 'description', 'requirements', 'sub_category_id', 'my_rate', 'status','rate'];
+    protected $fillable = ['user_id', 'title', 'description', 'requirements', 'sub_category_id', 'my_rate', 'status','rate','active'];
 
     public function user(){
         return $this->belongsTo('App\User');
@@ -24,6 +24,21 @@ class Skill extends Model
 
     public function getCategoryIdAttribute(){
         return Category::find($this->attributes['sub_category_id'])->getRoot()->id;
+    }
+
+    /**
+     * Created By Dara on 21/12/2015
+     * get the name of the categories for the specific skill
+     */
+    public function getFirstCategoryNameAttribute(){
+        $secondCategoryId=$this->attributes['sub_category_id'];
+        $secondCategory=Category::find($secondCategoryId);
+        return $secondCategory->parent()->first()->name;
+    }
+
+    public function getSecondCategoryNameAttribute(){
+        $secondCategoryId=$this->attributes['sub_category_id'];
+        return Category::find($secondCategoryId)->name;
     }
 
     public function experiences(){

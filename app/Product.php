@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\Facades\jDate;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Product extends Model
@@ -10,7 +11,7 @@ class Product extends Model
     use SearchableTrait;
 
     protected $table = 'products';
-    protected $fillable = ['user_id', 'skill_id', 'shop_id', 'category_id', 'name', 'price', 'discount', 'guarantee', 'warranty', 'description', 'status', 'available', 'num_visit', 'num_comment', 'num_buy'];
+    protected $fillable = ['user_id', 'skill_id', 'shop_id', 'category_id', 'name', 'price', 'discount', 'guarantee', 'warranty', 'description', 'status', 'available', 'num_visit', 'num_comment', 'num_buy','active'];
 
     protected $searchable = [
         'columns' => [
@@ -18,6 +19,10 @@ class Product extends Model
             'description' => 5,
         ]
     ];
+
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
+    }
 
     public function user(){
         return $this->belongsTo('App\User');

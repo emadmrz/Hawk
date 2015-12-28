@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Addon;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -69,5 +71,23 @@ class AddonsController extends Controller
         $user=Auth::user();
         $profits=$user->profits()->latest()->get();
         return view('store.profit.index',compact('profits','user'))->with(['title'=>'مدیریت افزونه افزایش رتیه در جستجو']);
+    }
+
+    /**
+     * Created By Dara on 28/12/2015
+     * addon management admin control
+     */
+    public function adminIndex(User $user){
+        $addons=Addon::latest()->lists('name')->toArray(); //get all addon names
+        $validAddon=[];
+        foreach($addons as $addon){
+            $validAddon[]="App\\".ucfirst($addon); //create the itemable_type (APP\Shop ....)
+        }
+        $payments=$user->payments()
+            ->where('status','=',1)
+            ->whereIn('itemable_type',$validAddon)
+            ->groupBy('itemable_type')
+            ->get();
+        return view('admin.addon.index',compact('user','payments'))->with(['title'=>'User Addon Management']);
     }
 }

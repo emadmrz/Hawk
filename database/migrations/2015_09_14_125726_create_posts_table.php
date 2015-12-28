@@ -22,6 +22,7 @@ class CreatePostsTable extends Migration
             $table->integer('num_like')->unsigned()->default(0);
             $table->integer('num_comment')->unsigned()->default(0);
             $table->integer('status')->default(1);
+            $table->integer('active')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -20,4 +20,8 @@ class Usage extends Model
     public function freeup($volume){
         $this->increment('capacity', $volume);
     }
+
+    public function freeDown($volume){
+        $this->decrement('capacity',$volume);
+    }
 }

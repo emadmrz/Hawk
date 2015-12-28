@@ -11,6 +11,7 @@ use App\Product;
 use App\Shop;
 use App\Storage;
 use App\Stream;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -357,5 +358,33 @@ class CommentController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Created By Dara on 21/12/2015
+     * user-comments admin control
+     */
+    public function adminIndex(User $user){
+        $comments=$user->comments()->where('commentable_type','!=','App\Problem')->paginate(20);
+        return view('admin.comment.index',compact('user','comments'))->with(['title'=>'Comments']);
+    }
 
+    public function adminCommentDelete(User $user,Comment $comment){
+        $comment->delete();
+        Flash::success(trans('admin/message.commentDeleted'));
+        return redirect()->back();
+    }
+
+    /**
+     * Created By Dara on 21/12/2015
+     * user-answers admin control
+     */
+    public function adminAnswerIndex(User $user){
+        $answers=$user->comments()->where('commentable_type','=','App\Problem')->paginate(20);
+        return view('admin.answer.index',compact('user','answers'))->with(['title'=>'Answers']);
+    }
+
+    public function adminAnswerDelete(User $user,Comment $comment){
+        $comment->delete();
+        Flash::success(trans('admin/message.answerDeleted'));
+        return redirect()->back();
+    }
 }

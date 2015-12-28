@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Group;
 use App\Repositories\GroupRepository;
 use App\Repositories\StreamRepository;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
+use Laracasts\Flash\Flash;
 
 class GroupController extends Controller
 {
@@ -217,6 +219,37 @@ class GroupController extends Controller
         ]);
         return redirect()->back();
 
+    }
+
+    /**
+     * Created By Dara on 21/12/2015
+     * admin-group management
+     */
+    public function adminIndex($user=null){
+        if($user==null){ //no user selected
+            $groups=Group::paginate(20);
+        }else{
+            $groups=$user->groupis()->paginate(20);
+        }
+
+        return view('admin.group.index',compact('groups','user'))->with(['title'=>'User group Management']);
+    }
+
+    public function adminChange($user=null,Group $group){
+        if($group->active==0){ //the post is already disabled
+            $group->update(['active'=>1]);
+            Flash::success(trans('admin/messages.groupActivate'));
+        }elseif($group->active==1){ //the post is already enabled
+            $group->update(['active'=>0]);
+            Flash::success(trans('admin/messages.groupBan'));
+        }
+        return redirect()->back();
+    }
+
+    public function adminDelete($user=null,Group $group){
+        $group->delete();
+        Flash::success(trans('admin/messages.groupDeleted'));
+        return redirect()->back();
     }
 
 

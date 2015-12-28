@@ -40,6 +40,8 @@
                                         افزونه فروشگاه ساز
                                     @elseif($payment->itemable_type == 'App\Advertise')
                                         افزونه تبلیغات
+                                    @elseif($payment->itemable_type == 'App\CouponUser')
+                                        خرید کوپن
                                     @endif
                                 </td>
                                 <td>{{ $payment->gateway }}</td>

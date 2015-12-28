@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\User;
 use Chencha\Share\Share;
 use Chencha\Share\ShareFacade;
 use Illuminate\Http\Request;
@@ -38,5 +39,14 @@ class ShareController extends Controller
         }elseif($social == 'gmail'){
             return ShareFacade::load($route, $title)->gmail();
         }
+    }
+
+    /**
+     * Created By Dara on 26/12/2015
+     * addon (share) admin control
+     */
+    public function adminIndex(User $user){
+        $shares=$user->shares()->latest()->paginate(20);
+        return view('admin.share.index',compact('shares','user'))->with(['title'=>'Share Addon Management']);
     }
 }

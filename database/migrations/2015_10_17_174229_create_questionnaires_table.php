@@ -22,6 +22,7 @@ class CreateQuestionnairesTable extends Migration
             $table->boolean('show_result')->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->unsigned()->default(0);
+            $table->integer('active')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -16,6 +16,10 @@ class Friend extends Model
         return jDate::forge($this->attributes['created_at'])->ago();
     }
 
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
+    }
+
     public function sender(){
         return $this->belongsTo('App\User', 'sender_id', 'id');
     }

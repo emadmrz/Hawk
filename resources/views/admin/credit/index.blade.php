@@ -35,7 +35,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                    @if(sizeof($users)>1)
                     <div class="text-center">{!! $users->render() !!}</div>
+                    @endif
                 </div>
                 <!-- /.table-responsive -->
             </div>

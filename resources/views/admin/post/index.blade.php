@@ -3,9 +3,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                @if($profile!=null)
-                 <a href="{{route('home.profile',[$profile->id])}}" class="pull-right">{{$profile->username}}</a>
-                @endif
+                 <a href="{{route('home.profile',[$user->id])}}" class="pull-right">{{$user->username}}</a>
                 Posts
             </div>
             <!-- /.panel-heading -->
@@ -33,21 +31,22 @@
                                 <td>{{str_limit($post->content,20)}}</td>
                                 <td>{{$post->user->roles[0]->name}}</td>
                                 <td>
-                                    @if($post->status==1)
+                                    @if($post->active==1)
                                         <button class="btn btn-success disabled">active</button>
                                     @endif
-                                    @if($post->status==0)
+                                    @if($post->active==0)
                                             <button class="btn btn-danger disabled">banned</button>
                                         @endif
                                 </td>
 
                                 <td>
                                     <a class="btn btn-info" href="{{route('home.post.preview',[$post->user->id,$post->id])}}">Preview</a>
-                                    @if($post->status==1)
-                                        <a href="{{route('admin.post.change',[$post->id])}}" data-post-ban class="btn btn-danger">ban</a>
-                                    @elseif($post->status==0)
-                                        <a href="{{route('admin.post.change',[$post->id])}}" data-post-active class="btn btn-primary">active</a>
+                                    @if($post->active==1)
+                                        <a href="{{route('admin.users.post.change',[$user->id,$post->id])}}" data-post-ban class="btn btn-warning">ban</a>
+                                    @elseif($post->active==0)
+                                        <a href="{{route('admin.users.post.change',[$user->id,$post->id])}}" data-post-active class="btn btn-primary">active</a>
                                     @endif
+                                    <a class="btn btn-danger" data-delete-confirm href="{{route('admin.users.post.delete',[$post->user->id,$post->id])}}">Delete</a>
                                 </td>
                             </tr>
                         @endforeach

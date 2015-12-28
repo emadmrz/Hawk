@@ -9,7 +9,7 @@ use Morilog\Jalali\Facades\jDate;
 class Offer extends Model
 {
     protected $table = 'offers';
-    protected $fillable = ['status', 'paid', 'user_id'];
+    protected $fillable = ['status', 'paid', 'user_id','active'];
 
     public function user()
     {
@@ -32,6 +32,11 @@ class Offer extends Model
         return jDate::forge($expired_at)->format("Y/m/d");
 
     }
+
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
+    }
+
     public function scopeValid($query){
         $created_at=$this->created_at;
         $expired_at=Carbon::parse($created_at)->subMonth(1);

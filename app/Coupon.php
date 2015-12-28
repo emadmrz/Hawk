@@ -28,6 +28,10 @@ class Coupon extends Model
         return $service->id;
     }
 
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
+    }
+
     public function sold(){
         $this->decrement('num');
     }

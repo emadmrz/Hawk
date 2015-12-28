@@ -22,6 +22,7 @@ class CreateSkillsTable extends Migration
             $table->text('description');
             $table->string('requirements');
             $table->boolean('status');
+            $table->integer('active')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

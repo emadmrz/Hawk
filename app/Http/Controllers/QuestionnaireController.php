@@ -229,4 +229,24 @@ class QuestionnaireController extends Controller
             'is_see' => 1
         ]);
     }
+
+    /**
+     * Created By Dara on 23/12/2015
+     * addon (questionnaire) admin control
+     */
+    public function adminIndex(User $user){
+        $questionnaires=$user->questionnaires()->latest()->paginate(20);
+        return view('admin.questionnaire.index',compact('user','questionnaires'))->with(['title'=>'Questionnaire Addon Management']);
+    }
+
+    public function adminChange(User $user,Questionnaire $questionnaire){
+        if($questionnaire->active==0){ //the questionnaire is already disabled
+            $questionnaire->update(['active'=>1]);
+            Flash::success(trans('admin/messages.questionnaireActivate'));
+        }elseif($questionnaire->active==1){ //the questionnaire is already enabled
+            $questionnaire->update(['active'=>0]);
+            Flash::success(trans('admin/messages.questionnaireBan'));
+        }
+        return redirect()->back();
+    }
 }

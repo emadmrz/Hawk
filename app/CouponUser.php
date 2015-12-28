@@ -29,5 +29,9 @@ class CouponUser extends Model
         return jDate::forge($expired_at)->format('Y/m/d');
     }
 
+    public function getShamsiCreatedAtAttribute(){
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
+    }
+
 
 }

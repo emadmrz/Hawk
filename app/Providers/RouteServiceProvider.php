@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Announcement;
 use App\Corporation;
 use App\Coupon;
 use App\CouponGallery;
@@ -11,7 +12,9 @@ use App\Offer;
 use App\Problem;
 use App\Report;
 use App\Settle;
+use App\Storage;
 use App\User;
+use Bican\Roles\Models\Role;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -104,6 +107,21 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->bind('corporation',function($value){
             return Corporation::findOrFail($value);
+        });
+
+        /**
+         * Created By Dara on 25/12/2015
+         */
+        $router->bind('announcement',function($value){
+            return Announcement::findOrFail($value);
+        });
+
+        $router->bind('storage',function($value){
+            return Storage::findOrFail($value);
+        });
+
+        $router->bind('role',function($value){
+            return Role::findOrFail($value);
         });
 
     }

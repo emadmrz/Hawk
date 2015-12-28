@@ -404,4 +404,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Sticky');
     }
 
+    /**
+     * Created By Dara on 23/12/2015
+     * user-announcement relation
+     */
+    public function announcements(){
+        return $this->hasMany('App\Announcement');
+    }
+
 }

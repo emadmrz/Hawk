@@ -33,14 +33,30 @@ class SearchController extends Controller
             ]);
             $catSelected = $request->input('cat');
             //fill the select boxes
-            $provinces = Province::where('parent_id', null)->lists('name', 'id');
+            $provinces=[];
+            $allProvinces = Province::where('parent_id', null)->lists('name', 'id');
             $provinces[0] = 'اهمیتی ندارد';
-            $cities = Province::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+            foreach($allProvinces as $key=>$value){
+                $provinces[$key]=$value;
+            }
+            $cities=[];
+            $allCities = Province::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
             $cities[0] = 'اهمیتی ندارد';
-            $firstSkillCat = Category::where('parent_id', null)->lists('name', 'id');
+            foreach($allCities as $key=>$value){
+                $cities[$key]=$value;
+            }
+            $firstSkillCat=[];
+            $allFirstSkillCat = Category::where('parent_id', null)->lists('name', 'id');
             $firstSkillCat[0] = 'اهمیتی ندارد';
-            $secondSkillCat = Category::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+            foreach($allFirstSkillCat as $key=>$value){
+                $firstSkillCat[$key]=$value;
+            }
+            $secondSkillCat=[];
+            $allSecondSkillCat = Category::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
             $secondSkillCat[0] = 'اهمیتی ندارد';
+            foreach($allSecondSkillCat as $key=>$value){
+                $secondSkillCat[$key]=$value;
+            }
 
             if($catSelected=='users'){
                 $user = new \stdClass();
@@ -49,9 +65,12 @@ class SearchController extends Controller
                 $user = new \stdClass();
                 $user->productTitle=$request->input('query');
             }
-
-            $productCat=Category::where('depth',1)->lists('name','id');
+            $productCat=[];
+            $allProductCat=Category::where('depth',1)->lists('name','id');
             $productCat[0]='اهمیتی ندارد';
+            foreach($allProductCat as $key=>$value){
+                $productCat[$key]=$value;
+            }
 
 
             //the request has been made outside the fast-search
@@ -68,18 +87,38 @@ class SearchController extends Controller
             ]);
         } else {
             //fill the select boxes
-            $provinces = Province::where('parent_id', null)->lists('name', 'id');
+            $provinces=[];
+            $allProvinces = Province::where('parent_id', null)->lists('name', 'id');
             $provinces[0] = 'اهمیتی ندارد';
-            $cities = Province::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+            foreach($allProvinces as $key=>$value){
+                $provinces[$key]=$value;
+            }
+            $cities=[];
+            $allCities = Province::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
             $cities[0] = 'اهمیتی ندارد';
-            $firstSkillCat = Category::where('parent_id', null)->lists('name', 'id');
+            foreach($allCities as $key=>$value){
+                $cities[$key]=$value;
+            }
+            $firstSkillCat=[];
+            $allFirstSkillCat = Category::where('parent_id', null)->lists('name', 'id');
             $firstSkillCat[0] = 'اهمیتی ندارد';
-            $secondSkillCat = Category::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+            foreach($allFirstSkillCat as $key=>$value){
+                $firstSkillCat[$key]=$value;
+            }
+            $secondSkillCat=[];
+            $allSecondSkillCat = Category::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
             $secondSkillCat[0] = 'اهمیتی ندارد';
+            foreach($allSecondSkillCat as $key=>$value){
+                $secondSkillCat[$key]=$value;
+            }
             $user = [];
 
-            $productCat=Category::where('depth',1)->lists('name','id');
+            $productCat=[];
+            $allProductCat=Category::where('depth',1)->lists('name','id');
             $productCat[0]='اهمیتی ندارد';
+            foreach($allProductCat as $key=>$value){
+                $productCat[$key]=$value;
+            }
 
 
             //the request has been made outside the fast-search

@@ -191,4 +191,24 @@ class PollController extends Controller
         ]);
     }
 
+    /**
+     * Created By Dara on 25/12/2015
+     * user-poll admin control
+     */
+    public function adminIndex(User $user){
+        $polls=$user->polls()->paginate(20);
+        return view('admin.poll.index',compact('polls','user'))->with(['title'=>'User Poll Management']);
+    }
+
+    public function adminChange(User $user,Poll $poll){
+        if($poll->active==0){ //the poll is already disabled
+            $poll->update(['active'=>1]);
+            Flash::success(trans('admin/messages.pollActivate'));
+        }elseif($poll->active==1){ //the poll is already enabled
+            $poll->update(['active'=>0]);
+            Flash::success(trans('admin/messages.pollBan'));
+        }
+        return redirect()->back();
+    }
+
 }

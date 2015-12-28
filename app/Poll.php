@@ -8,7 +8,7 @@ use Morilog\Jalali\Facades\jDate;
 class Poll extends Model
 {
     protected $table = 'polls';
-    protected $fillable = ['user_id', 'title', 'question', 'category_id', 'scope', 'show_result', 'description', 'status'];
+    protected $fillable = ['user_id', 'title', 'question', 'category_id', 'scope', 'show_result', 'description', 'status','active'];
 
     public function user(){
         return $this->belongsTo('App\User');

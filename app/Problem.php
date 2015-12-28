@@ -9,7 +9,7 @@ class Problem extends Model
 {
     protected $table='problems';
     protected $fillable=[
-        'user_id','parentable_id','parentable_type','image','content','num_like','num_comment','comment_id'
+        'user_id','parentable_id','parentable_type','image','content','num_like','num_comment','comment_id','active'
     ];
 
     public function user(){
@@ -34,7 +34,7 @@ class Problem extends Model
     }
 
     public function getShamsiCreatedAtAttribute(){
-        return jDate::forge($this->attributes['create_at'])->format('Y/m/d');
+        return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
     }
 
     public function getShamsiHumanCreatedAtAttribute(){

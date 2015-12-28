@@ -18,6 +18,7 @@ class CreateOffersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->tinyInteger('status')->default(0);
             $table->boolean('paid')->default(0);
+            $table->integer('active')->default(1);
             $table->timestamps();
         });
     }

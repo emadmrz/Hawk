@@ -39,7 +39,10 @@ class UserController extends Controller
     }
 
     public function select(User $user){
-        return view('admin.users.management', compact('user'))->with(['title'=>$user->username]);
+        $educations=$user->educations()->latest()->paginate(20);
+        $infos=$user->info()->latest()->paginate(20);
+        $bio=$user->biography()->first();
+        return view('admin.users.management', compact('user','educations','infos','bio'))->with(['title'=>$user->username]);
     }
 
 }

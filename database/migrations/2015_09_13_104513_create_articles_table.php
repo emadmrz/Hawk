@@ -23,6 +23,7 @@ class CreateArticlesTable extends Migration
             $table->integer('num_comment')->unsigned()->default(0);
             $table->integer('num_visit')->unsigned()->default(0);
             $table->boolean('status');
+            $table->integer('active')->default(1);
             $table->boolean('is_published');
             $table->timestamps();
 

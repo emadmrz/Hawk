@@ -206,4 +206,13 @@ class FriendController extends Controller
         return view('profile.findFriend',compact('results'))->with(['title' => 'نتایج جستجو', 'type'=>'search']);
 
     }
+
+    /**
+     * Created By Dara on 22/12/2015
+     * user-friend admin control
+     */
+    public function adminFriendIndex(User $user,FriendRepository $friendRepository){
+        $friends=$friendRepository->friendsOf($user->id);
+        return view('admin.friend.index',compact('friends','user'))->with(['title'=>'Friends Management']);
+    }
 }

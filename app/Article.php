@@ -10,7 +10,7 @@ use Morilog\Jalali\Facades\jDateTime;
 class Article extends Model
 {
     protected $table ='articles';
-    protected $fillable=['user_id', 'title', 'content', 'keywords', 'num_like', 'num_comment', 'num_visit', 'banner', 'status','stat'];
+    protected $fillable=['user_id', 'title', 'content', 'keywords', 'num_like', 'num_comment', 'num_visit', 'banner', 'status','stat','active'];
 
     public function user(){
         return $this->belongsTo('App\User');
