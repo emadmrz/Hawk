@@ -13,6 +13,8 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\jDate;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
@@ -48,24 +50,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'first_name' => 10,
             'last_name' => 10,
             'email' => 5,
-            'company'=>5,
-            'users.description'=>3,
-            'problems.content'=>5,
-            'articles.title'=>5,
-            'articles.content'=>3,
-            'biographies.text'=>2,
-            'infos.address'=>1,
-            'posts.content'=>5,
-            'skills.title'=>5,
-            'skills.description'=>3
+            'company' => 5,
+            'users.description' => 3,
+            'problems.content' => 5,
+            'articles.title' => 5,
+            'articles.content' => 3,
+            'biographies.text' => 2,
+            'infos.address' => 1,
+            'posts.content' => 5,
+            'skills.title' => 5,
+            'skills.description' => 3
         ],
-        'joins'=>[
-            'posts'=>['users.id','posts.user_id'],
-            'problems'=>['users.id','problems.user_id'],
-            'articles'=>['users.id','articles.user_id'],
-            'biographies'=>['users.id','biographies.user_id'],
-            'infos'=>['users.id','infos.user_id'],
-            'skills'=>['users.id','skills.user_id']
+        'joins' => [
+            'posts' => ['users.id', 'posts.user_id'],
+            'problems' => ['users.id', 'problems.user_id'],
+            'articles' => ['users.id', 'articles.user_id'],
+            'biographies' => ['users.id', 'biographies.user_id'],
+            'infos' => ['users.id', 'infos.user_id'],
+            'skills' => ['users.id', 'skills.user_id']
         ]
     ];
 
@@ -91,6 +93,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return jDate::forge($this->attributes['created_at'])->format('Y/m/d');
     }
+
     public function getShamsiUpdatedAtAttribute()
     {
         return jDate::forge($this->attributes['updated_at'])->format('Y/m/d');
@@ -100,7 +103,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created by Emad Mirzaie on 01/09/2015.
      * get user role
      */
-    public function getUserRoleNameAttribute(){
+    public function getUserRoleNameAttribute()
+    {
         return $this->roles()->first()->name;
     }
 
@@ -108,17 +112,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created by Emad Mirzaie on 01/09/2015.
      * User status and email confirmation status
      */
-    public function getUserStatusAttribute(){
-        $statuses=[
-            0 => ['name'=>trans('users.deactiveStatus'), 'type'=>'danger'],
-            1 => ['name'=>trans('users.activeStatus'), 'type'=>'success']
+    public function getUserStatusAttribute()
+    {
+        $statuses = [
+            0 => ['name' => trans('users.deactiveStatus'), 'type' => 'danger'],
+            1 => ['name' => trans('users.activeStatus'), 'type' => 'success']
         ];
         return $statuses[$this->attributes['status']];
     }
-    public function getUserConfirmedStatusAttribute(){
-        $statuses=[
-            0 => ['name'=>trans('users.notConfirmedStatus'), 'type'=>'danger'],
-            1 => ['name'=>trans('users.confirmedStatus'), 'type'=>'success']
+
+    public function getUserConfirmedStatusAttribute()
+    {
+        $statuses = [
+            0 => ['name' => trans('users.notConfirmedStatus'), 'type' => 'danger'],
+            1 => ['name' => trans('users.confirmedStatus'), 'type' => 'success']
         ];
         return $statuses[$this->attributes['confirmed']];
     }
@@ -128,31 +135,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * username and image attributes
      */
 
-    public function getAvatarAttribute(){
-        if(is_null($this->attributes['image'])){
+    public function getAvatarAttribute()
+    {
+        if (is_null($this->attributes['image'])) {
             return 'user-default-avatar.jpg';
-        }else{
+        } else {
             return $this->attributes['image'];
         }
     }
 
-    public function getBannerAttribute(){
-        if(is_null($this->attributes['cover'])){
+    public function getBannerAttribute()
+    {
+        if (is_null($this->attributes['cover'])) {
             return 'default.jpg';
-        }else{
+        } else {
             return $this->attributes['cover'];
         }
     }
 
-    public function getUsernameAttribute(){
-        if($this->hasRole(3)){
-            if(!is_null($this->attributes['company']) and !empty($this->attributes['company']) ){
+    public function getUsernameAttribute()
+    {
+        if ($this->hasRole(3)) {
+            if (!is_null($this->attributes['company']) and !empty($this->attributes['company'])) {
                 return $this->attributes['company'];
-            }else{
-                return $this->attributes['first_name'].' '.$this->attributes['last_name'];
+            } else {
+                return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
             }
-        }else{
-            return $this->attributes['first_name'].' '.$this->attributes['last_name'];
+        } else {
+            return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
         }
     }
 
@@ -160,78 +170,96 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created By Dara on 6/11/2015
      * return the user balance
      */
-    public function getBalanceAttribute(){
+    public function getBalanceAttribute()
+    {
         return $this->credits()->sum('amount');
     }
 
-    public function info(){
+    public function info()
+    {
         return $this->hasOne('App\Info');
     }
 
-    public function usage(){
+    public function usage()
+    {
         return $this->hasOne('App\Usage');
     }
 
 
-    public function location(){
+    public function location()
+    {
         return $this->hasOne('App\Location');
     }
 
-    public function educations(){
+    public function educations()
+    {
         return $this->hasMany('App\Education');
     }
 
-    public function biography(){
+    public function biography()
+    {
         return $this->hasOne('App\Biography');
     }
 
-    public function files(){
+    public function files()
+    {
         return $this->hasMany('App\File');
     }
 
-    public function articles(){
+    public function articles()
+    {
         return $this->hasMany('App\Article');
     }
 
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany('App\Post');
     }
 
-    public function skills(){
+    public function skills()
+    {
         return $this->hasMany('App\Skill');
     }
 
-    public function recommendations(){
+    public function recommendations()
+    {
         return $this->hasMany('App\Recommendation');
     }
 
-    public function endorses(){
+    public function endorses()
+    {
         return $this->hasMany('App\Endorse');
     }
 
 
-    public function friends(){
+    public function friends()
+    {
         $friendRepository = new FriendRepository();
         return $friendRepository->friendsOf($this->attributes['id']);
     }
 
-    public function addresses(){
+    public function addresses()
+    {
         return $this->hasMany('App\Address');
     }
 
-    public function payments(){
+    public function payments()
+    {
         return $this->hasMany('App\Payment');
     }
 
-    public function storages(){
+    public function storages()
+    {
         return $this->hasMany('App\Storage');
     }
 
-    public function polls(){
+    public function polls()
+    {
         return $this->hasMany('App\Poll');
     }
 
-    public function questionnaires(){
+    public function questionnaires()
+    {
         return $this->hasMany('App\Questionnaire');
     }
 
@@ -239,23 +267,33 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created by Ahmad Dara on 30/10/2015.
      *
      */
-    public function offers(){
+    public function offers()
+    {
         return $this->hasMany('App\Offer');
     }
-    public function coupon_gallery(){
+
+    public function coupon_gallery()
+    {
         return $this->hasMany('App\CouponGallery');
     }
-    public function coupons(){
+
+    public function coupons()
+    {
         return $this->hasMany('App\Coupon');
     }
-    public function coupon_user(){
+
+    public function coupon_user()
+    {
         return $this->hasMany('App\CouponUser');
     }
-    
-    public function groups(){
+
+    public function groups()
+    {
         return $this->belongsToMany('App\Group')->withTimestamps();
     }
-    public function groupis(){
+
+    public function groupis()
+    {
         return $this->hasMany('App\Group');
     }
 
@@ -263,11 +301,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created by Emad Mirzaie on 30/10/2015.
      *
      */
-    public function shop(){
+    public function shop()
+    {
         return $this->hasOne('App\Shop');
     }
 
-    public function products(){
+    public function products()
+    {
         return $this->hasMany('App\Product');
     }
 
@@ -276,7 +316,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Stream');
     }
 
-    public function advertises(){
+    public function advertises()
+    {
         return $this->hasMany('App\Advertise');
     }
 
@@ -285,7 +326,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->morphMany('App\Post', 'parentable');
     }*/
 
-    public function problems(){
+    public function problems()
+    {
         return $this->hasMany('App\Problem');
     }
 
@@ -293,11 +335,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created By Dara on 9/11/2015
      * credits and settles relations
      */
-    public function credits(){
+    public function credits()
+    {
         return $this->hasMany('App\Credit');
     }
 
-    public function settles(){
+    public function settles()
+    {
         return $this->hasMany('App\Settle');
     }
 
@@ -305,7 +349,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created By Dara on 9/11/2015
      * report-relation
      */
-    public function reports(){
+    public function reports()
+    {
         return $this->hasMany('App\Report');
     }
 
@@ -313,7 +358,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created By Dara on 9/11/2015
      * feedback-relation
      */
-    public function feedbacks(){
+    public function feedbacks()
+    {
         return $this->hasMany('App\Feedback');
     }
 
@@ -321,18 +367,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created By Dara on 1/12/2015
      * corporation relation
      */
-    public function corporations(){ //return the corporations that others make request to me
-        return $this->hasMany('App\Corporation','receiver_id','id');
+    public function corporations()
+    { //return the corporations that others make request to me
+        return $this->hasMany('App\Corporation', 'receiver_id', 'id');
     }
 
-    public function myCorporations(){ //return the corporations that i made
+    public function myCorporations()
+    { //return the corporations that i made
         return $this->hasMany('App\Corporation', 'sender_id', 'id');
     }
-     /**
-      * Created By Dara on 26/11/2015
+
+    /**
+     * Created By Dara on 26/11/2015
      * relater-user relation
      */
-    public function relaters(){
+    public function relaters()
+    {
         return $this->hasMany('App\Relater');
     }
 
@@ -340,7 +390,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created By Dara on 28/11/2015
      * profit - user relation
      */
-    public function profits(){
+    public function profits()
+    {
         return $this->hasMany('App\Profit');
     }
 
@@ -348,24 +399,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created By Dara on 9/12/205
      * rate-user relationships
      */
-    public function rate(){
-        return $this->morphMany('App\Rate','parentable');
+    public function rate()
+    {
+        return $this->morphMany('App\Rate', 'parentable');
     }
 
     /**
      * Created By Dara on 12/12/2015
      * comments-user relationships
      */
-    public function comments(){
-        return $this->hasMany('App\Comment','user_id','id');
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'user_id', 'id');
     }
 
     /**
      * Created By Dara on 12/12/2015
      * get the visits for the specific user profile
      */
-    public function profileVisits(){
-        return $this->hasMany('App\ProfileVisitor','profile_id','id');
+    public function profileVisits()
+    {
+        return $this->hasMany('App\ProfileVisitor', 'profile_id', 'id');
     }
 
 
@@ -374,7 +428,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Check if auth user is friend with user
      */
 
-    public function getIsFriendAttribute (){
+    public function getIsFriendAttribute()
+    {
         $friendRepository = new FriendRepository();
         return $friendRepository->isFriend($this->attributes['id']);
     }
@@ -384,23 +439,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->morphMany('App\MessageUser', 'parentable');
     }
 
-    public function activity(){
+    public function activity()
+    {
         return $this->hasOne('App\Activity');
     }
 
-    public function shares(){
+    public function shares()
+    {
         return $this->hasMany('App\Share');
     }
 
-    public function showcases(){
-        return $this->hasMany('App\Showcase','user_id','id');
+    public function showcases()
+    {
+        return $this->hasMany('App\Showcase', 'user_id', 'id');
     }
 
-    public function profileShowcases(){
-        return $this->hasMany('App\Showcase','profile_id','id');
+    public function profileShowcases()
+    {
+        return $this->hasMany('App\Showcase', 'profile_id', 'id');
     }
 
-    public function stickies(){
+    public function stickies()
+    {
         return $this->hasMany('App\Sticky');
     }
 
@@ -408,8 +468,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Created By Dara on 23/12/2015
      * user-announcement relation
      */
-    public function announcements(){
+    public function announcements()
+    {
         return $this->hasMany('App\Announcement');
     }
+
+    public function recruitments()
+    {
+        return $this->hasMany('App\Recruitment');
+    }
+
+    public function recruitmentRequesters()
+    {
+        return $this->hasMany('App\RecruitmentRequester', 'user_id', 'id');
+    }
+
+    public function recruitmentAnswers()
+    {
+        return $this->hasMany('App\RecruitmentAnswer', 'user_id', 'id');
+    }
+
+
 
 }

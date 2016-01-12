@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Group;
 use App\Product;
 use App\Province;
 use App\User;
@@ -325,6 +326,10 @@ class SearchController extends Controller
             'query' => 'required|min:3',
             'section' => 'required|in:users,products'
         ]);
+
+        //adding group search
+        $groupResults=Group::search($request->input('query'),null,true)->get();
+
         if ($request->input('section') == 'users') {
             $query = User::search($request->input('query'), null, true);
             $query->leftJoin('profits','users.id','=','profits.user_id');
@@ -334,7 +339,7 @@ class SearchController extends Controller
             $query = Product::search($request->input('query'), null, true);
             $results = $query->groupBy('products.id')->get();
         }
-        $return = view('search.partials.fastResult', compact('results'))->with(['section' => $request->input('section')])->render();
+        $return = view('search.partials.fastResult', compact('results'),compact('groupResults'))->with(['section' => $request->input('section')])->render();
 
         return [
             'hasCallback' => 1,

@@ -10,6 +10,7 @@ use App\Events\advertisePurchased;
 use App\Events\pollPurchased;
 use App\Events\profitPurchased;
 use App\Events\questionnairePurchased;
+use App\Events\recruitmentPurchased;
 use App\Events\relaterPurchased;
 use App\Events\shopPurchased;
 use App\Events\showcasePurchased;
@@ -614,6 +615,57 @@ class StoreController extends Controller
         }else{
             Flash::error($this->errorCode($this->verify));
             return redirect(route('store.showcase', $payment->itemable_id));
+        }
+    }
+
+    /**
+     * Created By Dara on 12/30/2015
+     * recruitment addon handling
+     */
+    public function recruitment(){
+        $user=Auth::user();
+        $recruitment=Addon::recruitment()->first();
+        return view('store.recruitment',compact('user','recruitment'))->with(['title'=>'افزونه آگهی استخدام']);
+    }
+
+    private function recruitmentPrice()
+    {
+        return (Config::get('addonRecruitment.base_price') - config::get('addonRecruitment.base_price') * config::get('addonRecruitment.discount'));
+    }
+
+    public function recruitmentBuy(Request $request){
+        $user = Auth::user();
+        $this->validate($request, [
+            'payment_gate' => 'required|in:mellat,pasaragad'
+        ]);
+        $description = "آگهی استخدام";
+        $price = $this->recruitmentPrice();
+        $callback = route('store.recruitment.buy.callback');
+        $recruitment = $user->recruitments()->create(['status'=>0]);
+        $order = $recruitment->payment()->create([
+            'user_id' => $user->id,
+            'amount' => $price,
+            'gateway' => $request->input('payment_gate'),
+            'description' => $description,
+            'status' => 0
+        ]);
+        $orderId = $order->id;
+        $this->pay($price, $callback, $orderId, $description, $request->input('payment_gate'));
+    }
+
+    public function recruitmentCallback(Request $request)
+    {
+        $payment = Payment::findOrfail($request->input('order_id'));
+        $this->verify($request->input('au'), $payment->amount, $payment->gateway);
+        if(true){
+            $payment->update(['au' => $request->input('au')]); // tracking code
+            Event::fire(new recruitmentPurchased($payment));
+            $this->stream($payment);
+            Flash::success('recruitment added successfully');
+            return redirect(route('store.index'));
+        }else{
+            Flash::error($this->errorCode($this->verify));
+            return redirect(route('store.recruitment'));
         }
     }
 

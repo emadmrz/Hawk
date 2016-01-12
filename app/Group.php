@@ -4,12 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Morilog\Jalali\Facades\jDate;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Group extends Model
 {
+    use SearchableTrait;
     protected $table='groups';
 
     protected $fillable=['user_id','name','banner','image','active'];
+
+    protected $searchable=[
+        'columns'=>[
+            'name'=>10
+        ]
+    ];
 
     public function users(){
         return $this->belongsToMany('App\User')->withTimestamps();

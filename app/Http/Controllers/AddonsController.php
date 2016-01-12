@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Addon;
+use App\RecruitmentRequester;
 use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AddonsController extends Controller
 {
@@ -71,6 +73,18 @@ class AddonsController extends Controller
         $user=Auth::user();
         $profits=$user->profits()->latest()->get();
         return view('store.profit.index',compact('profits','user'))->with(['title'=>'مدیریت افزونه افزایش رتیه در جستجو']);
+    }
+
+    /**
+     * Created By Dara on 30/12/2015
+     * recruitment management handling
+     */
+    public function recruitment(){
+        $user=Auth::user();
+        $recruitmentQuery=$user->recruitments();
+        $recruitments=$recruitmentQuery->latest()->get();
+        $requesters=RecruitmentRequester::whereIN('recruitment_id',$recruitmentQuery->lists('id')->toArray())->get();
+        return view('store.recruitment.index',compact('recruitments','user','requesters'))->with(['title'=>'مدیریت افزونه آگهی استخدام']);
     }
 
     /**

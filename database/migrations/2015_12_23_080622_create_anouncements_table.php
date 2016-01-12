@@ -30,6 +30,6 @@ class CreateAnouncementsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('announcement');
+        Schema::drop('announcements');
     }
 }

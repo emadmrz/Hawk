@@ -288,6 +288,37 @@
                 </div>
             </div>
 
+            <div class="col-sm-3">
+                <div class="col-item">
+                    <div class="photo">
+                        <img src="{{ asset('img/icons/store/'.Config::get('addonRecruitment.banner')) }}" class="img-responsive" alt="a" />
+                        <div class="name">{{ Config::get('addonRecruitment.slug') }}</div>
+                        <!--<div class="discount">50% تخفیف  <br><del>40,000 تومان</del></div>-->
+                    </div>
+                    <div class="info">
+                        <div class="row">
+                            <div class="price col-md-6">
+                                <h5>{{ Config::get('addonRecruitment.title') }}</h5>
+                                <h5 class="price-text-color">
+                                    {{ number_format(Config::get('addonRecruitment.base_price')) }} تومان
+                                </h5>
+                            </div>
+                            <div class="rating hidden-sm col-md-6">
+                                <div class="service-rate ltr" data-id="1" data-rating="2.2"></div>
+                            </div>
+                        </div>
+                        <div class="separator clear-left">
+                            <p class="btn-add">
+                                <i class="fa fa-shopping-cart"></i><a href="{{route('store.recruitment')}}" class="hidden-sm">خرید افزونه</a></p>
+                            <p class="btn-details">
+                                <i class="fa fa-list"></i><a href="{{route('store.recruitment')}}" class="hidden-sm"> جزئیات بیشتر </a></p>
+                        </div>
+                        <div class="clearfix">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="well help">

@@ -164,9 +164,13 @@ $(document).ready(function(){
         if($(this).hasClass('active')){
             $("div#navbar").find('input[name="cat"]').val('users');
         }else{
+
             $(this).addClass('active');
             $(this).siblings('span').removeClass('active');
+            //trigger
+            $("form[role=search]").find('input#fast-search').trigger('keyup');
             $("div#navbar").find('input[name="cat"]').val('users')
+
         }
     });
     $("div#navbar").find('span#products').click(function(){
@@ -175,6 +179,8 @@ $(document).ready(function(){
         }else{
             $(this).addClass('active');
             $(this).siblings('span').removeClass('active');
+            //trigger
+            $("form[role=search]").find('input#fast-search').trigger('keyup');
             $("div#navbar").find('input[name="cat"]').val('products')
         }
     });

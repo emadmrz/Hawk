@@ -571,7 +571,6 @@
         //        $("#advance_search_elements").hide();
         $(document).ready(function(){
 
-
             $("#toggle_advance").click(function(e){
                 e.preventDefault()
                 $("#advance_search_elements").slideToggle()

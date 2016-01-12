@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CorporationQuestionnaireTableSeeder::class);
         $this->call(RateTableSeeder::class);
 
+
         Model::reguard();
     }
 }

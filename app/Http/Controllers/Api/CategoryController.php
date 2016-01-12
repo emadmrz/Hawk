@@ -16,8 +16,16 @@ class CategoryController extends Controller
          * changed By Dara on 16/11/2015
          * if the category_id ==0 then dont search for its subCategory
          */
+        $sub_category=[];
+        $sub_category[0]=new \stdClass();
+        $sub_category[0]->name='انتخاب کنید';
+        $sub_category[0]->id=0;
+        $all_sub_categories=Category::findOrFail($request->input('category_id'))->getDescendants();
+        foreach($all_sub_categories as $category){
+            $sub_category[]=$category;
+        }
 
-        return Category::findOrFail($request->input('category_id'))->getDescendants();
+        return $sub_category;
     }
 
     public function tags(Request $request){
