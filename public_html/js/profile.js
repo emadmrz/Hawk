@@ -1297,6 +1297,64 @@ $(document).ready(function(){
 
     });
 
+    var select_category_id=$('select#category_id')
+    var category_id=select_category_id.children('option');
+    $.each(category_id,function(index,value){
+       if(index==0){
+           $(this).attr('disabled',true);
+       }
+    });
+
+    $('select#category_id').change(function(){
+        $.ajax({
+            type: 'get',
+            url: "/api/category/sub/",
+            data: {category_id: $(this).val()},
+            dataType: 'json',
+            success: function(data){
+                var $select = $("select#sub_category_id");
+                $select.html('');
+                $(data).each(function (key, value) {
+                    if(value.id==0){
+                        var $option=$("<option/>").attr({value:value.id,disabled:true,selected:true}).text(value.name);
+                    }else{
+                        var $option = $("<option/>").attr("value", value.id).text(value.name);
+                    }
+
+                    $select.append($option);
+                });
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $('select#sub_category_id').change(function(){
+        $.ajax({
+            type: 'get',
+            url: "/api/category/tags/",
+            data: {sub_category_id: $(this).val()},
+            dataType: 'json',
+            success: function(data){
+                var $select = $("select#select_tags");
+                $select.html('');
+                $(data).each(function (key, value) {
+                    var $option = $("<option/>").attr("value", value.id).text(value.name);
+                    $select.append($option);
+                });
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }
+        });
+    });
+
+    $("#select_tags").select2({
+        placeholder: "تگ های مرتبط به مهارت خود را انتخاب نمایید.",
+        tags: true
+    });
+
     $('#Sticky_container').on('click', 'div.sticky-note .save', function(){
         var $this = $(this);
         var container = $this.closest('.sticky-note');

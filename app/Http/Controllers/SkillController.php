@@ -58,11 +58,16 @@ class SkillController extends Controller
     }
 
     public function create(SkillRepository $skillRepository){
-        $categories = Category::where('parent_id', null)->lists('name', 'id');
+        $categories=[];
+        $all_main_categories = Category::where('parent_id', null)->lists('name', 'id');
+        $categories[0]='انتخاب کنید';
+        foreach($all_main_categories as $key=>$value){
+            $categories[$key]=$value;
+        }
         $my_rate = $skillRepository->my_rate();
         $statuses = $skillRepository->statuses();
         $all_tags = [];
-        $sub_categories = Category::where('parent_id', null)->firstOrFail()->getDescendants()->lists('name', 'id');
+        $sub_categories = [];
         return view('profile.newSkill', compact('categories', 'my_rate', 'all_tags', 'sub_categories', 'statuses'))->with(['title'=>'ثبت مهارت جدید', 'new_skill'=>1, 'edit_skill'=>0, 'step'=>1, 'hasEdit'=>0]);
     }
 

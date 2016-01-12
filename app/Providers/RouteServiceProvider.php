@@ -10,6 +10,8 @@ use App\Event;
 use App\Group;
 use App\Offer;
 use App\Problem;
+use App\Recruitment;
+use App\RecruitmentRequester;
 use App\Report;
 use App\Settle;
 use App\Storage;
@@ -122,6 +124,14 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->bind('role',function($value){
             return Role::findOrFail($value);
+        });
+
+        $router->bind('recruitment',function($value){
+            return Recruitment::findOrFail($value);
+        });
+
+        $router->bind('recruitmentRequester',function($value){
+            return RecruitmentRequester::findOrFail($value);
         });
 
     }

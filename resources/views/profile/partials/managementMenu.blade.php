@@ -13,6 +13,7 @@
                 <li><i class="fa fa-user-secret" ></i><a class="">مدیریت افزونه تبلیغ پروفایل ها</a></li>
                 <li class="{{ (strpos(URL::current(),route('profile.management.addon.advertise')) !== false) ? 'active' : '' }}"><i class="fa fa-flag-checkered" ></i><a href="{{ route('profile.management.addon.advertise') }}" class="">مدیریت افزونه تبلیغ در صفحه اول</a></li>
                 <li class="{{ (strpos(URL::current(),route('profile.management.addon.profit')) !== false) ? 'active' : '' }}"><i class="fa fa-rocket" ></i><a href="{{ route('profile.management.addon.profit') }}" class="">مدیریت افزونه افزایش رتبه جستجو</a></li>
+                <li class="{{ (strpos(URL::current(),route('profile.management.addon.recruitment')) !== false) ? 'active' : '' }}"><i class="fa fa-rocket" ></i><a href="{{ route('profile.management.addon.recruitment') }}" class="">مدیریت افزونه آگهی استخدام</a></li>
             </ul>
         </div>
     </div>

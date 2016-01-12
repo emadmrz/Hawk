@@ -19,7 +19,7 @@ class offerPurchased extends Event
      */
     public function __construct(Payment $payment)
     {
-        $this->payment=$payment;
+        $this->payment = $payment;
     }
 
     /**

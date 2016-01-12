@@ -47,6 +47,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\showcasePurchased' => [
             'App\Listeners\activeShowcase',
         ],
+        'App\Events\recruitmentPurchased' => [
+            'App\Listeners\activeRecruitment',
+        ],
+        'App\Events\recruitmentConfirmed' => [
+            'App\Listeners\publishRecruitment',
+        ],
     ];
 
     /**

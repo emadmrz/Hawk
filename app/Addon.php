@@ -58,4 +58,8 @@ class Addon extends Model
         $query->where('name','showcase');
     }
 
+    public function scopeRecruitment($query){
+        $query->where('name','recruitment');
+    }
+
 }

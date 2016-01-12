@@ -57,6 +57,7 @@
                     <ul class="dropdown-menu" aria-labelledby="setting_menu">
                         <li><a href="{{ route('profile.setting.storage') }}" ><i class="fa fa-database fa-1x"></i> حجم پروفایل </a></li>
                         <li><a href="{{ route('profile.setting.password') }}" ><i class="fa fa-lock fa-1x"></i> تغییر کلمه عبور </a></li>
+                        <li><a href="{{ route('profile.setting.password') }}" ><i class="fa fa-lock fa-1x"></i>آگهی های استخدام </a></li>
                         <li><a href="#"><i class="fa fa-bug" ></i>گزارش خطاها و باگ  </a></li>
                     </ul>
                 </li>
@@ -86,6 +87,9 @@
                         @endif
                         @if(count($user->offers))
                             <li><a href="{{ route('profile.management.addon.offer') }}" ><i class="fa fa-diamond fa-1x"></i>افزونه پیشنهاد ویژه</a></li>
+                        @endif
+                        @if(count($user->recruitments))
+                            <li><a href="{{ route('profile.management.addon.recruitment') }}" ><i class="fa fa-diamond fa-1x"></i>افزونه آگهی استخدام</a></li>
                         @endif
                     </ul>
                 </li>

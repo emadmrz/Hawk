@@ -33,13 +33,13 @@
                     <div class="form-group panel-form">
                         {!! Form::label('main_category', 'دسته بندی سطح ۱ : ', ['class'=>'control-label pull-right col-sm-2']) !!}
                         <div class="col-sm-3">
-                            {!! Form::select('main_category', $main_categories, null, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                            {!! Form::select('main_category', $main_categories, null, ['id'=>'category_id','class'=>'form-control', 'placeholder'=>'']) !!}
                         </div>
                     </div>
                     <div class="form-group panel-form">
                         {!! Form::label('category_id', ' دسته بندی سطح ۲ :', ['class'=>'control-label pull-right col-sm-2']) !!}
                         <div class="col-sm-3">
-                            {!! Form::select('category_id', $sub_categories, null, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                            {!! Form::select('category_id', $sub_categories, null, ['id'=>'sub_category_id','class'=>'form-control', 'placeholder'=>'']) !!}
                         </div>
                     </div>
                     <div class="form-group">

@@ -97,6 +97,13 @@ Route::group(['prefix' => 'home', 'as'=>'home.'], function () {
     Route::post('/profile/sticky/{sticky}/update',['as'=>'profile.sticky.update', 'uses'=>'StickyController@update']);
     Route::delete('/profile/sticky/{sticky}/delete',['as'=>'profile.sticky.delete', 'uses'=>'StickyController@delete']);
 
+    /**
+     * Created By Dara on 4/1/2016
+     * recruitment public routes
+     */
+    Route::get('/profile/{profile}/recruitment/{recruitment}/preview',['as'=>'recruitment.preview','uses'=>'RecruitmentController@publicPreview']);
+    Route::post('/profile/{profile}/recruitment/{recruitment}/submit',['as'=>'recruitment.submit','uses'=>'RecruitmentController@submitRecruitment']);
+
 });
 
 /**
@@ -392,6 +399,21 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::get('/addon/showcase/active',['as'=>'addon.showcase.active', 'uses'=>'ShowcaseController@activeRequest']);
         Route::get('/addon/showcase/{showcase}/approve',['as'=>'addon.showcase.approve', 'uses'=>'ShowcaseController@approved']);
 
+        /**
+         * Created By Dara on 30/12/2015
+         * managing the recruitment addon routes
+         */
+        Route::get('addon/recruitment',['as'=>'addon.recruitment','uses'=>'AddonsController@recruitment']);
+        Route::get('addon/recruitment/{recruitment}/edit',['as'=>'addon.recruitment.edit','uses'=>'RecruitmentController@edit']);
+        Route::get('addon/recruitment/{recruitment}/question',['as'=>'addon.recruitment.question','uses'=>'RecruitmentController@editQuestion']);
+        Route::post('addon/recruitment/{recruitment}/question/submit',['as'=>'addon.recruitment.question.submit','uses'=>'RecruitmentController@submitQuestion']);
+        Route::post('addon/recruitment/{recruitment}/question/add',['as'=>'addon.recruitment.question.add','uses'=>'RecruitmentController@addQuestion']);
+        Route::get('addon/recruitment/{recruitment}/finalSubmit',['as'=>'addon.recruitment.finalSubmit','uses'=>'RecruitmentController@finalSubmit']);
+        Route::get('addon/recruitment/{recruitment}/preview',['as'=>'addon.recruitment.preview','uses'=>'RecruitmentController@profilePreview']);
+        Route::get('addon/recruitment/{recruitment}/preview',['as'=>'addon.recruitment.requester.preview','uses'=>'RecruitmentController@requesterPreview']);
+        Route::get('addon/recruitment/{recruitment}/{recruitmentRequester}/preview',['as'=>'addon.recruitment.requester.preview','uses'=>'RecruitmentController@requesterPreview']);
+        Route::post('/addon/recruitment/{recruitment}/job/create',['as'=>'addon.recruitment.job.create','uses'=>'RecruitmentController@create']);
+
     });
 
     /**
@@ -427,6 +449,14 @@ Route::group(['prefix' => 'profile', 'as'=>'profile.', 'middleware'=>['auth','em
         Route::post('/{corporation}/question',['as'=>'question.submit','uses'=>'CorporationController@questionSubmit']);
         Route::get('/{corporation}/question/show',['as'=>'question.show','uses'=>'CorporationController@questionShow']);
     });
+
+    /**
+     * Created By Dara on 5/1/2016
+     * handling recruitments related to me
+     */
+    Route::get('recruitment',['as'=>'recruitment','uses'=>'RecruitmentController@recruitmentIndex']);
+    Route::post('recruitment',['as'=>'recruitment.search','uses'=>'RecruitmentController@recruitmentSearch']);
+    Route::get('recruitment/{recruitment}/requester/{recruitmentRequester}/preview',['as'=>'recruitment.requester.preview','uses'=>'RecruitmentController@publicRequesterPreview']);
 
 });
 
@@ -691,6 +721,13 @@ Route::group(['middleware'=>['auth'], 'prefix' => 'admin', 'as'=>'admin.'], func
          */
         Route::get('{user}/addon',['as'=>'addon.index','uses'=>'AddonsController@adminIndex']);
 
+        /**
+         * Created By Dara on 3/1/2016
+         * addon management recruitment control
+         */
+        Route::get('{user}/recruitment',['as'=>'recruitment.index','uses'=>'RecruitmentController@adminIndex']);
+        Route::get('{user}/recruitment/{recruitment}/change',['as'=>'recruitment.change','uses'=>'RecruitmentController@adminChange']);
+
     });
     /**
      * Created By Dara on 22/12/2015
@@ -844,6 +881,16 @@ Route::group(['prefix' => 'store', 'as'=>'store.'], function () {
     Route::get('showcase/{showcase}/buy',['as'=>'showcase.buy','uses'=>'StoreController@showcaseBuy']);
     Route::any('showcase/buy/callback',['as'=>'showcase.buy.callback', 'uses'=>'StoreController@showcaseCallback']);
     Route::any('showcase/comment',['as'=>'showcase.comment', 'uses'=>'CommentController@showcase']);
+
+    /**
+     * Created By Dara on 30/12/2015
+     * recruitment addon routes
+     */
+    Route::get('recruitment',['as'=>'recruitment','uses'=>'StoreController@recruitment']);
+    Route::get('recruitment/buy',['as'=>'recruitment.buy','uses'=>'StoreController@recruitmentBuy']);
+    Route::any('recruitment/buy/callback',['as'=>'recruitment.buy.callback', 'uses'=>'StoreController@recruitmentCallback']);
+    Route::any('recruitment/comment',['as'=>'recruitment.comment', 'uses'=>'CommentController@recruitment']);
+
 
 });
 
